@@ -6,6 +6,13 @@ import Loading from "../../Loading";
 import dashoard from "../../assets/dashboard.png";
 import course from "../../assets/courses.png";
 import generate from "../../assets/generatecourse.png";
+import subscription from "../../assets/subscription.png";
+import support from "../../assets/support.png";
+import faq from "../../assets/faq.png";
+import terms from "../../assets/terms.png";
+import privacy from "../../assets/privacy.png";
+import logout from "../../assets/logout.png";
+import bin from "../../assets/bin.png";
 
 const Layout = () => {
   const location = useLocation();
@@ -13,13 +20,23 @@ const Layout = () => {
     { title: "Dashboard", icon: dashoard, to: "/dashboard" },
     { title: "My Courses", icon: course, to: "/" },
     { title: "Generate Course", icon: generate, to: "/" },
+    { title: "My Subscription", icon: subscription, to: "/" },
+    { title: "My Certificates", icon: subscription, to: "/" },
+    { title: "Help & Support ", icon: support, to: "/" },
+    { title: "FAQ", icon: faq, to: "/" },
+    { title: "Notifications", icon: subscription, to: "/" },
+    { title: "Terms of Service", icon: terms, to: "/" },
+    { title: "Privacy Policy", icon: privacy, to: "/" },
+    { title: "Profile", icon: profile, to: "/" },
+    { title: "Logout", icon: logout, to: "/" },
+    { title: "Delete Account", icon: bin, to: "/" },
   ];
 
   return (
     <div className="">
       <Headers Menus={Menus} />
-      <div className="flex w-full  h-screen pt-14 font-poppins">
-        <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden">
+      <div className="flex w-full  h-screen pt-14 font-poppins   ">
+        <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden overflow-auto no-scrollbar">
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
             <img src={profile} alt="User" className="w-14 h-14 " />
             <div>
@@ -33,20 +50,20 @@ const Layout = () => {
             </div>
           </div>
 
-          <div className="row-span-10 mt-4  overflow-auto no-scrollbar">
+          <div className=" my-1 ">
             <ul className="pt-2">
               {Menus.map((menu, index) => (
                 <React.Fragment key={index}>
                   <NavLink to={menu.to}>
                     <li
-                      className={` cursor-pointer text-md flex items-center gap-x-3 p-2 mt-1 pl-3 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B]    ${
+                      className={` cursor-pointer text-md flex items-center gap-x-3 p-1.5 mt-1 pl-4 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B] font-extralight   ${
                         location.pathname === menu.to
                           ? "bg-gradient-to-r from-[#110038] to-[#08006B]  transition-all duration-500"
                           : " "
                       }`}
                     >
-                      <div className="flex items-center gap-x-2 ">
-                        <img src={menu.icon} alt="icons" className="w-6 h-6" />
+                      <div className="flex items-center gap-x-3 ">
+                        <img src={menu.icon} alt="icons" className="w-4 h-4" />
                         <span
                           className={`font-poppins text-lg flex-1 duration-300 `}
                         >
