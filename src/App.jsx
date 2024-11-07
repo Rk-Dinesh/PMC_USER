@@ -3,13 +3,15 @@ import Layout from "./pages/layout/Layout";
 import Headers from "./pages/layout/Headers";
 import SignUp from "./pages/auth/SignUp";
 import NotFound from "./404";
+import SignIn from "./pages/auth/SignIn";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="" element={<SignUp />} />
+          <Route path="" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<SignUp />} />
             <Route path="/dashboard1" element={<Headers />} />

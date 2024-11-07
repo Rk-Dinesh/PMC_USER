@@ -16,8 +16,9 @@ export default {
         //  'search': '#E8E2E2',
         //  'paginate-br' : '#BDBDBD',
         // 'paginate-bg' : '#F3F3F3',
-      }
+      },
     },
   },
   plugins: [],
 }
+
