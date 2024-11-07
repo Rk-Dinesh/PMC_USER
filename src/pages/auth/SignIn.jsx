@@ -9,9 +9,14 @@ const SignIn = () => {
     const redirectSignUp = () =>{
         navigate('/signup')
     }
+
+    const redirectOtp = () =>{
+        navigate('/otp')
+    }
+
   return (
     <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white bg-[url('../../assets/bgimage.png')] ">
-    <div className="w-[430px] mx-1  bg-[#200098] bg-[url('../../assets/bgimage.png')] bg-cover bg-center p-4  flex flex-col justify-center ">
+    <div className="w-[430px] mx-1  bg-[#200098] bg-[url('../../assets/bgimage.png')] bg-cover bg-center p-4  flex flex-col justify-center shadow-black shadow-lg">
       <img src={Logo} alt="Logo" className="w-full" />
       <form>
         <p className="text-center text-lg my-2">Login</p>
@@ -23,10 +28,10 @@ const SignIn = () => {
             type="text"
             placeholder="Enter Phone"
             required
-            className="py-1.5  rounded-md text-center text-black"
+            className="py-2  rounded-md text-center text-black shadow-md outline-none"
           />
           <div className="flex justify-center my-8">
-            <button className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 ">
+            <button className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 " onClick={redirectOtp}>
               Continue
             </button>
           </div>

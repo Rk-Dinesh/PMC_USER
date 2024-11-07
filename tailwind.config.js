@@ -17,6 +17,7 @@ export default {
         //  'paginate-br' : '#BDBDBD',
         // 'paginate-bg' : '#F3F3F3',
       },
+      
     },
   },
   plugins: [],

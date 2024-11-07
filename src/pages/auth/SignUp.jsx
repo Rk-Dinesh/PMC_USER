@@ -12,7 +12,7 @@ const SignUp = () => {
   }
   return (
     <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white bg-[url('../../assets/bgimage.png')] ">
-      <div className="w-[430px] mx-1  bg-[#200098] bg-[url('../../assets/bgimage.png')] bg-cover bg-center px-4 py-1 flex flex-col justify-center shadow-lg">
+      <div className="w-[430px] mx-1  bg-[#200098] bg-[url('../../assets/bgimage.png')] bg-cover bg-center px-4 py-1 flex flex-col justify-center shadow-black shadow-lg">
         <img src={Logo} alt="Logo" className="w-full" />
         <form>
           <p className="text-center text-lg my-2">Create an account</p>
@@ -24,7 +24,7 @@ const SignUp = () => {
               type="text"
               placeholder="e.g John"
               required
-              className="py-2  rounded-md px-4 text-black shadow-md"
+              className="py-2  rounded-md px-4 text-black shadow-md outline-none"
             />
             <label htmlFor="lname">
               Last Name <span className="text-red-600">*</span>
@@ -33,7 +33,7 @@ const SignUp = () => {
               type="text"
               placeholder="e.g Doe"
               required
-              className="py-2 px-4 rounded-md  text-black shadow-md"
+              className="py-2 px-4 rounded-md  text-black shadow-md outline-none"
             />
             <label htmlFor="phone">
               Phone <span className="text-red-600">*</span>
@@ -42,7 +42,7 @@ const SignUp = () => {
               type="text"
               placeholder="9999999999"
               required
-              className="py-2 px-2  rounded-md text-center  text-black shadow-md"
+              className="py-2 px-2  rounded-md text-center  text-black shadow-md outline-none"
             />
             <label htmlFor="email">
               Email <span className="text-red-600">*</span>
@@ -51,7 +51,7 @@ const SignUp = () => {
               type="email"
               placeholder="johndoe@gmail.com"
               required
-              className="py-2  rounded-md text-center text-black shadow-md"
+              className="py-2  rounded-md text-center text-black shadow-md outline-none"
             />
             <label htmlFor="dob">
               Date of Birth <span className="text-red-600">*</span>
@@ -60,10 +60,10 @@ const SignUp = () => {
               type="text"
               placeholder="dd/mm/yy"
               required
-              className="py-2  rounded-md text-center text-black shadow-md"
+              className="py-2  rounded-md text-center text-black shadow-md outline-none"
             />
             <div className="flex gap-2 items-center my-4">
-              <input type="checkbox" name="" id="" />
+              <input type="checkbox" name="" id="" className="outline-none "/>
               <p className="text-sm font-extralight">
                 I agree to the{" "}
                 <span className="text-blue-400">Terms of Service</span> &{" "}
