@@ -5,7 +5,7 @@ import AllCourse from "./AllCourse";
 const MyCourses = () => {
   const [activeTab, setActiveTab] = useState("tab1");
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto -z-10 " >
       <div className="flex justify-between mt-8 mx-4 flex-wrap gap-3 font-poppins">
         <div className="flex  justify-start gap-3   flex-wrap">
           <div class="relative inline-block">

@@ -13,7 +13,7 @@ const Headers = ({ Menus }) => {
   };
 
   return (
-    <div className='flex justify-between items-center px-3 bg-gradient-to-r from-[#110038] to-[#08006B] fixed w-full'>
+    <div className='flex justify-between items-center px-3 bg-gradient-to-r from-[#110038] to-[#08006B] z-50 fixed w-full'>
       <img src={PMCLogo} alt="PickMyCourse" className='w-42 h-14' />
       
       <p className='text-2xl text-white md:block lg:hidden block' onClick={toggleDropdown}>
@@ -21,7 +21,7 @@ const Headers = ({ Menus }) => {
       </p>
 
       {isDropdownOpen && (
-        <div className='absolute right-0 top-14 w-full bg-[#200098] text-white shadow-md z-50 lg:hidden md:block block'>
+        <div className='absolute right-0 top-14 w-full bg-[#200098] text-white shadow-md lg:hidden md:block block'>
           <div className="flex gap-2 items-center pt-3 mx-3">
             <img src={profile} alt="User" className="w-14 h-14" />
             <div>

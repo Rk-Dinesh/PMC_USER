@@ -2,8 +2,8 @@ import React from "react";
 
 const Dashboard = () => {
   return (
-    <div className="m-20">
-   <div class="relative inline-block z-10">
+    <div className="m-20 -z-10">
+   <div class="relative inline-block ">
     <button class="bg-blue-500 text-white py-2 px-4 ">
         Notched Button
     </button>
