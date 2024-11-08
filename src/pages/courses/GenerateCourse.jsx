@@ -110,7 +110,7 @@ const GenerateCourse = () => {
             to learn. You can leave this blank if you want our AI to generate
             the Sub Topics.
           </p>
-          <div className="flex flex-col py-4 gap-1 ">
+          <div className="flex flex-col py-1 gap-1 ">
             <label htmlFor="subtopic" value="Sub Topic" className="text-lg">
               Enter Subtopic<span className="text-red-600">*</span>
             </label>

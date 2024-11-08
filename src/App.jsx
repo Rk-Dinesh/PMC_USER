@@ -7,6 +7,8 @@ import OTP from "./pages/auth/OTP";
 import Dashboard from "./pages/dashboard/Dashboard";
 import MyCourses from "./pages/courses/MyCourses";
 import GenerateCourse from "./pages/courses/GenerateCourse";
+import HelpSupport from "./pages/help&support/HelpSupport";
+import NewTicket from "./pages/help&support/NewTicket";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/course" element={<MyCourses />} />
             <Route path="/create" element={<GenerateCourse />} />
+            <Route path="/support" element={<HelpSupport />} />
+            <Route path="/newticket" element={<NewTicket />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

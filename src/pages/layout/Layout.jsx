@@ -14,6 +14,7 @@ import privacy from "../../assets/privacy.png";
 import logout from "../../assets/logout.png";
 import bin from "../../assets/bin.png";
 
+
 const Layout = () => {
   const location = useLocation();
   const Menus = [
@@ -22,7 +23,7 @@ const Layout = () => {
     { title: "Generate Course", icon: generate, to: "/create" },
     { title: "My Subscription", icon: subscription, to: "/" },
     { title: "My Certificates", icon: subscription, to: "/" },
-    { title: "Help & Support ", icon: support, to: "/" },
+    { title: "Help & Support ", icon: support, to: "/support" },
     { title: "FAQ", icon: faq, to: "/" },
     { title: "Notifications", icon: subscription, to: "/" },
     { title: "Terms of Service", icon: terms, to: "/" },
@@ -36,7 +37,7 @@ const Layout = () => {
     <div className="">
       <Headers Menus={Menus} />
       <div className="flex w-full  h-screen pt-14 font-poppins   ">
-        <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden overflow-hidden no-scrollbar h-screen">
+        <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden overflow-auto no-scrollbar h-screen">
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
             <img src={profile} alt="User" className="w-14 h-14 " />
             <div>
@@ -77,10 +78,12 @@ const Layout = () => {
             </ul>
           </div>
         </div>
-        <div className="lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white h-screen overflow-auto">
+        <div className=" lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white h-screen overflow-auto">
+        
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>
+          <p className="  text-sm mt-4 mb-3 mx-5 lg:text-end md:text-end text-center font-extralight ">&#169; PickMyCourse Developed with <span className="text-red-700">&#x2764;</span> by SeenIT Pty Ltd</p>
         </div>
       </div>
     </div>
