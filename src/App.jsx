@@ -6,6 +6,7 @@ import SignIn from "./pages/auth/SignIn";
 import OTP from "./pages/auth/OTP";
 import Dashboard from "./pages/dashboard/Dashboard";
 import MyCourses from "./pages/courses/MyCourses";
+import GenerateCourse from "./pages/courses/GenerateCourse";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/course" element={<MyCourses />} />
+            <Route path="/create" element={<GenerateCourse />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

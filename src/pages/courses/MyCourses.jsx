@@ -1,9 +1,94 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import AllCourse from "./AllCourse";
+import image from "../../assets/assest.png";
 
 const MyCourses = () => {
   const [activeTab, setActiveTab] = useState("tab1");
+  const course = [
+    {
+      images: image,
+      topic: "Topic Name",
+      type: "Text & Video Course",
+      date: "12/12/24",
+      certificate: "no",
+    },
+    {
+      images: image,
+      topic: "Topic Name",
+      type: "Text & Theory Course",
+      date: "12/11/24",
+      certificate: "no",
+    },
+    {
+      images: image,
+      topic: "Topic Name",
+      type: "Text & Video Course",
+      date: "12/08/24",
+      certificate: "no",
+    },
+    {
+      images: image,
+      topic: "Topic Name",
+      type: "Text & Video Course",
+      date: "12/08/24",
+      certificate: "no",
+    },
+    {
+      images: image,
+      topic: "Topic Name",
+      type: "Text & Video Course",
+      date: "12/08/24",
+      certificate: "yes",
+    },
+    {
+      images: image,
+      topic: "Topic Name",
+      type: "Text & Video Course",
+      date: "12/08/24",
+      certificate: "yes",
+    },
+    {
+      images: image,
+      topic: "Topic Name",
+      type: "Text & Video Course",
+      date: "12/08/24",
+      certificate: "no",
+    },
+    {
+        images : image,
+        topic : "Topic Name",
+        type : "Text & Video Course",
+        date : "12/08/24",
+        certificate : 'yes'
+    },
+    {
+        images : image,
+        topic : "Topic Name",
+        type : "Text & Video Course",
+        date : "12/08/24",
+        certificate : 'yes'
+    },
+    {
+        images : image,
+        topic : "Topic Name",
+        type : "Text & Video Course",
+        date : "12/08/24",
+        certificate : 'yes'
+    },
+    {
+        images : image,
+        topic : "Topic Name",
+        type : "Text & Video Course",
+        date : "12/08/24",
+        certificate : 'yes'
+    },
+
+  ];
+
+  const completed = course.filter((course)=>course.certificate === 'yes');
+  const active = course.filter((course)=>course.certificate !== 'yes')
+
   return (
     <div className="overflow-auto -z-10 " >
       <div className="flex justify-between mt-8 mx-4 flex-wrap gap-3 font-poppins">
@@ -59,9 +144,9 @@ const MyCourses = () => {
       </div>
       <hr className="border-2 my-1 border-white mx-1"/>
       
-      <div className="mx-1 overflow-auto">{activeTab === "tab1" && <AllCourse />}</div>
-      <div className="mx-1 ">{activeTab === "tab2" && <div>Hi</div>}</div>
-      <div className="mx-1 ">{activeTab === "tab3" && <div>H3</div>}</div>
+      <div className="mx-1 overflow-auto">{activeTab === "tab1" && <AllCourse  course={course}/>}</div>
+      <div className="mx-1 ">{activeTab === "tab2" && <AllCourse course={completed}/>}</div>
+      <div className="mx-1 ">{activeTab === "tab3" &&<AllCourse  course={active}/>}</div>
     </div>
   );
 };

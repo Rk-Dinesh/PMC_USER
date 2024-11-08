@@ -1,87 +1,8 @@
 import React from "react";
 import image from "../../assets/assest.png";
 
-const AllCourse = () => {
-  const course = [
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/12/24",
-      certificate: "yes",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Theory Course",
-      date: "12/11/24",
-      certificate: "no",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "yes",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "yes",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "yes",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "yes",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "yes",
-    },
-    {
-        images : image,
-        topic : "Topic Name",
-        type : "Text & Video Course",
-        date : "12/08/24",
-        certificate : 'yes'
-    },
-    {
-        images : image,
-        topic : "Topic Name",
-        type : "Text & Video Course",
-        date : "12/08/24",
-        certificate : 'yes'
-    },
-    {
-        images : image,
-        topic : "Topic Name",
-        type : "Text & Video Course",
-        date : "12/08/24",
-        certificate : 'yes'
-    },
-    {
-        images : image,
-        topic : "Topic Name",
-        type : "Text & Video Course",
-        date : "12/08/24",
-        certificate : 'yes'
-    },
+const AllCourse = ({course}) => {
 
-  ];
   return (
     <div className="grid grid-cols-12 gap-3 mx-2 mt-6 ">
       {course.map((courses, index) => (

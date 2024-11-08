@@ -1,22 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Dashboard = () => {
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleRadioChange = (event) => {
+    console.log("Selected Value:", event.target.value);
+    setSelectedValue(event.target.value);
+  };
+
   return (
-    <div className="m-20 -z-10">
-   <div class="relative inline-block ">
-    <button class="bg-blue-500 text-white py-2 px-4 ">
-        Notched Button
-    </button>
-    <div class="absolute -top-8 -right-10 w-8 h-8 bg-[#110038] transform rotate-45 -translate-x-1/2 translate-y-1/2"></div>
-</div>
-{/* <div class="flex items-center mt-20">
-    <button class="bg-blue-500 text-white py-2 px-4  ">
-        Notched Button
-    </button>
-    <div class="w-8 h-8 bg-[#380c00] transform rotate-45  -mr-12 -mt-20 ">
-      
-    </div>
-</div> */}
+    <div className="flex flex-col space-y-4">
+      <div className="flex items-center cursor-pointer">
+        <input
+          type="radio"
+          name="value"
+          id="4"
+          value="4"
+          onChange={handleRadioChange}
+          checked={selectedValue === "4"}
+          className="hidden peer"
+        />
+        <label
+          htmlFor="4"
+          className="flex items-center cursor-pointer"
+        >
+          <span className="w-5 h-5 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
+          <span className={`w-4 h-4  ${selectedValue === "4" ? "bg-white" : "hidden"}`}></span>
+          </span>
+          <span className="ml-2">5</span>
+        </label>
+      </div>
+
+      <div className="flex items-center cursor-pointer">
+        <input
+          type="radio"
+          name="value"
+          id="7"
+          value="7"
+          onChange={handleRadioChange}
+          checked={selectedValue === "7"}
+          className="hidden peer"
+        />
+        <label
+          htmlFor="7"
+          className="flex items-center cursor-pointer"
+        >
+          <span className="w-5 h-5 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
+          <span className={`w-4 h-4  ${selectedValue === "7" ? "bg-white" : "hidden"}`}></span>
+          </span>
+          <span className="ml-2">10</span>
+        </label>
+      </div>
     </div>
   );
 };

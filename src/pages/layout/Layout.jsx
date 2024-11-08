@@ -19,7 +19,7 @@ const Layout = () => {
   const Menus = [
     { title: "Dashboard", icon: dashoard, to: "/dashboard" },
     { title: "My Courses", icon: course, to: "/course" },
-    { title: "Generate Course", icon: generate, to: "/" },
+    { title: "Generate Course", icon: generate, to: "/create" },
     { title: "My Subscription", icon: subscription, to: "/" },
     { title: "My Certificates", icon: subscription, to: "/" },
     { title: "Help & Support ", icon: support, to: "/" },
