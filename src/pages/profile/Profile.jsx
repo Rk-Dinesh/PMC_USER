@@ -1,8 +1,14 @@
-import React from "react";
+import React,{useState} from "react";
 import Profiles from "../../assets/profile.png";
+import UpdateProfile from "./UpdateProfile";
 
 const Profile = () => {
+    const [isModal, setIsModal] = useState(false);
+    const CloseEmailModal = () =>{
+        setIsModal(!isModal)
+    }
   return (
+    <>
     <div className="mx-5 my-6 font-poppins">
       <div className=" flex flex-col mx-6">
         <img src={Profiles} alt="Image" className="w-40 h-40" />
@@ -58,6 +64,7 @@ const Profile = () => {
            <div className="flex justify-center my-2">
            <button
               className={` text-base  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-center px-10 py-2.5 my-3 `}
+              onClick={()=>setIsModal(true)}
             >
               Update
             </button>
@@ -84,6 +91,9 @@ const Profile = () => {
         </div>
       </div>
     </div>
+    {isModal && <UpdateProfile CloseEmailModal={CloseEmailModal}/>}
+    </>
+
   );
 };
 
