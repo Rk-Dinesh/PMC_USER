@@ -9,6 +9,11 @@ import MyCourses from "./pages/courses/MyCourses";
 import GenerateCourse from "./pages/courses/GenerateCourse";
 import HelpSupport from "./pages/help&support/HelpSupport";
 import NewTicket from "./pages/help&support/NewTicket";
+import FAQ from "./pages/faq/FAQ";
+import Notification from "./pages/notification/Notification";
+import TermsService from "./pages/terms/TermsService";
+import PrivacyPolicy from "./pages/terms/PrivacyPolicy";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   return (
@@ -24,6 +29,11 @@ function App() {
             <Route path="/create" element={<GenerateCourse />} />
             <Route path="/support" element={<HelpSupport />} />
             <Route path="/newticket" element={<NewTicket />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/notify" element={<Notification />} />
+            <Route path="/terms" element={<TermsService />} />
+            <Route path="/policy" element={<PrivacyPolicy />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
