@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import Headers from "./Headers";
 import profile from "../../assets/profile.png";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
@@ -13,10 +13,14 @@ import terms from "../../assets/terms.png";
 import privacy from "../../assets/privacy.png";
 import logout from "../../assets/logout.png";
 import bin from "../../assets/bin.png";
-
+import LogOut from "../auth/LogOut";
+import DeleteAccount from "../auth/DeleteAccount";
 
 const Layout = () => {
   const location = useLocation();
+  const [isLogOutModalOpen, setLogOutModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
   const Menus = [
     { title: "Dashboard", icon: dashoard, to: "/dashboard" },
     { title: "My Courses", icon: course, to: "/course" },
@@ -29,10 +33,22 @@ const Layout = () => {
     { title: "Terms of Service", icon: terms, to: "/terms" },
     { title: "Privacy Policy", icon: privacy, to: "/policy" },
     { title: "Profile", icon: profile, to: "/profile" },
-    { title: "Logout", icon: logout, to: "/" },
-    { title: "Delete Account", icon: bin, to: "/" },
+    {
+      title: "Logout",
+      icon: logout,
+      to: "#",
+      onClick: () => setLogOutModalOpen(true),
+    },
+    { title: "Delete Account", icon: bin, to: "#",  onClick: () => setDeleteModalOpen(true)},
   ];
 
+  const handleCloseModal = () => {
+    setLogOutModalOpen(false);
+  };
+
+  const handleDeleteCloseModal = () => {
+    setDeleteModalOpen(false);
+  };
   return (
     <div className="">
       <Headers Menus={Menus} />
@@ -55,7 +71,7 @@ const Layout = () => {
             <ul className="pt-2">
               {Menus.map((menu, index) => (
                 <React.Fragment key={index}>
-                  <NavLink to={menu.to}>
+                  <NavLink to={menu.to} onClick={menu.onClick}>
                     <li
                       className={` cursor-pointer text-md flex items-center gap-x-3 p-1.5 mt-1 pl-4 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B] font-extralight   ${
                         location.pathname === menu.to
@@ -79,13 +95,17 @@ const Layout = () => {
           </div>
         </div>
         <div className=" lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white h-screen overflow-auto">
-        
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>
-          <p className="  text-sm mt-4 mb-3 mx-5 lg:text-end md:text-end text-center font-extralight ">&#169; PickMyCourse Developed with <span className="text-red-700">&#x2764;</span> by SeenIT Pty Ltd</p>
+          <p className="  text-sm mt-4 mb-3 mx-5 lg:text-end md:text-end text-center font-extralight ">
+            &#169; PickMyCourse Developed with{" "}
+            <span className="text-red-700">&#x2764;</span> by SeenIT Pty Ltd
+          </p>
         </div>
       </div>
+      {isLogOutModalOpen && <LogOut handleCloseModal={handleCloseModal} />}
+      {isDeleteModalOpen && <DeleteAccount handleDeleteCloseModal={handleDeleteCloseModal}/>}
     </div>
   );
 };

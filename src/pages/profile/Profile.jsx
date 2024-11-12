@@ -1,11 +1,18 @@
 import React,{useState} from "react";
 import Profiles from "../../assets/profile.png";
 import UpdateProfile from "./UpdateProfile";
+import UpdatePhone from "./UpdatePhone";
 
 const Profile = () => {
     const [isModal, setIsModal] = useState(false);
+    const [isPhoneModal, setIsPhoneModal] = useState(false);
+
     const CloseEmailModal = () =>{
         setIsModal(!isModal)
+    }
+
+    const ClosePhoneModal =() =>{
+      setIsPhoneModal(!isPhoneModal)
     }
   return (
     <>
@@ -82,6 +89,7 @@ const Profile = () => {
            <div className="flex justify-center my-2">
            <button
               className={` text-base  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-center px-10 py-2.5 my-3 `}
+              onClick={()=>setIsPhoneModal(true)}
             >
               Update
             </button>
@@ -92,6 +100,7 @@ const Profile = () => {
       </div>
     </div>
     {isModal && <UpdateProfile CloseEmailModal={CloseEmailModal}/>}
+    {isPhoneModal && <UpdatePhone ClosePhoneModal={ClosePhoneModal}/>}
     </>
 
   );

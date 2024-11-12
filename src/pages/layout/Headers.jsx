@@ -34,7 +34,7 @@ const Headers = ({ Menus }) => {
           </div>
           <ul className="flex flex-wrap py-5 ">
             {Menus.map((menu, index) => (
-              <NavLink to={menu.to} key={index}>
+              <NavLink to={menu.to} onClick={menu.onClick} key={index} >
                 <li
                   className={`cursor-pointer text-md flex items-center gap-x-3 p-2 mt-1 pl-3 transition-all duration-700 ${
                     location.pathname === menu.to

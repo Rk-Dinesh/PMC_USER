@@ -14,6 +14,7 @@ import Notification from "./pages/notification/Notification";
 import TermsService from "./pages/terms/TermsService";
 import PrivacyPolicy from "./pages/terms/PrivacyPolicy";
 import Profile from "./pages/profile/Profile";
+import LogOut from "./pages/auth/LogOut";
 
 function App() {
   return (
