@@ -52,8 +52,8 @@ const Layout = () => {
   return (
     <div className="">
       <Headers Menus={Menus} />
-      <div className="flex w-full  h-screen pt-14 font-poppins   ">
-        <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden overflow-auto no-scrollbar h-screen">
+      <div className="flex w-full h-screen  pt-14 font-poppins   ">
+        <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden overflow-auto  ">
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
             <img src={profile} alt="User" className="w-14 h-14 " />
             <div>
@@ -94,7 +94,7 @@ const Layout = () => {
             </ul>
           </div>
         </div>
-        <div className=" lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white h-screen overflow-auto">
+        <div className=" lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white overflow-auto ">
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>
