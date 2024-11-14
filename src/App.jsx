@@ -15,6 +15,9 @@ import TermsService from "./pages/terms/TermsService";
 import PrivacyPolicy from "./pages/terms/PrivacyPolicy";
 import Profile from "./pages/profile/Profile";
 import LogOut from "./pages/auth/LogOut";
+import ViewTicket from "./pages/help&support/ViewTicket";
+import Certificate from "./pages/certificate/Certificate";
+import ViewCertificate from "./pages/certificate/ViewCertificate";
 
 function App() {
   return (
@@ -30,11 +33,14 @@ function App() {
             <Route path="/create" element={<GenerateCourse />} />
             <Route path="/support" element={<HelpSupport />} />
             <Route path="/newticket" element={<NewTicket />} />
+            <Route path="/viewticket" element={<ViewTicket />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/notify" element={<Notification />} />
             <Route path="/terms" element={<TermsService />} />
             <Route path="/policy" element={<PrivacyPolicy />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/certificate" element={<Certificate />} />
+            <Route path="/viewcertificate" element={<ViewCertificate />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

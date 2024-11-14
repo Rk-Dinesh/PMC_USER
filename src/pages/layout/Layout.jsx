@@ -26,7 +26,7 @@ const Layout = () => {
     { title: "My Courses", icon: course, to: "/course" },
     { title: "Generate Course", icon: generate, to: "/create" },
     { title: "My Subscription", icon: subscription, to: "/" },
-    { title: "My Certificates", icon: subscription, to: "/" },
+    { title: "My Certificates", icon: subscription, to: "/certificate" },
     { title: "Help & Support ", icon: support, to: "/support" },
     { title: "FAQ", icon: faq, to: "/faq" },
     { title: "Notifications", icon: subscription, to: "/notify" },
