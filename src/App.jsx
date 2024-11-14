@@ -18,6 +18,8 @@ import LogOut from "./pages/auth/LogOut";
 import ViewTicket from "./pages/help&support/ViewTicket";
 import Certificate from "./pages/certificate/Certificate";
 import ViewCertificate from "./pages/certificate/ViewCertificate";
+import Subscription from "./pages/subscription/Subscription";
+import Invoice from "./pages/subscription/Invoice";
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/certificate" element={<Certificate />} />
             <Route path="/viewcertificate" element={<ViewCertificate />} />
+            <Route path="/subscription" element={<Subscription />} />
+            <Route path="/invoice" element={<Invoice />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

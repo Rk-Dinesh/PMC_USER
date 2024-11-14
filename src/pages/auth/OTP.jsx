@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../../assets/PMC_Logo.png";
 import { useNavigate } from "react-router-dom";
+import cover from "../../assets/bgimage.png";
 
 const OTP = () => {
   const navigate = useNavigate();
@@ -31,18 +32,23 @@ const OTP = () => {
     }
   };
 
-  const redirectHome = () =>{
-    navigate('/dashboard')
-}
+  const redirectHome = () => {
+    navigate("/dashboard");
+  };
 
   return (
-    <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white bg-[url('../../assets/bgimage.png')] ">
-      <div className="w-[430px] mx-1  bg-[#200098] bg-[url('../../assets/bgimage.png')] bg-cover bg-center p-4  flex flex-col justify-center shadow-black shadow-lg">
-        <img src={Logo} alt="Logo" className="w-full" />
-        <p className="text-center text-lg my-4 font-extralight">
-          Phone Number Verification
-        </p>
-        <form>
+    <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white ">
+      <div className="w-[430px] mx-1  bg-[#200098]  p-4  flex flex-col justify-center shadow-black shadow-lg relative">
+      <img
+          src={cover}
+          alt="Image"
+          className="absolute top-2 right-1 w-[420px] opacity-20"
+        />
+        <form className="z-0">
+          <img src={Logo} alt="Logo" className="w-full" />
+          <p className="text-center text-lg my-4 font-extralight">
+            Phone Number Verification
+          </p>
           <div className="flex justify-center gap-3 my-6">
             <input
               name="otp1"
@@ -120,7 +126,10 @@ const OTP = () => {
             <p className="text-lg font-extralight">90 secs</p>
           </div>
           <div className="flex justify-center my-12">
-            <button className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 " onClick={redirectHome}>
+            <button
+              className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 "
+              onClick={redirectHome}
+            >
               Verify
             </button>
           </div>

@@ -1,20 +1,26 @@
 import React from "react";
 import Logo from "../../assets/PMC_Logo.png";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import cover from "../../assets/bgimage.png";
 
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const redirectSignIn = () =>{
-      navigate('/')
-  }
+  const redirectSignIn = () => {
+    navigate("/");
+  };
   return (
-    <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white bg-[url('../../assets/bgimage.png')] ">
-      <div className="w-[430px] mx-1  bg-[#200098] bg-[url('../../assets/bgimage.png')] bg-cover bg-center px-4 py-1 flex flex-col justify-center shadow-black shadow-lg">
-        <img src={Logo} alt="Logo" className="w-full" />
-        <form>
+    <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white  ">
+      <div className="w-[430px] mx-1  bg-[#200098]  px-4 py-1 flex flex-col justify-center shadow-black shadow-lg relative">
+      <img
+          src={cover}
+          alt="Image"
+          className="absolute top-2 right-1 w-[420px] opacity-20"
+        />
+        <form className="z-0">
+          <img src={Logo} alt="Logo" className="w-full " />
           <p className="text-center text-lg my-2">Create an account</p>
           <div className="flex flex-col gap-2 mx-4 my-2 font-extralight">
             <label htmlFor="fname">
@@ -63,7 +69,7 @@ const SignUp = () => {
               className="py-2  rounded-md text-center text-black shadow-md outline-none"
             />
             <div className="flex gap-2 items-center my-4">
-              <input type="checkbox" name="" id="" className="outline-none "/>
+              <input type="checkbox" name="" id="" className="outline-none " />
               <p className="text-sm font-extralight">
                 I agree to the{" "}
                 <span className="text-blue-400">Terms of Service</span> &{" "}
@@ -71,7 +77,10 @@ const SignUp = () => {
               </p>
             </div>
             <div className="flex justify-center my-1">
-              <button className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 " onClick={redirectSignIn}>
+              <button
+                className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 "
+                onClick={redirectSignIn}
+              >
                 Continue
               </button>
             </div>
