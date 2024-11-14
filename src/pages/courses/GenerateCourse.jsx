@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const GenerateCourse = () => {
+  const navigate = useNavigate();
   const maxSubtopics = 5;
   const [formValues, setFormValues] = useState([{ sub: "" }]);
   const [selectedValue, setSelectedValue] = useState("4");
@@ -33,6 +35,10 @@ const GenerateCourse = () => {
     newFormValues.pop();
     setFormValues(newFormValues);
   };
+
+  const redirectlist = () => {
+    navigate('/list')
+  }
 
   return (
     <div className="my-5 text-white font-poppins ">
@@ -195,6 +201,7 @@ const GenerateCourse = () => {
          <div className="flex justify-center">
          <button
               className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-1/2 md:w-3/4 w-full py-2.5 my-5 `}
+              onClick={redirectlist}
             >
              Generate Course
             </button>

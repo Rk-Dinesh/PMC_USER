@@ -20,6 +20,8 @@ import Certificate from "./pages/certificate/Certificate";
 import ViewCertificate from "./pages/certificate/ViewCertificate";
 import Subscription from "./pages/subscription/Subscription";
 import Invoice from "./pages/subscription/Invoice";
+import ListTopics from "./pages/courses/ListTopics";
+import Content from "./pages/courses/Content";
 
 function App() {
   return (
@@ -29,10 +31,12 @@ function App() {
           <Route path="" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/otp" element={<OTP />} />
+          <Route path="/content" element={<Content />} />
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/course" element={<MyCourses />} />
             <Route path="/create" element={<GenerateCourse />} />
+            <Route path="/list" element={<ListTopics />} />           
             <Route path="/support" element={<HelpSupport />} />
             <Route path="/newticket" element={<NewTicket />} />
             <Route path="/viewticket" element={<ViewTicket />} />
