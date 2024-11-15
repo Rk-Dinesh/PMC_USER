@@ -30,6 +30,11 @@ const ViewCertificate = () => {
         </h3>
         <p className="text-sm sm:text-base md:text-lg mb-4">on 01/10/2024</p>
       </div>
+      <div className="flex justify-center my-8 ">
+          <button className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-52 py-2.5 ">
+            Download certificate
+          </button>
+        </div>
     </div>
   );
 };

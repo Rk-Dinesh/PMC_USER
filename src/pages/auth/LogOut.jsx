@@ -1,7 +1,12 @@
 import React from "react";
 import Modal from "../../components/Modal";
+import { useNavigate } from "react-router-dom";
 
 const LogOut = ({ handleCloseModal }) => {
+  const navigate = useNavigate()
+  const redirect = () => {
+    navigate('')
+  }
   return (
     <Modal>
       <div className="w-[550px] min-h-[330px] my-4 mx-8 font-extralight font-poppins text-white">
@@ -24,6 +29,7 @@ const LogOut = ({ handleCloseModal }) => {
           </button>
           <button
             className={` font-normal bg-white text-black text-center w-36 py-2.5 my-2 `}
+            onClick={redirect}
           >
             Logout
           </button>
