@@ -4,19 +4,55 @@ import { useNavigate } from "react-router-dom";
 import cover from "../../assets/bgimage.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import { API } from "../../Host";
+import { toast } from "react-toastify";
+
+const UserSchema = yup.object().shape({
+  phone: yup.number().required("Phone Number is required"),
+});
 
 const SignIn = () => {
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(UserSchema),
+  });
 
   const redirectSignUp = () => {
     navigate("/signup");
   };
 
-  const redirectOtp = () => {
-    navigate("/otp");
+  const onSubmit = async (data) => {
+    const formData = {
+      ...data,
+    };
+    try {
+      const response = await axios.post(`${API}/api/usersignin`, formData);
+      const responseData = response.data.userData;
+      if (response.status === 200) {
+        toast.success("Logged in Successfully");
+        localStorage.setItem("user", responseData._id);
+        localStorage.setItem("fname", responseData.fname);
+        localStorage.setItem("lname", responseData.lname);
+        localStorage.setItem("email", responseData.email);
+        localStorage.setItem("phone", responseData.phone);
+        navigate("/otp");
+      } else {
+        toast.error("Failed To Upload");
+        console.log("Error in posting Data");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  
 
   return (
     <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white  ">
@@ -26,34 +62,21 @@ const SignIn = () => {
           alt="Image"
           className="absolute top-2 right-1 w-[420px] opacity-20"
         />
-        <form className="z-0">
+        <form className="z-0" onSubmit={handleSubmit(onSubmit)}>
           <img src={Logo} alt="Logo" className="w-full " />
           <p className="text-center text-lg my-2">Login</p>
           <div className="flex flex-col gap-3 mx-2 my-4 ">
-           <span className="">
-           <PhoneInput
-              country={"in"}
-              // value={this.state.phone}
-              // onChange={phone => this.setState({ phone })}
-              className="text-black mx-8 "
-              // containerStyle={{ border: '1px solid #ccc', borderRadius: '5px' }}
-          inputStyle={{ padding: '10px',color:'black',marginLeft:'38px' }}
-          buttonStyle={{
-            background: 'linear-gradient(to right, #3D03FA, #A71CD2)', // Gradient background
-            border: 'none', // No border
-            paddingRight:'10px',
-            
-          }}
-          dropdownStyle={{ backgroundColor: '#fff', border: '1px solid #ccc' }}
-          // searchStyle={{ padding: '5px', fontSize: '14px' }}
-              
+            <label htmlFor="phone">
+              Phone <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Enter Phone"
+              {...register("phone")}
+              className="py-2  rounded-md text-center text-black shadow-md outline-none"
             />
-           </span>
             <div className="flex justify-center my-8">
-              <button
-                className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 "
-                onClick={redirectOtp}
-              >
+              <button className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 ">
                 Continue
               </button>
             </div>
