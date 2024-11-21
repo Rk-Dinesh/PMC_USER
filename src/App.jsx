@@ -24,6 +24,7 @@ import Subscription from "./pages/subscription/Subscription";
 import Invoice from "./pages/subscription/Invoice";
 import ListTopics from "./pages/courses/ListTopics";
 import Content from "./pages/courses/Content";
+import ImageUploader from "./pages/auth/Test";
 
 function App() {
   return (
@@ -51,6 +52,8 @@ function App() {
             <Route path="/viewcertificate" element={<ViewCertificate />} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/invoice" element={<Invoice />} />
+            <Route path="/uploder" element={<ImageUploader />} />
+
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

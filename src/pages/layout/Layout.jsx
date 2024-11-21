@@ -39,7 +39,12 @@ const Layout = () => {
       to: "#",
       onClick: () => setLogOutModalOpen(true),
     },
-    { title: "Delete Account", icon: bin, to: "#",  onClick: () => setDeleteModalOpen(true)},
+    {
+      title: "Delete Account",
+      icon: bin,
+      to: "#",
+      onClick: () => setDeleteModalOpen(true),
+    },
   ];
 
   const handleCloseModal = () => {
@@ -98,14 +103,18 @@ const Layout = () => {
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>
-          <p className="  text-sm mt-4 mb-3 mx-5 lg:text-end md:text-end text-center font-extralight ">
-            &#169; PickMyCourse Developed with{" "}
-            <span className="text-red-700">&#x2764;</span> by SeenIT Pty Ltd
-          </p>
         </div>
       </div>
+      <footer className="bg-gradient-to-r from-[#110038] to-[#08006B] py-3 px-6">
+        <p className=" text-white text-sm  lg:text-end md:text-end text-center font-extralight  ">
+          &#169; PickMyCourse Developed with{" "}
+          <span className="text-red-700">&#x2764;</span> by SeenIT Pty Ltd
+        </p>
+      </footer>
       {isLogOutModalOpen && <LogOut handleCloseModal={handleCloseModal} />}
-      {isDeleteModalOpen && <DeleteAccount handleDeleteCloseModal={handleDeleteCloseModal}/>}
+      {isDeleteModalOpen && (
+        <DeleteAccount handleDeleteCloseModal={handleDeleteCloseModal} />
+      )}
     </div>
   );
 };

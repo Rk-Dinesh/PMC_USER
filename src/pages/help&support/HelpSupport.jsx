@@ -1,47 +1,31 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { API, formatDate1 } from "../../Host";
 
 const HelpSupport = () => {
   const navigate = useNavigate();
+  const [ticket, setTicket] = useState([]);
+  
   const redirectnewticket = () => {
     navigate("/newticket");
   };
-  const redirectviewticket = () => {
-    navigate("/viewticket");
+
+  useEffect(() => {
+    fetchTicket();
+  }, []);
+
+  const fetchTicket = async () => {
+    try {
+      const response = await axios.get(`${API}/api/getticket`);
+      const responseData = await response.data.ticket;      
+      setTicket(responseData);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const ticket = [
-    {
-      ticket: "12345",
-      category: "General",
-      Date: "12/12/24",
-      status: "New Ticket",
-    },
-    {
-      ticket: "12345",
-      category: "General",
-      Date: "12/12/24",
-      status: "In Progress",
-    },
-    {
-      ticket: "12345",
-      category: "General",
-      Date: "12/12/24",
-      status: "Closed",
-    },
-    {
-      ticket: "12345",
-      category: "General",
-      Date: "12/12/24",
-      status: "On Hold",
-    },
-    {
-      ticket: "12345",
-      category: "General",
-      Date: "12/12/24",
-      status: "New Ticket",
-    },
-  ];
+
   return (
     <div className="mx-4 my-6 font-poppins">
       <button
@@ -66,9 +50,9 @@ const HelpSupport = () => {
         <>
           <div className="flex justify-between mx-2 flex-wrap" key={index}>
             <div className="flex flex-col gap-1">
-              <p>Ticket No: {ticket.ticket}</p>
+              <p>Ticket No: {ticket.ticketId}</p>
               <p>Category : {ticket.category}</p>
-              <p>Date : {ticket.Date}</p>
+              <p>Date : {formatDate1(ticket.createdAt)}</p>
               <p>
                 Status :{" "}
                 <span
@@ -89,7 +73,11 @@ const HelpSupport = () => {
             <div>
               <button
                 className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-48 py-2 my-5 `}
-                onClick={redirectviewticket}
+                onClick={() =>
+                  navigate(`/viewticket`, {
+                    state: { ticketId: ticket.ticketId },
+                  })
+                }
               >
                 View Ticket
               </button>
