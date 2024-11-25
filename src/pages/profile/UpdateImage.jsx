@@ -12,7 +12,7 @@ const UpdateImage = ({ CloseProfileModal }) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (!file) {
-      alert("Please select a file!");
+      toast.error("Please select a file!");
       return;
     }
     const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
@@ -45,7 +45,7 @@ const UpdateImage = ({ CloseProfileModal }) => {
     try {
       const response = await axios.post(`${API}/api/images`, payload);
       if (response.status === 200) {
-        toast.success("Profile Image Updated Succesfully");
+        toast.success(response.data.message);
         CloseProfileModal();
       } else {
         console.log("Failed to Upload");

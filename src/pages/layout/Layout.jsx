@@ -105,12 +105,12 @@ const Layout = () => {
           </Suspense>
         </div>
       </div>
-      <footer className="bg-gradient-to-r from-[#110038] to-[#08006B] py-3 px-6">
+      {/* <footer className="bg-gradient-to-r from-[#110038] to-[#08006B] py-3 px-6">
         <p className=" text-white text-sm  lg:text-end md:text-end text-center font-extralight  ">
           &#169; PickMyCourse Developed with{" "}
           <span className="text-red-700">&#x2764;</span> by SeenIT Pty Ltd
         </p>
-      </footer>
+      </footer> */}
       {isLogOutModalOpen && <LogOut handleCloseModal={handleCloseModal} />}
       {isDeleteModalOpen && (
         <DeleteAccount handleDeleteCloseModal={handleDeleteCloseModal} />
