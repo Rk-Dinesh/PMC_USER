@@ -11,6 +11,75 @@ const GenerateCourse = () => {
   const [selectedType, setSelectedType] = useState("Text & Image Course");
   const [paidMember, setPaidMember] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [endDate, setEndDate] = useState("");
+  const [courses, setCourses] = useState([]);
+  const [Count, setCount] = useState(0);
+
+  let type = sessionStorage.getItem("type");
+  const user = sessionStorage.getItem("user");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userType = sessionStorage.getItem("type");
+      if (userType !== "free") {
+        setPaidMember(true);
+        setLableText("Select number of sub topics");
+        await getCount();
+        await getCourse();
+        await getDetails();
+      } else {
+        await getCourse();
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  async function getCount() {
+    const postURL = serverURL + `/api/getcountplan?user=${user}`;
+    try {
+      const response = await axios.get(postURL);
+      const responseData = response.data;
+      console.log(responseData[0].count);
+      setCount(responseData[0].count);
+    } catch (error) {}
+  }
+
+  async function getCourse() {
+    const postURL = serverURL + `/api/courses?userId=${user}`;
+    try {
+      const response = await axios.get(postURL);
+      console.log(response.data);
+      setCourses(response.data);
+    } catch (error) {}
+  }
+
+  async function getDetails() {
+    const dataToSend = {
+      uid: sessionStorage.getItem("uid"),
+    };
+    try {
+      const postURL = serverURL + "/api/subscriptiondetail";
+      await axios.post(postURL, dataToSend).then((res) => {
+        console.log(res.data.session.current_period_end);
+        setEndDate(res.data.session.current_period_end);
+      });
+    } catch (error) {}
+  }
+
+  const updateCount = async () => {
+    const dataToSend = {
+      user: sessionStorage.getItem("uid"),
+    };
+
+    const postURL = serverURL + "/api/updatecount";
+    try {
+      const response = await axios.post(postURL, dataToSend);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleRadioChange = (event) => {
     setSelectedValue(event.target.value);
@@ -23,9 +92,6 @@ const GenerateCourse = () => {
   let handleChange = (i, e) => {
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
-    console.log(newFormValues[i][e.target.name]);
-    console.log(e.target.value);
-    console.log(newFormValues);
     setFormValues(newFormValues);
   };
 
@@ -114,14 +180,73 @@ const GenerateCourse = () => {
   ]
   }`;
 
-    // sendPrompt(prompt, mainTopic, selectedType)
-
-    console.log("prompt", prompt);
+    sendPrompt(prompt, mainTopic, selectedType);
   };
 
-  const redirectlist = () => {
-    navigate("/list");
-  };
+  async function sendPrompt(prompt, mainTopic, selectedType) {
+    const dataToSend = {
+      prompt: prompt,
+    };
+    try {
+      const postURL = `${serverURL}/api/prompt`;
+      const res = await axios.post(postURL, dataToSend);
+      const generatedText = res.data.generatedText;
+      const cleanedJsonString = generatedText
+        .replace(/```json/g, "")
+        .replace(/```/g, "");
+      try {
+        const parsedJson = JSON.parse(cleanedJsonString);
+        setProcessing(false);
+
+        // Check the type of subscription and the end date before navigating
+        if (type === "free" && courses.length >= 1) {
+          toast.error("Please subscribe to access more courses.");
+        } else if (type === "Monthly Plan") {
+          if (Count > 0) {
+            await updateCount();
+            navigate("/topics", {
+              state: {
+                jsonData: parsedJson,
+                mainTopic: mainTopic.toLowerCase(),
+                type: selectedType.toLowerCase(),
+              },
+            });
+          } else {
+            toast.error(
+              "Your monthly plan has reached the limit. Please upgrade to Monthly plan or Monthly Pro plan for access."
+            );
+          }
+        } else if (type === "Monthly Plan Pro") {
+          if (Count > 0) {
+            await updateCount();
+            navigate("/topics", {
+              state: {
+                jsonData: parsedJson,
+                mainTopic: mainTopic.toLowerCase(),
+                type: selectedType.toLowerCase(),
+              },
+            });
+          } else {
+            toast.error(
+              "Your monthly plan has reached the limit. Please upgrade to Monthly plan or Monthly Pro plan for access."
+            );
+          }
+        } else {
+          navigate("/topics", {
+            state: {
+              jsonData: parsedJson,
+              mainTopic: mainTopic.toLowerCase(),
+              type: selectedType.toLowerCase(),
+            },
+          });
+        }
+      } catch (error) {
+        sendPrompt(prompt, mainTopic, selectedType);
+      }
+    } catch (error) {
+      sendPrompt(prompt, mainTopic, selectedType);
+    }
+  }
 
   return (
     <div className="my-5 text-white font-poppins ">
@@ -207,8 +332,8 @@ const GenerateCourse = () => {
               {formValues.map((element, index) => (
                 <div key={index}>
                   <input
-                    name="sub" 
-                    value={element.sub} 
+                    name="sub"
+                    value={element.sub}
                     onChange={(e) => handleChange(index, e)}
                     className="py-2 px-4 rounded-md text-black shadow-md outline-none lg:w-3/4 md:w-full w-full my-1"
                     placeholder="Enter Subtopic"

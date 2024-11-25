@@ -39,7 +39,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/course" element={<MyCourses />} />
             <Route path="/create" element={<GenerateCourse />} />
-            <Route path="/list" element={<ListTopics />} />           
+            <Route path="/topics" element={<ListTopics />} />           
             <Route path="/support" element={<HelpSupport />} />
             <Route path="/newticket" element={<NewTicket />} />
             <Route path="/viewticket" element={<ViewTicket />} />
