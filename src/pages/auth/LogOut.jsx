@@ -10,6 +10,7 @@ const LogOut = ({ handleCloseModal }) => {
     localStorage.removeItem('lname');
     localStorage.removeItem("email");
     localStorage.removeItem("phone");
+    localStorage.removeItem("type");
     navigate('')
   }
   return (

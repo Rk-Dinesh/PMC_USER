@@ -44,6 +44,7 @@ const SignIn = () => {
         localStorage.setItem("lname", responseData.lname);
         localStorage.setItem("email", responseData.email);
         localStorage.setItem("phone", responseData.phone);
+        localStorage.setItem("type", responseData.type);
         navigate("/otp");
       } else {
         toast.error("Failed To Upload");

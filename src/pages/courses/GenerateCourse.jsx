@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { API } from "../../Host";
+import axios from "axios";
 
 const GenerateCourse = () => {
   const navigate = useNavigate();
@@ -15,15 +17,14 @@ const GenerateCourse = () => {
   const [courses, setCourses] = useState([]);
   const [Count, setCount] = useState(0);
 
-  let type = sessionStorage.getItem("type");
-  const user = sessionStorage.getItem("user");
+  let type = localStorage.getItem("type");
+  const user = localStorage.getItem("user");
 
   useEffect(() => {
     const fetchData = async () => {
-      const userType = sessionStorage.getItem("type");
+      const userType = localStorage.getItem("type");
       if (userType !== "free") {
         setPaidMember(true);
-        setLableText("Select number of sub topics");
         await getCount();
         await getCourse();
         await getDetails();
@@ -36,7 +37,7 @@ const GenerateCourse = () => {
   }, []);
 
   async function getCount() {
-    const postURL = serverURL + `/api/getcountplan?user=${user}`;
+    const postURL = API + `/api/getcountplan?user=${user}`;
     try {
       const response = await axios.get(postURL);
       const responseData = response.data;
@@ -46,7 +47,7 @@ const GenerateCourse = () => {
   }
 
   async function getCourse() {
-    const postURL = serverURL + `/api/courses?userId=${user}`;
+    const postURL = API + `/api/courses?userId=${user}`;
     try {
       const response = await axios.get(postURL);
       console.log(response.data);
@@ -56,10 +57,10 @@ const GenerateCourse = () => {
 
   async function getDetails() {
     const dataToSend = {
-      uid: sessionStorage.getItem("uid"),
+      uid: localStorage.getItem("user"),
     };
     try {
-      const postURL = serverURL + "/api/subscriptiondetail";
+      const postURL = API + "/api/subscriptiondetail";
       await axios.post(postURL, dataToSend).then((res) => {
         console.log(res.data.session.current_period_end);
         setEndDate(res.data.session.current_period_end);
@@ -69,10 +70,10 @@ const GenerateCourse = () => {
 
   const updateCount = async () => {
     const dataToSend = {
-      user: sessionStorage.getItem("uid"),
+      user: localStorage.getItem("user"),
     };
 
-    const postURL = serverURL + "/api/updatecount";
+    const postURL = API + "/api/updatecount";
     try {
       const response = await axios.post(postURL, dataToSend);
       console.log(response.data);
@@ -179,6 +180,8 @@ const GenerateCourse = () => {
    }
   ]
   }`;
+    // console.log(prompt);
+    
 
     sendPrompt(prompt, mainTopic, selectedType);
   };
@@ -187,15 +190,18 @@ const GenerateCourse = () => {
     const dataToSend = {
       prompt: prompt,
     };
-    try {
-      const postURL = `${serverURL}/api/prompt`;
-      const res = await axios.post(postURL, dataToSend);
-      const generatedText = res.data.generatedText;
+    console.log(dataToSend);
+    
+    try {   
+      const res = await axios.post(`${API}/api/prompt`, dataToSend);
+      const generatedText = res.data.generatedText; 
       const cleanedJsonString = generatedText
         .replace(/```json/g, "")
         .replace(/```/g, "");
       try {
         const parsedJson = JSON.parse(cleanedJsonString);
+        console.log(parsedJson);
+        
         setProcessing(false);
 
         // Check the type of subscription and the end date before navigating
@@ -241,10 +247,10 @@ const GenerateCourse = () => {
           });
         }
       } catch (error) {
-        sendPrompt(prompt, mainTopic, selectedType);
+        //sendPrompt(prompt, mainTopic, selectedType);
       }
     } catch (error) {
-      sendPrompt(prompt, mainTopic, selectedType);
+      //sendPrompt(prompt, mainTopic, selectedType);
     }
   }
 
@@ -428,13 +434,9 @@ const GenerateCourse = () => {
             </div>
             <div className="flex justify-center">
               <button
-                isProcessing={processing}
-                processingSpinner={
-                  <AiOutlineLoading className="h-6 w-6 animate-spin" />
-                }
                 className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-1/2 md:w-3/4 w-full py-2.5 my-5 `}
               >
-                Generate Course
+                {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Generating ....</p></span> : "Generate Course" }
               </button>
             </div>
           </div>
