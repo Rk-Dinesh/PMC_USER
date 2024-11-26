@@ -8,7 +8,7 @@ const TruncatedText = ({ text, len }) => {
     const truncatedText = isTruncated ? words.slice(0, len).join(' ') + '...' : text;
 
     return (
-        <span className='self-center whitespace-normal text-xl font-black text-white'>
+        <span className=' whitespace-normal text-xl  text-white mx-8 font-poppins font-normal'>
             {truncatedText}
         </span>
     );

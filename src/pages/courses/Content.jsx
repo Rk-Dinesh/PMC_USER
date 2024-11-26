@@ -9,7 +9,7 @@ import StyledText from "../../components/StyledText";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { IoChatbubbleEllipses } from "react-icons/io5";
+import { IoChatbubbleEllipses, IoClose } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
@@ -603,7 +603,7 @@ const Content = () => {
     <>
       <Headers />
       {!mainTopic ? null : (
-        <div className="flex flex-col h-screen  ">
+        <div className="flex flex-col h-screen  " >
           <div
             onClick={() => setIsOpenDrawer(true)}
             className="m-5 fixed bottom-4 right-4 z-40 w-12 h-12 bg-[#200098] text-white rounded-full flex justify-center items-center shadow-md "
@@ -619,7 +619,8 @@ const Content = () => {
             </div>
             <div className="overflow-y-auto flex-grow flex-col w-9/12 ">
               <nav className="py-5 bg-gradient-to-b from-[#110038] via-[#150243] to-[#150243] border-b border-white flex items-center">
-                <div className="ml-1 flex items-center">
+                <div className="ml-1  flex flex-col w-1/2">
+                  <TruncatedText text={mainTopic} len={10} />
                   {isComplete ? (
                     <p
                       onClick={finish}
@@ -628,33 +629,17 @@ const Content = () => {
                       Download Certificate
                     </p>
                   ) : (
-                    <div className="w-8 h-8 mr-3">
-                      <CircularProgressbar
-                        value={percentage}
-                        text={`${percentage}%`}
-                        styles={buildStyles({
-                          rotation: 0.25,
-                          strokeLinecap: "butt",
-                          textSize: "20px",
-                          pathTransitionDuration: 0.5,
-                          pathColor: "#000",
-                          textColor: "#000",
-                          trailColor: "#d6d6d6",
-                        })}
-                      />
-                    </div>
+                    <span className="text-white">
+                      <p className="w-3/4 text-end mx-4 text-lg font-extralight">{`${percentage}%`}</p>
+                      <div class="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
+                        <div
+                          class="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
+                          style={{ width: `${percentage}%` }}
+                        ></div>
+                      </div>
+                      <p className="mx-6 mt-0.5 text-sm">Completion status</p>
+                    </span>
                   )}
-                  <TruncatedText text={mainTopic} len={10} />
-                  <span className="text-white">
-                    <p className="w-3/4 text-end mx-4 text-xl">{`${percentage}%`}</p>
-                    <div class="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
-                      <div
-                        class="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
-                        style={{ width: {`${percentage}%`} }}
-                      ></div>
-                    </div>
-                    <p className="mx-6 text-sm">Completion status</p>
-                  </span>
                 </div>
               </nav>
               <div className="px-5 text-white bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] pt-5 font-poppins font-extralight">
@@ -684,32 +669,38 @@ const Content = () => {
               </div>
             </div>
           </div>
-          {/* <div className={`fixed inset-0 z-50 ${isOpenDrawer ? 'block' : 'hidden'}`}>
-                  <div className='bg-white dark:bg-black h-full'>
-                      <div className='overflow-y-auto' style={{ height: 'calc(100% - 50px)' }}>
-                          {messages.map((msg, index) => (
-                              <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                  <div className={`rounded-lg p-2 m-2 ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}>
-                                      <div dangerouslySetInnerHTML={{ __html: msg.text }} />
-                                  </div>
-                              </div>
-                          ))}
-                      </div>
-                      <div className='flex items-center p-2'>
-                          <input
-                              value={newMessage}
-                              placeholder='Ask Something...'
-                              onChange={(e) => setNewMessage(e.target.value)}
-                              className='h-12 border border-gray-300 rounded-l-md p-2 flex-grow'
-                              type="text"
-                          />
-                          <button onClick={sendMessage} className='h-12 bg-blue-500 text-white rounded-r-md px-4'>
-                              <IoSend size={20} />
-                          </button>
-                      </div>
+          <div className={`fixed inset-0 z-50 ${isOpenDrawer ? 'block' : 'hidden'}`}>
+          <div className='bg-[#200098] h-full w-1/4 right-0 absolute'>
+            <div className="flex justify-between items-center p-2">
+              <h2 className="text-white">Chat</h2>
+              <button onClick={() => setIsOpenDrawer(false)} className="text-white">
+                <IoClose size={20} />
+              </button>
+            </div>
+            <div className='overflow-y-auto' style={{ height: 'calc(100% - 180px)' }}>
+              {messages.map((msg, index) => (
+                <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`rounded-lg p-2 m-2 ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}>
+                    <div dangerouslySetInnerHTML={{ __html: msg.text }} />
                   </div>
-              </div> */}
+                </div>
+              ))}
+            </div>
+            <div className='flex items-center p-2 '>
+              <input
+                value={newMessage}
+                placeholder='Ask Something...'
+                onChange={(e) => setNewMessage(e.target.value)}
+                className='h-12 border border-gray-300 rounded-l-md p-2 flex-grow'
+                type="text"
+              />
+              <button onClick={sendMessage} className='h-12 bg-blue-500 text-white rounded-r-md px-4'>
+                <IoSend size={20} />
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
       )}
     </>
   );
