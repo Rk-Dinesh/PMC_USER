@@ -349,8 +349,8 @@ const GenerateCourse = () => {
               ))}
 
               <div className={` flex flex-wrap gap-3 `}>
-                <button
-                  className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  py-2.5 ${
+                <p
+                  className={` text-base text-center bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  py-2.5 ${
                     formValues.length <= 1
                       ? "lg:w-3/4 md:w-full w-full"
                       : "lg:w-3/4 md:w-full w-full"
@@ -358,14 +358,14 @@ const GenerateCourse = () => {
                   onClick={() => addFormFields()}
                 >
                   Add Subtopic
-                </button>
+                </p>
                 {formValues.length > 1 && (
-                  <button
-                    className=" text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-3/4 md:w-full w-full  py-2.5 "
+                  <p
+                    className=" text-base text-center bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-3/4 md:w-full w-full  py-2.5 "
                     onClick={() => removeFormFields()}
                   >
                     Remove Subtopic
-                  </button>
+                  </p>
                 )}
               </div>
             </div>
@@ -435,6 +435,7 @@ const GenerateCourse = () => {
             <div className="flex justify-center">
               <button
                 className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-1/2 md:w-3/4 w-full py-2.5 my-5 `}
+                type="submit"
               >
                 {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Generating ....</p></span> : "Generate Course" }
               </button>

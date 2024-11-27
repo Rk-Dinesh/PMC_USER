@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API } from "../../Host";
 import { toast } from "react-toastify";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const ListTopics = () => {
   const { state } = useLocation();
@@ -265,7 +266,7 @@ const ListTopics = () => {
           className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-48 py-2  font-normal `}
            onClick={redirectCourse}
         >
-          Generate Course
+          {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Generating ....</p></span> : "Generate Course" }
         </button>
       </div>
     </div>

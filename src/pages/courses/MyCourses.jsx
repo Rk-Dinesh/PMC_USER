@@ -1,10 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import AllCourse from "./AllCourse";
 import image from "../../assets/assest.png";
+import { API } from "../../Host";
+import axios from "axios";
 
 const MyCourses = () => {
   const [activeTab, setActiveTab] = useState("tab1");
+  const [courses, setCourses] = useState([]);
+  const [processing, setProcessing] = useState(true);
+  const userId = localStorage.getItem('user');
+  console.log(userId);
+  
+
+  useEffect(() => {
+    const fetchUserCourses = async () => {
+
+        const postURL = API + `/api/courses?userId=${userId}`;
+        try {
+            const response = await axios.get(postURL);
+            setCourses(response.data);
+            setProcessing(false);
+        } catch (error) {
+            fetchUserCourses();
+        }
+    };
+
+    fetchUserCourses();
+}, [userId]);
+
+const handleCourse = (content, mainTopic, type, courseId, completed, end) => {
+  const jsonData = JSON.parse(content)
+  localStorage.setItem('courseId', courseId);
+  localStorage.setItem('first', completed);
+  localStorage.setItem('jsonData', JSON.stringify(jsonData));
+  let ending = '';
+  if (completed) {
+      ending = end;
+  }
+  navigate('/content', { state: { jsonData: jsonData, mainTopic: mainTopic.toUpperCase(), type: type.toLowerCase(), courseId: courseId, end: ending } });
+}
+
+const handleCertificate = (mainTopic, end) => {
+  const ending = new Date(end).toLocaleDateString()
+  navigate('/certificate', { state: { courseTitle: mainTopic, end: ending } });
+}
   const course = [
     {
       images: image,
@@ -86,8 +126,8 @@ const MyCourses = () => {
 
   ];
 
-  const completed = course.filter((course)=>course.certificate === 'yes');
-  const active = course.filter((course)=>course.certificate !== 'yes')
+  const completed = course.filter((course)=>course.certificate === 'true');
+  const active = course.filter((course)=>course.certificate !== 'true')
 
   return (
     <div className="overflow-auto -z-10 " >
@@ -144,7 +184,7 @@ const MyCourses = () => {
       </div>
       <hr className="border-2 my-1 border-white mx-1"/>
       
-      <div className="mx-1 overflow-auto">{activeTab === "tab1" && <AllCourse  course={course}/>}</div>
+      <div className="mx-1 overflow-auto">{activeTab === "tab1" && <AllCourse  course={course} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
       <div className="mx-1 ">{activeTab === "tab2" && <AllCourse course={completed}/>}</div>
       <div className="mx-1 ">{activeTab === "tab3" &&<AllCourse  course={active}/>}</div>
     </div>

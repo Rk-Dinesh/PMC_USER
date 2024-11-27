@@ -624,7 +624,7 @@ const Content = () => {
                   {isComplete ? (
                     <p
                       onClick={finish}
-                      className="mr-3 underline text-black dark:text-white font-normal"
+                      className="mr-3 underline text-black dark:text-white font-normal mx-8"
                     >
                       Download Certificate
                     </p>

@@ -18,9 +18,9 @@ const AllCourse = ({course}) => {
           className="lg:col-span-3 md:col-span-4 col-span-12 overflow-hidden shadow-lg bg-[#110038] font-poppins font-extralight"
           key={index}
         >
-          <img className="w-full" src={courses.images} alt="Images" />
+          <img className="w-full" src={courses.photo} alt="Images" />
           <div className="px-4 py-3">
-            <div className="text-lg"> {courses.topic}</div>
+            <div className="text-lg"> {courses.mainTopic}</div>
             <p className="text-base">{courses.type}</p>
             <p className="text-base">{courses.date}</p>
           </div>
