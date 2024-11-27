@@ -110,8 +110,8 @@ const handleCertificate = (mainTopic, end) => {
       <hr className="border-2 my-1 border-white mx-1"/>
       
       <div className="mx-1 overflow-auto">{activeTab === "tab1" && <AllCourse  courses={courses} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
-      <div className="mx-1 ">{activeTab === "tab2" && <AllCourse courses={completed}/>}</div>
-      <div className="mx-1 ">{activeTab === "tab3" &&<AllCourse  courses={active}/>}</div>
+      <div className="mx-1 ">{activeTab === "tab2" && <AllCourse courses={completed} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
+      <div className="mx-1 ">{activeTab === "tab3" &&<AllCourse  courses={active} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
     </div>
   );
 };

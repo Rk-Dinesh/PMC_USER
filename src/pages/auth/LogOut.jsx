@@ -5,12 +5,7 @@ import { useNavigate } from "react-router-dom";
 const LogOut = ({ handleCloseModal }) => {
   const navigate = useNavigate()
   const redirect = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('fname');
-    localStorage.removeItem('lname');
-    localStorage.removeItem("email");
-    localStorage.removeItem("phone");
-    localStorage.removeItem("type");
+    localStorage.clear()
     navigate('')
   }
   return (

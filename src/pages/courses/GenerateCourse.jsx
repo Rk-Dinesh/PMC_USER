@@ -205,7 +205,7 @@ const GenerateCourse = () => {
         setProcessing(false);
 
         // Check the type of subscription and the end date before navigating
-        if (type === "free" && courses.length >= 1) {
+        if (type === "free" && courses.length >= 5) {
           toast.error("Please subscribe to access more courses.");
         } else if (type === "Monthly Plan") {
           if (Count > 0) {

@@ -12,7 +12,7 @@ const AllCourse = ({courses,handleCourse,handleCertificate}) => {
           className="lg:col-span-3 md:col-span-4 col-span-12 overflow-hidden shadow-lg bg-[#110038] font-poppins font-extralight"
           key={index}
         >
-          <img className="w-full" src={course.photo} alt="Images" />
+          <img className="w-full h-44" src={course.photo} alt="Images" />
           <div className="px-4 py-3">
             <div className="text-lg"> {course.mainTopic}</div>
             <p className="text-sm pt-1">{course.type}</p>

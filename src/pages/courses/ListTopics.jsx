@@ -83,11 +83,19 @@ const ListTopics = () => {
     jsonData[mainTopic][0].subtopics[0].image = image;
 
     const user = localStorage.getItem("user");
+    const fname = localStorage.getItem('fname');
+    const email = localStorage.getItem('email');
+    const phone = localStorage.getItem('phone');
+    const lname = localStorage.getItem('lname');
     const content = JSON.stringify(jsonData);
     const postURL = API + "/api/course";
     const response = await axios.post(postURL, {
       user,
       content,
+      fname,
+      lname,
+      email,
+      phone,
       type,
       mainTopic,
     });
@@ -116,10 +124,18 @@ const ListTopics = () => {
     jsonData[mainTopic][0].subtopics[0].youtube = image;
 
     const user = localStorage.getItem("user");
+    const fname = localStorage.getItem('fname');
+    const email = localStorage.getItem('email');
+    const phone = localStorage.getItem('phone');
+    const lname = localStorage.getItem('lname');
     const content = JSON.stringify(jsonData);
     const postURL = API + "/api/course";
     const response = await axios.post(postURL, {
       user,
+      fname,
+      lname,
+      email,
+      phone,
       content,
       type,
       mainTopic,
