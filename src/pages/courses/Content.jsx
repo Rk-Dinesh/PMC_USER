@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { FiMenu, FiX } from "react-icons/fi";
 import TruncatedText from "../../components/TruncatedText";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
-import { FaCaretDown, FaCaretSquareLeft } from "react-icons/fa";
-
+import {  FaCaretSquareLeft } from "react-icons/fa";
 import StyledText from "../../components/StyledText";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { IoChatbubbleEllipses, IoClose } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa";
-import { IoSend } from "react-icons/io5";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 import { API } from "../../Host";
 import Headers from "../layout/Headers";
+import robot from "../../assets/robot.png";
 
 const Content = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,11 +74,11 @@ const Content = () => {
       if (!end) {
         const today = new Date();
         const formattedDate = today.toLocaleDateString("en-GB");
-        navigate("/certificate", {
+        navigate("/viewcertificate", {
           state: { courseTitle: mainTopic, end: formattedDate },
         });
       } else {
-        navigate("/certificate", {
+        navigate("/viewcertificate", {
           state: { courseTitle: mainTopic, end: end },
         });
       }
@@ -206,17 +202,17 @@ const Content = () => {
       await axios
         .post(postURL, { html, email })
         .then((res) => {
-          navigate("/certificate", {
+          navigate("/viewcertificate", {
             state: { courseTitle: mainTopic, end: formattedDate },
           });
         })
         .catch((error) => {
-          navigate("/certificate", {
+          navigate("/viewcertificate", {
             state: { courseTitle: mainTopic, end: formattedDate },
           });
         });
     } catch (error) {
-      navigate("/certificate", {
+      navigate("/viewcertificate", {
         state: { courseTitle: mainTopic, end: formattedDate },
       });
     }
@@ -535,12 +531,16 @@ const Content = () => {
     }
   }
 
+  const redirectcourse = () =>{
+    navigate('/course')
+   }
+
   const renderTopicsAndSubtopics = (topics) => {
     return (
       <>
         <span
           className=" flex gap-2 mx-4 items-center text-white font-poppins font-extralight "
-          // onClick={redirectcourse}
+          onClick={redirectcourse}
         >
           <FaCaretSquareLeft className="text-lg" />
           <p className="my-3"> Back to Home</p>
@@ -606,11 +606,12 @@ const Content = () => {
         <div className="flex flex-col h-screen  " >
           <div
             onClick={() => setIsOpenDrawer(true)}
-            className="m-5 fixed bottom-4 right-4 z-40 w-12 h-12 bg-[#200098] text-white rounded-full flex justify-center items-center shadow-md "
+            className="m-5 fixed bottom-8 right-6 z-40  w-32 h-16  text-white  flex justify-center items-center shadow-md "
           >
-            <IoChatbubbleEllipses size={20} />
+            
+            <img src={robot} alt="Image" />
           </div>
-          <div className="flex flex-row overflow-y-auto mt-12 max-md:hidden">
+          <div className="flex flex-row overflow-y-auto mt-12 ">
             <div className={`w-3/12 bg-[#200098]  overflow-y-auto`}>
               <div className="mt-3">
                 {jsonData &&
@@ -670,34 +671,43 @@ const Content = () => {
             </div>
           </div>
           <div className={`fixed inset-0 z-50 ${isOpenDrawer ? 'block' : 'hidden'}`}>
-          <div className='bg-[#200098] h-full w-1/4 right-0 absolute'>
-            <div className="flex justify-between items-center p-2">
-              <h2 className="text-white">Chat</h2>
+          <div className='bg-[#200098] h-full lg:w-96 md:w-80 w-72 right-0 absolute'>
+            <div className="flex justify-end items-center p-2">
+             
               <button onClick={() => setIsOpenDrawer(false)} className="text-white">
-                <IoClose size={20} />
+                <IoClose size={24} />
               </button>
             </div>
-            <div className='overflow-y-auto' style={{ height: 'calc(100% - 180px)' }}>
+            <div className='overflow-y-auto' style={{ height: 'calc(100% - 250px)' }}>
               {messages.map((msg, index) => (
-                <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`rounded-lg p-2 m-2 ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}>
+                <div key={index} className={`flex font-poppins font-extralight text-base ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`rounded-lg  p-1 m-2 ${msg.sender === 'user' ? 'text-center text-white' : 'text-center text-white'}`}>
                     <div dangerouslySetInnerHTML={{ __html: msg.text }} />
                   </div>
                 </div>
               ))}
             </div>
-            <div className='flex items-center p-2 '>
-              <input
+            <div className="mx-6">
+              <textarea
                 value={newMessage}
+                rows={3}
                 placeholder='Ask Something...'
                 onChange={(e) => setNewMessage(e.target.value)}
-                className='h-12 border border-gray-300 rounded-l-md p-2 flex-grow'
+                className='w-full border border-gray-300 rounded-md outline-none p-2 text-center align-middle '
                 type="text"
               />
-              <button onClick={sendMessage} className='h-12 bg-blue-500 text-white rounded-r-md px-4'>
-                <IoSend size={20} />
+              </div>
+              <div className="flex justify-center">
+              <button
+                className={`text-white text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 my-5 `}
+                type="submit"
+                onClick={sendMessage} 
+              >
+                Submit
               </button>
             </div>
+        
+            
           </div>
         </div>
       </div>

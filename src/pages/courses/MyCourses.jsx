@@ -4,13 +4,15 @@ import AllCourse from "./AllCourse";
 import image from "../../assets/assest.png";
 import { API } from "../../Host";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const MyCourses = () => {
   const [activeTab, setActiveTab] = useState("tab1");
   const [courses, setCourses] = useState([]);
   const [processing, setProcessing] = useState(true);
   const userId = localStorage.getItem('user');
-  console.log(userId);
+  const navigate = useNavigate();
+  
   
 
   useEffect(() => {
@@ -43,91 +45,14 @@ const handleCourse = (content, mainTopic, type, courseId, completed, end) => {
 
 const handleCertificate = (mainTopic, end) => {
   const ending = new Date(end).toLocaleDateString()
-  navigate('/certificate', { state: { courseTitle: mainTopic, end: ending } });
+  navigate('/viewcertificate', { state: { courseTitle: mainTopic, end: ending } });
 }
-  const course = [
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/12/24",
-      certificate: "no",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Theory Course",
-      date: "12/11/24",
-      certificate: "no",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "no",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "no",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "yes",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "yes",
-    },
-    {
-      images: image,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "no",
-    },
-    {
-        images : image,
-        topic : "Topic Name",
-        type : "Text & Video Course",
-        date : "12/08/24",
-        certificate : 'yes'
-    },
-    {
-        images : image,
-        topic : "Topic Name",
-        type : "Text & Video Course",
-        date : "12/08/24",
-        certificate : 'yes'
-    },
-    {
-        images : image,
-        topic : "Topic Name",
-        type : "Text & Video Course",
-        date : "12/08/24",
-        certificate : 'yes'
-    },
-    {
-        images : image,
-        topic : "Topic Name",
-        type : "Text & Video Course",
-        date : "12/08/24",
-        certificate : 'yes'
-    },
+  const completed = courses.filter((course)=>course.completed === true);
 
-  ];
-
-  const completed = course.filter((course)=>course.certificate === 'true');
-  const active = course.filter((course)=>course.certificate !== 'true')
+  
+  const active = courses.filter((course)=>course.completed !== true);
+ 
+  
 
   return (
     <div className="overflow-auto -z-10 " >
@@ -184,9 +109,9 @@ const handleCertificate = (mainTopic, end) => {
       </div>
       <hr className="border-2 my-1 border-white mx-1"/>
       
-      <div className="mx-1 overflow-auto">{activeTab === "tab1" && <AllCourse  course={course} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
-      <div className="mx-1 ">{activeTab === "tab2" && <AllCourse course={completed}/>}</div>
-      <div className="mx-1 ">{activeTab === "tab3" &&<AllCourse  course={active}/>}</div>
+      <div className="mx-1 overflow-auto">{activeTab === "tab1" && <AllCourse  courses={courses} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
+      <div className="mx-1 ">{activeTab === "tab2" && <AllCourse courses={completed}/>}</div>
+      <div className="mx-1 ">{activeTab === "tab3" &&<AllCourse  courses={active}/>}</div>
     </div>
   );
 };

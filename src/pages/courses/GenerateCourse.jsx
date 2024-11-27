@@ -41,7 +41,7 @@ const GenerateCourse = () => {
     try {
       const response = await axios.get(postURL);
       const responseData = response.data;
-      console.log(responseData[0].count);
+      // console.log(responseData[0].count);
       setCount(responseData[0].count);
     } catch (error) {}
   }
@@ -50,7 +50,7 @@ const GenerateCourse = () => {
     const postURL = API + `/api/courses?userId=${user}`;
     try {
       const response = await axios.get(postURL);
-      console.log(response.data);
+      // console.log(response.data);
       setCourses(response.data);
     } catch (error) {}
   }
@@ -62,7 +62,7 @@ const GenerateCourse = () => {
     try {
       const postURL = API + "/api/subscriptiondetail";
       await axios.post(postURL, dataToSend).then((res) => {
-        console.log(res.data.session.current_period_end);
+        // console.log(res.data.session.current_period_end);
         setEndDate(res.data.session.current_period_end);
       });
     } catch (error) {}
@@ -76,7 +76,7 @@ const GenerateCourse = () => {
     const postURL = API + "/api/updatecount";
     try {
       const response = await axios.post(postURL, dataToSend);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -114,7 +114,7 @@ const GenerateCourse = () => {
     event.preventDefault();
     const subtopics = [];
     setProcessing(true);
-    console.log(formValues, "1213");
+    
 
     formValues.forEach((subtopic) => {
       subtopics.push(subtopic.sub);
@@ -134,7 +134,7 @@ const GenerateCourse = () => {
       return;
     }
 
-    console.log(subtopics);
+    
 
     const prompt = `Generate a list of Strict ${selectedValue} topics and any number sub topic for each topic for main title ${mainTopic.toLowerCase()}, everything in single line. Those ${selectedValue} topics should Strictly include these topics :- ${subtopics
       .join(", ")
@@ -180,7 +180,7 @@ const GenerateCourse = () => {
    }
   ]
   }`;
-    // console.log(prompt);
+    
     
 
     sendPrompt(prompt, mainTopic, selectedType);
@@ -190,7 +190,7 @@ const GenerateCourse = () => {
     const dataToSend = {
       prompt: prompt,
     };
-    console.log(dataToSend);
+    
     
     try {   
       const res = await axios.post(`${API}/api/prompt`, dataToSend);
@@ -200,7 +200,7 @@ const GenerateCourse = () => {
         .replace(/```/g, "");
       try {
         const parsedJson = JSON.parse(cleanedJsonString);
-        console.log(parsedJson);
+        
         
         setProcessing(false);
 

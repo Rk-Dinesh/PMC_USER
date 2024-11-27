@@ -10,7 +10,7 @@ const ListTopics = () => {
   const [processing, setProcessing] = useState(false);
   const { jsonData, mainTopic, type } = state || {};
   const navigate = useNavigate();
-  console.log(jsonData);
+
   useEffect(() => {
     if (!jsonData) {
       navigate("/create");

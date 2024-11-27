@@ -1,35 +1,36 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { API, formatDate1 } from "../../Host";
+import { TbRuler } from "react-icons/tb";
 
 const Certificate = () => {
   const navigate = useNavigate();
-  const certificate = [
-    {
-      topic: "React",
-      startDate: "12/12/24",
-      endDate: "12/12/24",
-    },
-    {
-      topic: "Angular",
-      startDate: "12/12/24",
-      endDate: "12/12/24",
-    },
-    {
-      topic: "Vue",
-      startDate: "12/12/24",
-      endDate: "12/12/24",
-    },
-    {
-      topic: "Next.js",
-      startDate: "12/12/24",
-      endDate: "12/12/24",
-    },
-  ];
+  const userId = localStorage.getItem("user");
+  const [courses, setCourses] = useState([]);
 
-  const redirectviewcertificate = () => {
-    navigate("/viewcertificate");
+  useEffect(() => {
+    const fetchUserCourses = async () => {
+      const postURL = API + `/api/courses?userId=${userId}`;
+      try {
+        const response = await axios.get(postURL);
+        setCourses(response.data);
+      } catch (error) {
+        fetchUserCourses();
+      }
+    };
+
+    fetchUserCourses();
+  }, []);
+
+  const handleCertificate = (mainTopic, end) => {
+    const ending = new Date(end).toLocaleDateString();
+    navigate("/viewcertificate", {
+      state: { courseTitle: mainTopic, end: ending },
+    });
   };
+
   return (
     <div className="mx-4 my-6 font-poppins">
       <div className="flex justify-between items-center flex-wrap gap-3">
@@ -44,21 +45,21 @@ const Certificate = () => {
         </div>
       </div>
       <hr className="my-2 " />
-      {certificate.map((certify, index) => (
+      {courses && courses.filter((certify)=>certify.completed === true).map((certify, index) => (
         <>
           <div
             className="flex justify-between mx-2 flex-wrap font-extralight"
             key={index}
           >
             <div className="flex flex-col gap-1">
-              <p className="text-lg">Topic Name : {certify.topic}</p>
-              <p>Start Date : {certify.startDate}</p>
-              <p>End Date : {certify.endDate}</p>
+              <p className="text-lg">Topic Name : {certify.mainTopic}</p>
+              <p>Start Date : {formatDate1(certify.date)}</p>
+              <p>End Date : {formatDate1(certify.end)}</p>
             </div>
             <div>
               <button
                 className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-48 py-2 my-5 `}
-                onClick={redirectviewcertificate}
+                onClick={() => handleCertificate(certify.mainTopic, certify.end)}
               >
                 View Certificate
               </button>
