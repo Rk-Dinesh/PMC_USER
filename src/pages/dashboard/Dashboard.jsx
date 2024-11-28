@@ -1,54 +1,85 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import "./style.css";
 import assest from "../../assets/assest.png";
 import { useNavigate } from "react-router-dom";
+import { API, formatDate1 } from "../../Host";
+import axios from "axios";
 
 const Dashboard = () => {
+  const userId = localStorage.getItem("user");
+  const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
-  const course = [
-    {
-      images: assest,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/12/24",
-      certificate: "no",
-    },
-    {
-      images: assest,
-      topic: "Topic Name",
-      type: "Text & Theory Course",
-      date: "12/11/24",
-      certificate: "no",
-    },
-    {
-      images: assest,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "no",
-    },
-    {
-      images: assest,
-      topic: "Topic Name",
-      type: "Text & Theory Course",
-      date: "12/11/24",
-      certificate: "no",
-    },
-    {
-      images: assest,
-      topic: "Topic Name",
-      type: "Text & Video Course",
-      date: "12/08/24",
-      certificate: "no",
-    },
-  ];
+  useEffect(() => {
+    const fetchUserCourses = async () => {
+      const postURL = API + `/api/courses?userId=${userId}`;
+      try {
+        const response = await axios.get(postURL);
+        setCourses(response.data);
+        setProcessing(false);
+      } catch (error) {
+        fetchUserCourses();
+      }
+    };
+
+    fetchUserCourses();
+  }, []);
+
+  const handleCourse = (content, mainTopic, type, courseId, completed, end) => {
+    const jsonData = JSON.parse(content);
+    localStorage.setItem("courseId", courseId);
+    localStorage.setItem("first", completed);
+    localStorage.setItem("jsonData", JSON.stringify(jsonData));
+    let ending = "";
+    if (completed) {
+      ending = end;
+    }
+    navigate("/content", {
+      state: {
+        jsonData: jsonData,
+        mainTopic: mainTopic.toUpperCase(),
+        type: type.toLowerCase(),
+        courseId: courseId,
+        end: ending,
+      },
+    });
+  };
 
   const redirectcourse = () => {
     navigate("/course");
   };
+
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth(); 
+const currentYear = currentDate.getFullYear(); 
+
+const coursesThisMonthCount = courses.filter((course) => {
+  const courseDate = new Date(course.date);
+  return (
+    courseDate.getMonth() === currentMonth &&
+    courseDate.getFullYear() === currentYear
+  );
+}).length;
+
+const completedThisMonthCount = courses.filter((course) => {
+  const courseDate = new Date(course.date);
+  return (
+    course.completed &&
+    courseDate.getMonth() === currentMonth &&
+    courseDate.getFullYear() === currentYear
+  );
+}).length;
+
+const ActiveThisMonthCount = courses.filter((course) => {
+  const courseDate = new Date(course.date);
+  return (
+    course.completed === false &&
+    courseDate.getMonth() === currentMonth &&
+    courseDate.getFullYear() === currentYear
+  );
+}).length;
 
   return (
     <div className=" mx-5 my-6 font-poppins font-extralight">
@@ -65,7 +96,7 @@ const Dashboard = () => {
             Total Courses Generated{" "}
           </p>
           <p className="text-center lg:text-7xl md:text-7xl text-7xl my-4">
-            38
+            {courses && courses.length}
           </p>
           <button
             className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 "
@@ -79,7 +110,9 @@ const Dashboard = () => {
             Video Courses Generated{" "}
           </p>
           <p className="text-center lg:text-7xl md:text-7xl text-7xl my-4">
-            28
+            {courses &&
+              courses.filter((course) => course.type === "video & text course")
+                .length}
           </p>
           <button
             className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 "
@@ -93,7 +126,9 @@ const Dashboard = () => {
             Theory Courses Generated{" "}
           </p>
           <p className="text-center lg:text-7xl md:text-7xl text-7xl my-4">
-            18
+            {courses &&
+              courses.filter((course) => course.type === "text & image course")
+                .length}
           </p>
           <button
             className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 "
@@ -105,7 +140,8 @@ const Dashboard = () => {
         <div className="lg:w-52 md:w-48 w-48 h-56 bg-black  my-1">
           <p className="mx-3 text-normal text-center mt-8 ">Active Courses </p>
           <p className="text-center lg:text-7xl md:text-7xl text-7xl my-6">
-            36
+            {courses &&
+              courses.filter((course) => course.completed === false).length}
           </p>
           <button
             className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 "
@@ -119,7 +155,8 @@ const Dashboard = () => {
             Completed Courses{" "}
           </p>
           <p className="text-center lg:text-7xl md:text-7xl text-7xl my-6">
-            37
+            {courses &&
+              courses.filter((course) => course.completed === true).length}
           </p>
           <button
             className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5  "
@@ -132,47 +169,47 @@ const Dashboard = () => {
       <div className="my-6 w-1/2">
         <p className="text-lg my-3">Monthly Activity Progress</p>
         <span>
-          <p className="w-3/4 text-end mx-4 text-xl">8/10</p>
+          <p className="w-3/4 text-end mx-4 text-xl">{coursesThisMonthCount}/10</p>
           <div class="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
             <div
               class="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
-              style={{ width: "75%" }}
+              style={{ width: `${(coursesThisMonthCount / 10) * 100}%` }} 
             ></div>
           </div>
           <p className="mx-6 text-sm">Courses Generated this month</p>
         </span>
         <span>
-          <p className="w-3/4 text-end mx-4 text-xl">6/10</p>
+          <p className="w-3/4 text-end mx-4 text-xl">{ActiveThisMonthCount}/10</p>
           <div class="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
             <div
               class="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
-              style={{ width: "50%" }}
+              style={{ width: `${(ActiveThisMonthCount / 10) * 100}%` }}
             ></div>
           </div>
           <p className="mx-6 text-sm">Active Courses this month</p>
         </span>
         <span>
-          <p className="w-3/4 text-end mx-4 text-xl">2/10</p>
+          <p className="w-3/4 text-end mx-4 text-xl">{completedThisMonthCount}/10</p>
           <div class="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
             <div
               class="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
-              style={{ width: "15%" }}
+              style={{ width: `${(completedThisMonthCount / 10) * 100}%` }}
             ></div>
           </div>
           <p className="mx-6 text-sm">Completed Courses this month</p>
         </span>
       </div>
-      <p className="text-lg my-4">Recent Courses</p>
+      <p className="text-lg mt-2 ">Recent Courses</p>
       <div className="flex gap-4 flex-wrap">
-        {course.map((data, index) => (
-          <div className="lg:w-52 md:w-52 w-48 h-60 bg-black my-1" key={index}>
-            <img src={data.images} alt="Image" className="w-full" />
-            <p className="text-lg mx-2 my-0.5">{data.topic}</p>
+        {courses.slice(-4).map((data, index) => (
+          <div className="lg:w-52 md:w-52 w-48 h-60 bg-black my-8" key={index}>
+            <img src={data.photo} alt="Image" className="w-full h-40" />
+            <p className="text-lg mx-2 my-0.5">{data.mainTopic}</p>
             <p className="text-sm mx-2 my-0.5">{data.type}</p>
-            <p className="text-sm mx-2 mb-3">{data.date}</p>
+            <p className="text-sm mx-2 mb-1">{formatDate1(data.date)}</p>
             <button
               className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-1.5 "
-              onClick={redirectcourse}
+              onClick={() => handleCourse(data.content, data.mainTopic, data.type, data._id, data.completed, data.end)}
             >
               Continue
             </button>

@@ -29,7 +29,7 @@ const MyCourses = () => {
     };
 
     fetchUserCourses();
-}, [userId]);
+}, []);
 
 const handleCourse = (content, mainTopic, type, courseId, completed, end) => {
   const jsonData = JSON.parse(content)
