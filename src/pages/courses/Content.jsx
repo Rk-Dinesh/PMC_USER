@@ -678,7 +678,7 @@ const Content = () => {
                 <IoClose size={24} />
               </button>
             </div>
-            <div className='overflow-y-auto' style={{ height: 'calc(100% - 250px)' }}>
+            <div className='overflow-y-auto' style={{ height: 'calc(100% - 200px)' }}>
               {messages.map((msg, index) => (
                 <div key={index} className={`flex font-poppins font-extralight text-base ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`rounded-lg  p-1 m-2 ${msg.sender === 'user' ? 'text-center text-white' : 'text-center text-white'}`}>
@@ -687,13 +687,12 @@ const Content = () => {
                 </div>
               ))}
             </div>
-            <div className="mx-6">
-              <textarea
+            <div className="mx-6 mt-2">
+              <input
                 value={newMessage}
-                rows={3}
                 placeholder='Ask Something...'
                 onChange={(e) => setNewMessage(e.target.value)}
-                className='w-full border border-gray-300 rounded-md outline-none p-2 text-center align-middle '
+                className='w-full border border-gray-300 rounded-md outline-none py-5 text-center  '
                 type="text"
               />
               </div>

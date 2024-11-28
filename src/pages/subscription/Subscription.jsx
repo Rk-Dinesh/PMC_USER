@@ -29,6 +29,10 @@ const Subscription = () => {
   const redirectinvoice = () => {
     navigate('/invoice')
   };
+
+  const redirectPricing = () => {
+    navigate('/pricing')
+  }
   return (
     <div className="mx-5 my-6 font-poppins font-extralight">
       <div className="max-w-sm h-auto bg-black   pt-2 my-5">
@@ -38,6 +42,7 @@ const Subscription = () => {
         <p className="text-normal mx-5 mb-2">No Of Courses : 06/20</p>
         <button
           className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2   `}
+          onClick={redirectPricing}
         >
           Change / Upgrade Plan
         </button>

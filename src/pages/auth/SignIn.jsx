@@ -36,7 +36,7 @@ const SignIn = () => {
     };
     try {
       const response = await axios.post(`${API}/api/usersignin`, formData);
-      const responseData = response.data.userData;
+      const responseData = response.data.userId;
       if (response.status === 200) {
         toast.success("Logged in Successfully");
         localStorage.setItem("user", responseData._id);
