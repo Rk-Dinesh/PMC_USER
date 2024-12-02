@@ -112,7 +112,7 @@ const Profile = () => {
                   type="text"
                   className=" py-3 pe-0 ps-2 block w-full bg-transparent border-t-transparent border-b border-x-transparent border-b-white outline-none  disabled:pointer-events-none text-white"
                   placeholder="johndoe@gmail.com"
-                  value={userData?.email || ''}
+                  value={localStorage.getItem("email") || ''}
                 />
               </div>
               <div className="flex justify-center my-2">
@@ -131,7 +131,7 @@ const Profile = () => {
                   type="text"
                   className=" py-3 pe-0 ps-2 block w-full bg-transparent border-t-transparent border-b border-x-transparent border-b-white outline-none  disabled:pointer-events-none text-white"
                   placeholder="1234567890"
-                  value={userData?.phone || ''}
+                  value={localStorage.getItem("phone") || ''}
                 />
               </div>
               <div className="flex justify-center my-2">
