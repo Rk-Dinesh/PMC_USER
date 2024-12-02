@@ -26,6 +26,7 @@ import ListTopics from "./pages/courses/ListTopics";
 import Content from "./pages/courses/Content";
 import ImageUploader from "./pages/auth/Test";
 import Pricing from "./pages/subscription/Pricing";
+import Payment from "./pages/subscription/Payment";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
             <Route path="/viewcertificate" element={<ViewCertificate />} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/invoice" element={<Invoice />} />
             <Route path="/uploder" element={<ImageUploader />} />
 

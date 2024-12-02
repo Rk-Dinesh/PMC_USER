@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -29,6 +29,9 @@ const ticketSchema = yup.object().shape({
 
 const NewTicket = () => {
   const navigate = useNavigate();
+  const [category, setCategory] = useState([]);
+  const [priority, setPriority] = useState([]);
+
   const {
     register,
     handleSubmit,
@@ -36,6 +39,11 @@ const NewTicket = () => {
   } = useForm({
     resolver: yupResolver(ticketSchema),
   });
+
+  useEffect(()=>{
+    fetchCategory()
+    fetchPriorty()
+  },[])
 
   const OnSubmit = async (data) => {
     const formData = {
@@ -60,6 +68,30 @@ const NewTicket = () => {
     }
   };
 
+  const fetchCategory = async () => {
+    try {
+      const response = await axios.get(
+        `${API}/api/getcategory`
+      );
+      const responseData = await response.data.cate;
+      setCategory(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchPriorty = async () => {
+    try {
+      const response = await axios.get(
+        `${API}/api/getpriority`
+      );
+      const responseData = await response.data.priority;
+      setPriority(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="font-poppins font-extralight my-5 lg:mx-6 md:mx-6 mx-2">
       <p className="text-center ">Raise Ticket</p>
@@ -75,10 +107,12 @@ const NewTicket = () => {
                   className="block w-full text-black px-3 py-2 pr-10 outline-none rounded-lg "
                   {...register("category")}
                 >
-                  <option value="">Select Category</option>
-                  <option value="Hi">Hi</option>
-                  <option value="Hello">Hello</option>
-                  <option value="Hey">Hey</option>
+                  <option value="" disabled>Select Category</option>
+                  {category && category.map((cate,index) => (
+                  <option key={index} value={cate.category}>
+                    {cate.category}
+                  </option>
+                ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
                   <FaCaretDown className="text-black text-2xl" />
@@ -147,10 +181,12 @@ const NewTicket = () => {
                   className="block w-full text-black px-3 py-2 pr-10 outline-none rounded-lg "
                   {...register("priority")}
                 >
-                  <option value="">Select Priority</option>
-                  <option value="HI">Hi</option>
-                  <option value="hello">Hello</option>
-                  <option value="yy">Hey</option>
+                  <option value="" disabled>Select Priority</option>
+                  {priority && priority.map((priority,index) => (
+                  <option key={index} value={priority.priority}>
+                    {priority.priority}
+                  </option>
+                ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
                   <FaCaretDown className="text-black text-2xl" />
