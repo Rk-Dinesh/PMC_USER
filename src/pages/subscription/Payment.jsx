@@ -64,7 +64,7 @@ const Payment = () => {
       console.log(res.data.url);
       localStorage.setItem("stripe", res.data.id);
       localStorage.setItem("method", "stripe");
-      localStorage.setItem("plan", 'FREE');
+      localStorage.setItem("plan", 'free');
       window.location.href = res.data.url;
     } catch (error) {
       //DO NOTHING

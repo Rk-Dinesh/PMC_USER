@@ -27,6 +27,8 @@ import Content from "./pages/courses/Content";
 import ImageUploader from "./pages/auth/Test";
 import Pricing from "./pages/subscription/Pricing";
 import Payment from "./pages/subscription/Payment";
+import Success from "./pages/subscription/Success";
+import Failed from "./pages/subscription/Failed";
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/success" element={<Success />} />
+            <Route path="/failed" element={<Failed />} />
             <Route path="/invoice" element={<Invoice />} />
             <Route path="/uploder" element={<ImageUploader />} />
 
