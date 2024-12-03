@@ -7,7 +7,7 @@ import { API } from "../../Host";
 import { toast } from "react-toastify";
 import countryList from "react-select-country-list";
 import { FaCaretDown } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const planSchema = yup.object().shape({
   fname: yup.string().required("fname is required"),
@@ -25,10 +25,12 @@ const planSchema = yup.object().shape({
 
 const Payment = () => {
   const options = useMemo(() => countryList().getData(), []);
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
   const location = useLocation();
   const amount = location?.state?.amount * 100;
   const receipt = location?.state?.receipt;
+  const course = location?.state?.course;
 
   console.log(amount, receipt);
 
@@ -64,7 +66,9 @@ const Payment = () => {
       console.log(res.data.url);
       localStorage.setItem("stripe", res.data.id);
       localStorage.setItem("method", "stripe");
-      localStorage.setItem("plan", 'free');
+      localStorage.setItem("plan", receipt);
+      localStorage.setItem('amount',amount);
+      localStorage.setItem('cousecount',course);
       window.location.href = res.data.url;
     } catch (error) {
       //DO NOTHING
@@ -101,8 +105,10 @@ const Payment = () => {
       
       localStorage.setItem("razorpay", order.id);
       localStorage.setItem("method", "razorpay");
-      localStorage.setItem("plan", 'free');
-  
+      localStorage.setItem("plan", receipt);
+      localStorage.setItem('amount',amount);
+      localStorage.setItem('coursecount',course);
+
       const options = {
         key: 'rzp_live_PwFLUg2b6qe1uU', 
         amount: amount, 

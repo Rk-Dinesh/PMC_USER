@@ -1,49 +1,114 @@
-import React, { useEffect, useState } from 'react'
-import { API } from '../../Host';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { API } from "../../Host";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Success = () => {
-    
   const [processing, setProcessing] = useState(false);
   const [jsonData, setJsonData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        getDetails();
-      }, []);
+  useEffect(() => {
+    getDetails();
+  }, []);
 
-    async function getDetails() {
-        if (localStorage.getItem("method") === "stripe") {
-          const dataToSend = {
-            subscriberId: localStorage.getItem("stripe"),
+  async function getDetails() {
+    if (localStorage.getItem("method") === "stripe") {
+      const dataToSend = {
+        subscriberId: localStorage.getItem("stripe"),
+        uid: localStorage.getItem("user"),
+        plan: localStorage.getItem("plan"),
+      };
+      const postURL = API + "/api/stripedetails";
+      await axios.post(postURL, dataToSend).then((res) => {
+        setJsonData(res.data);
+        localStorage.setItem("type", localStorage.getItem("plan"));
+        setIsLoading(false);
+      });
+      const formData = {
+        subscriberId: localStorage.getItem("stripe"),
+        uid: localStorage.getItem("user"),
+        plan: localStorage.getItem("plan"),
+        method: "stripe",
+        fname: localStorage.getItem("fname"),
+        lname: localStorage.getItem("lname"),
+        email: localStorage.getItem("email"),
+        phone: localStorage.getItem("phone"),
+        amount: localStorage.getItem("amount"),
+        course: localStorage.getItem("coursecount"),
+      };
+      const response = await axios.post(
+        `${API}/api/usersubscription`,
+        formData
+      );
+      console.log(response.data);
+      if (response.status === 200) {
+        const dataToSend = {
+          user: localStorage.getItem("user"),
+          count: localStorage.getItem("coursecount"),
+        };
+        const response = await axios.post(
+          `${API}/api/countplan`,
+          dataToSend
+        );
+        console.log(response.data);
+
+        localStorage.removeItem("amount");
+        localStorage.removeItem("coursecount");
+        localStorage.removeItem("stripe");
+        localStorage.removeItem("method");
+        localStorage.removeItem("plan");
+      }
+    } else {
+      try {
+        if (localStorage.getItem("method") === "razorpay") {
+          const formData = {
+            subscriberId: localStorage.getItem("razorpay"),
             uid: localStorage.getItem("user"),
             plan: localStorage.getItem("plan"),
+            method: "razorpay",
+            fname: localStorage.getItem("fname"),
+            lname: localStorage.getItem("lname"),
+            email: localStorage.getItem("email"),
+            phone: localStorage.getItem("phone"),
+            amount: localStorage.getItem("amount"),
+            course: localStorage.getItem("coursecount"),
           };
-          const postURL = API + "/api/stripedetails";
-          await axios.post(postURL, dataToSend).then((res) => {
-            setJsonData(res.data);
-            localStorage.setItem("type", localStorage.getItem("plan"));
-            setIsLoading(false);
-           // sendEmail(res.data);
-          });
-        } else {
-          try {
-             if (localStorage.getItem("method") === "razorpay") {
-              const plan = localStorage.getItem("plan");
-              
-            }
-          } catch (error) {
-            getDetails();
+          const response = await axios.post(
+            `${API}/api/usersubscription`,
+            formData
+          );
+          console.log(response.data);
+          if (response.status === 200) {
+            const dataToSend = {
+                user: localStorage.getItem("user"),
+                count: localStorage.getItem("coursecount"),
+              };
+              const response = await axios.post(
+                `${API}/api/countplan`,
+                dataToSend
+              );
+              console.log(response.data);
+      
+            localStorage.removeItem("amount");
+            localStorage.removeItem("coursecount");
+            localStorage.removeItem("razorpay");
+            localStorage.removeItem("method");
+            localStorage.removeItem("plan");
           }
         }
+      } catch (error) {
+        getDetails();
       }
+    }
+  }
 
-      async function download() {
-         if (localStorage.getItem("method") === "stripe") {
-          let amount = "";
-          
-    
-          const html = `<!DOCTYPE html>
+  async function download() {
+    if (localStorage.getItem("method") === "stripe") {
+      let amount = "";
+
+      const html = `<!DOCTYPE html>
                 <html>
                     <head>
                         <meta charset="utf-8" />
@@ -215,28 +280,27 @@ const Success = () => {
                         </div>
                     </body>
                 </html>`;
-          setProcessing(true);
-          const email = localStorage.getItem("email");
-          const postURL = API + "/api/downloadreceipt";
-          const response = await axios.post(postURL, { html, email });
-          if (response.data.success) {
-            toast.success(response.data.message);
-          } else {
-            download();
-          }
-        } 
+      setProcessing(true);
+      const email = localStorage.getItem("email");
+      const postURL = API + "/api/downloadreceipt";
+      const response = await axios.post(postURL, { html, email });
+      if (response.data.success) {
+        toast.success(response.data.message);
+      } else {
+        download();
       }
+    }
+  }
 
   return (
-    <div className='font-poppins font-extralight my-12'>
-        <p className='text-center text-xl '>Thank You 🎉</p>
-        <p className="text-center font-normal text-black py-4 dark:text-white">
-                <strong>{localStorage.getItem("fname")}</strong> for
-                subscribing to our{" "}
-                <strong>{localStorage.getItem("plan")}</strong> Plan.{" "}
-              </p>
+    <div className="font-poppins font-extralight my-12">
+      <p className="text-center text-xl ">Thank You 🎉</p>
+      <p className="text-center font-normal text-black py-4 dark:text-white">
+        <strong>{localStorage.getItem("fname")}</strong> for subscribing to our{" "}
+        <strong>{localStorage.getItem("plan")}</strong> Plan.{" "}
+      </p>
     </div>
-  )
-}
+  );
+};
 
-export default Success
+export default Success;

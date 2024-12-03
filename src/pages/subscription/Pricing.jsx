@@ -68,7 +68,8 @@ const Pricing = () => {
                   navigate("/payment", {
                     state: {
                       amount: plan.price,
-                      receipt:plan.packagename
+                      receipt:plan.packagename,
+                      course:plan.course
                     },
                   });
                 }}

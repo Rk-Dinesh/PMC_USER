@@ -27,7 +27,6 @@ const GenerateCourse = () => {
         setPaidMember(true);
         await getCount();
         await getCourse();
-        await getDetails();
       } else {
         await getCourse();
       }
@@ -52,19 +51,6 @@ const GenerateCourse = () => {
       const response = await axios.get(postURL);
       // console.log(response.data);
       setCourses(response.data);
-    } catch (error) {}
-  }
-
-  async function getDetails() {
-    const dataToSend = {
-      uid: localStorage.getItem("user"),
-    };
-    try {
-      const postURL = API + "/api/subscriptiondetail";
-      await axios.post(postURL, dataToSend).then((res) => {
-        // console.log(res.data.session.current_period_end);
-        setEndDate(res.data.session.current_period_end);
-      });
     } catch (error) {}
   }
 
@@ -205,9 +191,9 @@ const GenerateCourse = () => {
         setProcessing(false);
 
         // Check the type of subscription and the end date before navigating
-        if (type === "free" && courses.length >= 5) {
+        if (type === "free" && courses.length >= 1) {
           toast.error("Please subscribe to access more courses.");
-        } else if (type === "Monthly Plan") {
+        } else if (type !== "free") {
           if (Count > 0) {
             await updateCount();
             navigate("/topics", {
@@ -219,33 +205,10 @@ const GenerateCourse = () => {
             });
           } else {
             toast.error(
-              "Your monthly plan has reached the limit. Please upgrade to Monthly plan or Monthly Pro plan for access."
+              "Your monthly plan has reached the limit. Please upgrade the Monthly plan for further access"
             );
           }
-        } else if (type === "Monthly Plan Pro") {
-          if (Count > 0) {
-            await updateCount();
-            navigate("/topics", {
-              state: {
-                jsonData: parsedJson,
-                mainTopic: mainTopic.toLowerCase(),
-                type: selectedType.toLowerCase(),
-              },
-            });
-          } else {
-            toast.error(
-              "Your monthly plan has reached the limit. Please upgrade to Monthly plan or Monthly Pro plan for access."
-            );
-          }
-        } else {
-          navigate("/topics", {
-            state: {
-              jsonData: parsedJson,
-              mainTopic: mainTopic.toLowerCase(),
-              type: selectedType.toLowerCase(),
-            },
-          });
-        }
+        } 
       } catch (error) {
         //sendPrompt(prompt, mainTopic, selectedType);
       }
