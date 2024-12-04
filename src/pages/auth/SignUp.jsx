@@ -61,7 +61,7 @@ const SignUp = () => {
         <form className="z-0" onSubmit={handleSubmit(onSubmit)}>
           <img src={Logo} alt="Logo" className="w-full " />
           <p className="text-center text-lg my-2">Create an account</p>
-          <div className="flex flex-col gap-2 mx-4 my-2 font-extralight">
+          <div className="flex flex-col gap-1 mx-4 my-2 font-extralight">
             <label htmlFor="fname">
               First Name<span className="text-red-600">*</span>
             </label>
@@ -106,10 +106,10 @@ const SignUp = () => {
               Date of Birth <span className="text-red-600">*</span>
             </label>
             <input
-              type="text"
+              type="date"
               placeholder="dd/mm/yy"
               {...register("dob")}
-              className="py-2  rounded-md text-center text-black shadow-md outline-none"
+              className="py-2 px-4  rounded-md text-center text-black shadow-md outline-none"
             />
             <p className="text-center text-red-300">{errors.dob?.message}</p>
             <div className="flex gap-2 items-center my-4">

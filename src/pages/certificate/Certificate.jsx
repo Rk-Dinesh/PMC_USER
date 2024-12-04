@@ -3,13 +3,12 @@ import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { API, formatDate1 } from "../../Host";
-import { TbRuler } from "react-icons/tb";
 
 const Certificate = () => {
   const navigate = useNavigate();
   const userId = localStorage.getItem("user");
   const [courses, setCourses] = useState([]);
-
+  const [searchQuery, setSearchQuery] = useState("");
   useEffect(() => {
     const fetchUserCourses = async () => {
       const postURL = API + `/api/courses?userId=${userId}`;
@@ -31,21 +30,29 @@ const Certificate = () => {
     });
   };
 
+  const filteredCourses = courses.filter(
+    (certify) =>
+      certify.completed === true &&
+      certify.mainTopic.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="mx-4 my-6 font-poppins">
       <div className="flex justify-between items-center flex-wrap gap-3">
         <p className="text-lg font-extralight">My Certificates</p>
-        <div className="flex items-center gap-3 bg-white w-96 px-6 py-1.5  rounded-md mr-3">
+        <div className="flex items-center gap-3 bg-white w-96 px-6 py-1.5 rounded-md mr-3">
           <FaSearch className="text-black text-xl" />
           <input
             type="text"
-            placeholder="Search By Date"
+            placeholder="Search By Topic Name"
             className="bg-transparent w-full outline-none text-center font-extralight text-black"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
-      <hr className="my-2 " />
-      {courses && courses.filter((certify)=>certify.completed === true).map((certify, index) => (
+      <hr className="my-2" />
+      {filteredCourses.map((certify, index) => (
         <>
           <div
             className="flex justify-between mx-2 flex-wrap font-extralight"
@@ -58,8 +65,10 @@ const Certificate = () => {
             </div>
             <div>
               <button
-                className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-48 py-2 my-5 `}
-                onClick={() => handleCertificate(certify.mainTopic, certify.end)}
+                className={`text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-48 py-2 my-5`}
+                onClick={() =>
+                  handleCertificate(certify.mainTopic, certify.end)
+                }
               >
                 View Certificate
               </button>
