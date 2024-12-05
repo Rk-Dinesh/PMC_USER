@@ -28,7 +28,7 @@ const Success = () => {
       });
       const formData = {
         subscriberId: localStorage.getItem("stripe"),
-        uid: localStorage.getItem("user"),
+        user: localStorage.getItem("user"),
         plan: localStorage.getItem("plan"),
         method: "stripe",
         fname: localStorage.getItem("fname"),
@@ -65,7 +65,7 @@ const Success = () => {
         if (localStorage.getItem("method") === "razorpay") {
           const formData = {
             subscriberId: localStorage.getItem("razorpay"),
-            uid: localStorage.getItem("user"),
+            user: localStorage.getItem("user"),
             plan: localStorage.getItem("plan"),
             method: "razorpay",
             fname: localStorage.getItem("fname"),

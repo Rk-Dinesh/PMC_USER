@@ -18,9 +18,6 @@ import DeleteAccount from "../auth/DeleteAccount";
 
 const Layout = () => {
   const location = useLocation();
-  const fname = localStorage.getItem('fname');
-  const lname = localStorage.getItem('lname');
-  const type = localStorage.getItem('type');
   const [isLogOutModalOpen, setLogOutModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -64,10 +61,10 @@ const Layout = () => {
         <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden overflow-auto  ">
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
             <img src={profile} alt="User" className="w-14 h-14 " />
-            <div className="mx-1">
-              <p className="text-xl font-extralight">{`Hello! ${fname} ${lname}`} </p>
+            <div>
+              <p className="text-xl font-extralight">Hello ! John Doe</p>
               <p className="text-xs font-extralight pt-1">
-                Subscription : {type}
+                Subscription : Gold
               </p>
               <p className="text-xs font-extralight whitespace-nowrap py-1">
                 Subscription Expiry : 12/12/26

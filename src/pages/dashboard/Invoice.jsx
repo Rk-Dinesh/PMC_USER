@@ -1,32 +1,10 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import Logo from "../../assets/PMC_Logo.png";
-import {toPng} from 'html-to-image'
-import { AiOutlineLoading } from "react-icons/ai";
-import { toast } from "react-toastify";
 
 const Invoice = () => {
-  const [processing, setProcessing] = useState(false);
-  const pdfRef = useRef(null);
-
-  const handleDownload = async () => {
-    setProcessing(true);
-      toPng(pdfRef.current, { cacheBust: false })
-          .then((dataUrl) => {
-              const link = document.createElement("a");
-              link.download = `PMC_Invoice.png`;
-              link.href = dataUrl;
-              link.click();
-              toast.success("Downloaded")
-              setProcessing(false);
-          })
-          .catch((err) => {
-              //DO NOTHING
-          });
-  };
-
   return (
-    <div className="mx-12 my-6 font-poppins font-extralight " >
-      <div className="max-w-xl h-auto bg-white py-1 px-2"  ref={pdfRef}>
+    <div className="mx-12 my-6 font-poppins font-extralight">
+      <div className="max-w-xl h-auto bg-white py-1 px-2">
         <span className="flex justify-center my-3">
           <img src={Logo} alt="Image" className="w-48 " />
         </span>
@@ -78,7 +56,7 @@ const Invoice = () => {
           </div>
         </div>
         <hr className="my-2 mx-5" />
-        <div className="grid grid-cols-12 gap-3 text-black mx-3 my-8">
+        <div className="grid grid-cols-12 gap-3 text-black mx-3 my-3">
           <div className="col-span-6 font-normal">
             <p>Grand Total:</p>
           </div>
@@ -86,13 +64,12 @@ const Invoice = () => {
             <p>$ 1.18</p>
           </div>
         </div>
-       
-      </div>
-      <div className="flex  my-8 ">
-          <button  className={`text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-52 py-2.5 ${processing ? 'opacity-15' : ''}`}  disabled={processing} onClick={handleDownload}>
-          {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Downloading ....</p></span> : "Download Invoice" }
+        <div className="flex justify-center my-8">
+          <button className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 ">
+            Download Invoice
           </button>
-    </div>
+        </div>
+      </div>
     </div>
   );
 };

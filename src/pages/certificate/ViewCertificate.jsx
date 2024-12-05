@@ -21,7 +21,7 @@ const ViewCertificate = () => {
       toPng(pdfRef.current, { cacheBust: false })
           .then((dataUrl) => {
               const link = document.createElement("a");
-              link.download = "certificate.png";
+              link.download = `PMC_${courseTitle} certificate.png`;
               link.href = dataUrl;
               link.click();
               toast.success("Downloaded")

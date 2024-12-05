@@ -31,6 +31,7 @@ const NewTicket = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [priority, setPriority] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const {
     register,
@@ -40,10 +41,33 @@ const NewTicket = () => {
     resolver: yupResolver(ticketSchema),
   });
 
-  useEffect(()=>{
-    fetchCategory()
-    fetchPriorty()
-  },[])
+  useEffect(() => {
+    fetchCategory();
+    fetchPriorty();
+  }, []);
+
+  // const OnSubmit = async (data) => {
+  //   const formData = {
+  //     ...data,
+  //     user: localStorage.getItem("user"),
+  //     fname: localStorage.getItem("fname"),
+  //     lname: localStorage.getItem("lname"),
+  //     email: localStorage.getItem("email"),
+  //     phone: localStorage.getItem("phone"),
+  //   };
+
+  //   try {
+  //     const response = await axios.post(`${API}/api/ticket`, formData);
+  //     if (response.status === 200) {
+  //       toast.success("Ticket Raised");
+  //       navigate("/support");
+  //     } else {
+  //       toast.error("failed to raise ticket");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const OnSubmit = async (data) => {
     const formData = {
@@ -59,20 +83,48 @@ const NewTicket = () => {
       const response = await axios.post(`${API}/api/ticket`, formData);
       if (response.status === 200) {
         toast.success("Ticket Raised");
-        navigate('/support')
+        if (selectedFiles.length > 0) {
+          const ticketId = response.data.Ticket;
+          const uploadData = new FormData();
+          uploadData.append("user", localStorage.getItem("user"));
+          uploadData.append("ticketId", ticketId);
+          uploadData.append("createdby", localStorage.getItem("fname"));
+
+          console.log(uploadData);
+          
+          selectedFiles.forEach((file) => {
+            uploadData.append("files", file);
+          });
+
+          const uploadResponse = await axios.post(`${API}/post`, uploadData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          console.log(uploadResponse);
+          
+
+          if (uploadResponse.status === 200) {
+            toast.success("Files uploaded successfully");
+          } else {
+            toast.error("Failed to upload files");
+          }
+        }
+
+        navigate("/support");
       } else {
-        toast.error("failed to raise ticket");
+        toast.error("Failed to raise ticket");
       }
     } catch (error) {
       console.log(error);
+      toast.error("An error occurred");
     }
   };
 
   const fetchCategory = async () => {
     try {
-      const response = await axios.get(
-        `${API}/api/getcategory`
-      );
+      const response = await axios.get(`${API}/api/getcategory`);
       const responseData = await response.data.cate;
       setCategory(responseData);
     } catch (error) {
@@ -82,9 +134,7 @@ const NewTicket = () => {
 
   const fetchPriorty = async () => {
     try {
-      const response = await axios.get(
-        `${API}/api/getpriority`
-      );
+      const response = await axios.get(`${API}/api/getpriority`);
       const responseData = await response.data.priority;
       setPriority(responseData);
     } catch (error) {
@@ -107,12 +157,15 @@ const NewTicket = () => {
                   className="block w-full text-black px-3 py-2 pr-10 outline-none rounded-lg "
                   {...register("category")}
                 >
-                  <option value="" disabled>Select Category</option>
-                  {category && category.map((cate,index) => (
-                  <option key={index} value={cate.category}>
-                    {cate.category}
+                  <option value="" disabled>
+                    Select Category
                   </option>
-                ))}
+                  {category &&
+                    category.map((cate, index) => (
+                      <option key={index} value={cate.category}>
+                        {cate.category}
+                      </option>
+                    ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
                   <FaCaretDown className="text-black text-2xl" />
@@ -148,16 +201,23 @@ const NewTicket = () => {
             </div>
             <div className="my-5 font-normal flex flex-col">
               <label htmlFor="file-input">
-                {" "}
                 Attachments (you can select multiple files)
               </label>
               <div className="relative my-1 lg:w-3/4 md:w-3/4 w-full">
                 <label className="block bg-white rounded-lg">
                   <span className="sr-only">Choose File</span>
-                  <input type="file" className="hidden" id="file-input" />
+                  <input
+                    type="file"
+                    className="hidden"
+                    id="file-input"
+                    multiple
+                    onChange={(e) =>
+                      setSelectedFiles(Array.from(e.target.files))
+                    }
+                  />
                   <button
                     className="bg-gray-300 text-black px-4 py-2.5 rounded-md"
-                    for="file-input"
+                    htmlFor="file-input"
                   >
                     Choose Files
                   </button>
@@ -166,7 +226,9 @@ const NewTicket = () => {
                   className="absolute top-1/2 -translate-y-1/2 lg:right-4 md:right-4 right-16 text-normal text-black"
                   id="file-name"
                 >
-                  No Files Chosen
+                  {selectedFiles.length > 0
+                    ? `${selectedFiles.length} Files Selected`
+                    : "No Files Chosen"}
                 </span>
               </div>
             </div>
@@ -181,12 +243,15 @@ const NewTicket = () => {
                   className="block w-full text-black px-3 py-2 pr-10 outline-none rounded-lg "
                   {...register("priority")}
                 >
-                  <option value="" disabled>Select Priority</option>
-                  {priority && priority.map((priority,index) => (
-                  <option key={index} value={priority.priority}>
-                    {priority.priority}
+                  <option value="" disabled>
+                    Select Priority
                   </option>
-                ))}
+                  {priority &&
+                    priority.map((priority, index) => (
+                      <option key={index} value={priority.priority}>
+                        {priority.priority}
+                      </option>
+                    ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
                   <FaCaretDown className="text-black text-2xl" />
