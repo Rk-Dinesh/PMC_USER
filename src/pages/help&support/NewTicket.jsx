@@ -46,28 +46,7 @@ const NewTicket = () => {
     fetchPriorty();
   }, []);
 
-  // const OnSubmit = async (data) => {
-  //   const formData = {
-  //     ...data,
-  //     user: localStorage.getItem("user"),
-  //     fname: localStorage.getItem("fname"),
-  //     lname: localStorage.getItem("lname"),
-  //     email: localStorage.getItem("email"),
-  //     phone: localStorage.getItem("phone"),
-  //   };
 
-  //   try {
-  //     const response = await axios.post(`${API}/api/ticket`, formData);
-  //     if (response.status === 200) {
-  //       toast.success("Ticket Raised");
-  //       navigate("/support");
-  //     } else {
-  //       toast.error("failed to raise ticket");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const OnSubmit = async (data) => {
     const formData = {
@@ -88,7 +67,7 @@ const NewTicket = () => {
           const uploadData = new FormData();
           uploadData.append("user", localStorage.getItem("user"));
           uploadData.append("ticketId", ticketId);
-          uploadData.append("createdby", localStorage.getItem("fname"));
+          uploadData.append("createdby", 'user');
 
           console.log(uploadData);
           
