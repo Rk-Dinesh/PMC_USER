@@ -124,7 +124,7 @@ const ViewTicket = () => {
         <div className="mx-5">
           <p className="text-lg mt-3 mb-2 ">Support</p>
           <p className="text-normal font-normal my-4">
-            Date : {ticket?.updatedAt}
+            Date : {formatDate1(ticket?.updatedAt)}
           </p>
           <span className="flex items-center gap-2 my-3 flex-wrap">
             <p className="text-normal font-normal ">Attachments :</p>
