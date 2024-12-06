@@ -14,7 +14,7 @@ const AllCourse = ({courses,handleCourse,handleCertificate}) => {
         >
           <img className="w-full h-44" src={course.photo} alt="Images" />
           <div className="px-4 py-3">
-            <div className="text-lg"> {course.mainTopic}</div>
+            <div className="text-lg truncate"> {course.mainTopic}</div>
             <p className="text-sm pt-1">{course.type}</p>
             <p className="text-sm">{formatDate1(course.date)}</p>
           </div>

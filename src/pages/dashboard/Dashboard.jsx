@@ -248,7 +248,7 @@ const ActiveThisMonthCount = courses.filter((course) => {
         {courses.slice(-4).map((data, index) => (
           <div className="lg:w-52 md:w-52 w-48 h-60 bg-black my-8" key={index}>
             <img src={data.photo} alt="Image" className="w-full h-40" />
-            <p className="text-lg mx-2 my-0.5">{data.mainTopic}</p>
+            <p className="text-lg mx-2 my-0.5 truncate">{data.mainTopic}</p>
             <p className="text-sm mx-2 my-0.5">{data.type}</p>
             <p className="text-sm mx-2 mb-1">{formatDate1(data.date)}</p>
             <button
