@@ -6,6 +6,7 @@ import assest from "../../assets/assest.png";
 import { useNavigate } from "react-router-dom";
 import { API, formatDate1 } from "../../Host";
 import axios from "axios";
+import { PieChart, Pie, ResponsiveContainer, Cell,Legend } from 'recharts';
 
 const Dashboard = () => {
   const userId = localStorage.getItem("user");
@@ -26,6 +27,15 @@ const Dashboard = () => {
 
     fetchUserCourses();
   }, []);
+
+  const data02 = [
+    { name: 'Image', value: (courses && courses.length > 0) ? 
+      courses.filter((course) => course.type === "text & image course").length : 0 },
+    { name: 'Video', value: (courses && courses.length > 0) ? 
+      courses.filter((course) => course.type === "video & text course").length : 0 },
+];
+  
+  const COLORS = ['#ffffff'];
 
   const handleCourse = (content, mainTopic, type, courseId, completed, end) => {
     const jsonData = JSON.parse(content);
@@ -166,7 +176,8 @@ const ActiveThisMonthCount = courses.filter((course) => {
           </button>
         </div>
       </div>
-      <div className="my-6 w-1/2">
+      <div className="grid grid-cols-12 gap-3 ">
+      <div className="my-6 col-span-6">
         <p className="text-lg my-3">Monthly Activity Progress</p>
         <span>
           <p className="w-3/4 text-end mx-4 text-xl">{coursesThisMonthCount}/10</p>
@@ -198,6 +209,39 @@ const ActiveThisMonthCount = courses.filter((course) => {
           </div>
           <p className="mx-6 text-sm">Completed Courses this month</p>
         </span>
+      </div>
+      <div className='col-span-6 my-6' style={{ width: '100%', height: '300px' }}>
+        <p  className="text-lg ">Course Type</p>
+      <ResponsiveContainer>
+        <PieChart>
+          <defs>
+            <linearGradient id="gradientColor" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#3D03FA" />
+              <stop offset="100%" stopColor="#A71CD2" />
+            </linearGradient>
+          </defs>
+          <Pie
+            data={data02}
+            dataKey="value"
+            cx="50%"
+            cy="50%"
+            innerRadius={70}
+            outerRadius={90}
+            paddingAngle={1} 
+            label
+            stroke="none"
+          >
+            {data02.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={index === 0 ? 'url(#gradientColor)' : COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Legend/>
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
       </div>
       <p className="text-lg mt-2 ">Recent Courses</p>
       <div className="flex gap-4 flex-wrap">

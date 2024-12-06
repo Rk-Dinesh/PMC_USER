@@ -1,34 +1,35 @@
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "./pages/layout/Layout";
 import SignUp from "./pages/auth/SignUp";
-import NotFound from "./404";
 import SignIn from "./pages/auth/SignIn";
 import OTP from "./pages/auth/OTP";
-import Dashboard from "./pages/dashboard/Dashboard";
-import MyCourses from "./pages/courses/MyCourses";
-import GenerateCourse from "./pages/courses/GenerateCourse";
-import HelpSupport from "./pages/help&support/HelpSupport";
-import NewTicket from "./pages/help&support/NewTicket";
-import FAQ from "./pages/faq/FAQ";
-import Notification from "./pages/notification/Notification";
-import TermsService from "./pages/terms/TermsService";
-import PrivacyPolicy from "./pages/terms/PrivacyPolicy";
-import Profile from "./pages/profile/Profile";
-import LogOut from "./pages/auth/LogOut";
-import ViewTicket from "./pages/help&support/ViewTicket";
-import Certificate from "./pages/certificate/Certificate";
-import ViewCertificate from "./pages/certificate/ViewCertificate";
-import Subscription from "./pages/subscription/Subscription";
-import Invoice from "./pages/subscription/Invoice";
-import ListTopics from "./pages/courses/ListTopics";
+import NotFound from "./404";
 import Content from "./pages/courses/Content";
-import ImageUploader from "./pages/auth/Test";
-import Pricing from "./pages/subscription/Pricing";
-import Payment from "./pages/subscription/Payment";
-import Success from "./pages/subscription/Success";
-import Failed from "./pages/subscription/Failed";
+
+// Lazy load the components
+const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
+const MyCourses = lazy(() => import("./pages/courses/MyCourses"));
+const GenerateCourse = lazy(() => import("./pages/courses/GenerateCourse"));
+const HelpSupport = lazy(() => import("./pages/help&support/HelpSupport"));
+const NewTicket = lazy(() => import("./pages/help&support/NewTicket"));
+const FAQ = lazy(() => import("./pages/faq/FAQ"));
+const Notification = lazy(() => import("./pages/notification/Notification"));
+const TermsService = lazy(() => import("./pages/terms/TermsService"));
+const PrivacyPolicy = lazy(() => import("./pages/terms/PrivacyPolicy"));
+const Profile = lazy(() => import("./pages/profile/Profile"));
+const ViewTicket = lazy(() => import("./pages/help&support/ViewTicket"));
+const Certificate = lazy(() => import("./pages/certificate/Certificate"));
+const ViewCertificate = lazy(() => import("./pages/certificate/ViewCertificate"));
+const Subscription = lazy(() => import("./pages/subscription/Subscription"));
+const Invoice = lazy(() => import("./pages/subscription/Invoice"));
+const ListTopics = lazy(() => import("./pages/courses/ListTopics"));
+const Pricing = lazy(() => import("./pages/subscription/Pricing"));
+const Payment = lazy(() => import("./pages/subscription/Payment"));
+const Success = lazy(() => import("./pages/subscription/Success"));
+const Failed = lazy(() => import("./pages/subscription/Failed"));
 
 function App() {
   return (
@@ -40,28 +41,35 @@ function App() {
           <Route path="/otp" element={<OTP />} />
           <Route path="/content" element={<Content />} />
           <Route path="/" element={<Layout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/course" element={<MyCourses />} />
-            <Route path="/create" element={<GenerateCourse />} />
-            <Route path="/topics" element={<ListTopics />} />           
-            <Route path="/support" element={<HelpSupport />} />
-            <Route path="/newticket" element={<NewTicket />} />
-            <Route path="/viewticket" element={<ViewTicket />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/notify" element={<Notification />} />
-            <Route path="/terms" element={<TermsService />} />
-            <Route path="/policy" element={<PrivacyPolicy />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/certificate" element={<Certificate />} />
-            <Route path="/viewcertificate" element={<ViewCertificate />} />
-            <Route path="/subscription" element={<Subscription />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/payment" element={<Payment />} />
-            <Route path="/success" element={<Success />} />
-            <Route path="/failed" element={<Failed />} />
-            <Route path="/invoice" element={<Invoice />} />
-            <Route path="/uploder" element={<ImageUploader />} />
-
+            <Route 
+              path="*" 
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Routes>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/course" element={<MyCourses />} />
+                    <Route path="/create" element={<GenerateCourse />} />
+                    <Route path="/topics" element={<ListTopics />} />
+                    <Route path="/support" element={<HelpSupport />} />
+                    <Route path="/newticket" element={<NewTicket />} />
+                    <Route path="/viewticket" element={<ViewTicket />} />
+                    <Route path="/faq" element={<FAQ />} />
+                    <Route path="/notify" element={<Notification />} />
+                    <Route path="/terms" element={<TermsService />} />
+                    <Route path="/policy" element={<PrivacyPolicy />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/certificate" element={<Certificate />} />
+                    <Route path="/viewcertificate" element={<ViewCertificate />} />
+                    <Route path="/subscription" element={<Subscription />} />
+                    <Route path="/invoice" element={<Invoice />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/payment" element={<Payment />} />
+                    <Route path="/success" element={<Success />} />
+                    <Route path="/failed" element={<Failed />} />
+                  </Routes>
+                </Suspense>
+              } 
+            />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
