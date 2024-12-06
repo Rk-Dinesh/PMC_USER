@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import certificate from "../../assets/certificate.png";
+import certificate from "../../assets/certificate.jpg";
 import Logo from "../../assets/PMC_Logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import {toPng} from 'html-to-image'
