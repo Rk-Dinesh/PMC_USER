@@ -1,12 +1,34 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Logo from "../../assets/PMC_Logo.png";
 import {toPng} from 'html-to-image'
 import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
+import { API, formatDate1 } from "../../Host";
+import axios from "axios";
 
 const Invoice = () => {
   const [processing, setProcessing] = useState(false);
+  const [invoice, setInvoice] = useState({})
   const pdfRef = useRef(null);
+  const location = useLocation();
+  const subId = location?.state?.subId
+
+  
+  useEffect(() => {
+    const fetchSubs = async () => {
+      const postURL = API + `/api/getsubonid/${subId}`;
+      try {
+        const response = await axios.get(postURL);
+        setInvoice(response.data.sub);
+        console.log(response.data.sub);
+      } catch (error) {
+        console.error("Error fetching subscriptions:", error);
+      }
+    };
+
+    fetchSubs();
+  }, [subId]);
 
   const handleDownload = async () => {
     setProcessing(true);
@@ -26,6 +48,7 @@ const Invoice = () => {
 
   return (
     <div className="mx-12 my-6 font-poppins font-extralight " >
+      {invoice && (
       <div className="max-w-xl h-auto bg-white py-1 px-2"  ref={pdfRef}>
         <span className="flex justify-center my-3">
           <img src={Logo} alt="Image" className="w-48 " />
@@ -39,11 +62,11 @@ const Invoice = () => {
             <p>Amount:</p>
           </div>
           <div className="col-span-6  ">
-            <p>STRIPE</p>
-            <p>Monthly Plan</p>
-            <p>sub_1Pgimc01PbsRdqnLURNt6vId</p>
+            <p className="capitalize">{invoice.method}</p>
+            <p>{invoice.plan}</p>
+            <p>{invoice.subscriberId}</p>
             <p>cus_QXoP8hrt4tOqIh</p>
-            <p>1 USD</p>
+            <p>{parseInt((Number(invoice.amount) || 0) / 100)}</p>
           </div>
         </div>
         <hr className="my-2 mx-5" />
@@ -53,8 +76,8 @@ const Invoice = () => {
             <p>Date:</p>
           </div>
           <div className="col-span-6 ">
-            <p>256746746444</p>
-            <p>23-10-2024</p>
+            <p>{invoice.recieptId}</p>
+            <p>{formatDate1(invoice.date)}</p>
           </div>
         </div>
         <hr className="my-2 mx-5" />
@@ -88,6 +111,7 @@ const Invoice = () => {
         </div>
        
       </div>
+      )}
       <div className="flex  my-8 ">
           <button  className={`text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-52 py-2.5 ${processing ? 'opacity-15' : ''}`}  disabled={processing} onClick={handleDownload}>
           {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Downloading ....</p></span> : "Download Invoice" }

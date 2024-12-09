@@ -25,9 +25,7 @@ const Subscription = () => {
     fetchSubs();
   }, [userId]);
 
-  const redirectinvoice = () => {
-    navigate("/invoice");
-  };
+
 
   const redirectPricing = () => {
     navigate("/pricing");
@@ -118,7 +116,9 @@ const Subscription = () => {
             <div>
               <button
                 className={`text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-48 py-2 my-5 font-normal`}
-                onClick={redirectinvoice}
+                onClick={()=>navigate('/invoice',{state:{
+                  subId : plan._id
+                }})}
               >
                 View Invoice
               </button>
