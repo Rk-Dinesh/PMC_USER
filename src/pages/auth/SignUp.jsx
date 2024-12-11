@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { API } from "../../Host";
 import { toast } from "react-toastify";
+import { AiOutlineLoading } from "react-icons/ai";
 
 
 const UserSchema = yup.object().shape({
@@ -24,6 +25,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [phone, setPhone] = useState("");
   const [countryCode, setCountryCode] = useState("");
+  const [processing, setProcessing] = useState(false);
 
   const handlePhoneChange = (value, data) => {
     setPhone(value);
@@ -39,6 +41,7 @@ const SignUp = () => {
   });
 
   const onSubmit = async (data) => {
+    setProcessing(true)
     const localPhone = phone.slice(countryCode.length);
     const formData = {
       ...data,
@@ -50,9 +53,11 @@ const SignUp = () => {
       const response = await axios.post(`${API}/api/usersignup`, formData);
       if (response.status === 200) {
         toast.success("Account Created Successfully");
+        setProcessing(false)
         navigate("/");
       } else {
         toast.error("Failed To Upload");
+        setProcessing(false)
         console.log("Error in posting Data");
       }
     } catch (error) {
@@ -156,7 +161,7 @@ const SignUp = () => {
                 className=" text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 "
                 type="submit"
               >
-                Continue
+                {processing ? <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Creating....</p></span> : "Continue" }
               </button>
             </div>
           </div>

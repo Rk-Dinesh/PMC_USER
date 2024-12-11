@@ -9,11 +9,13 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { API } from "../../Host";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [phone, setPhone] = useState("");
   const [countryCode, setCountryCode] = useState("");
+  const [processing, setProcessing] = useState(false);
 
   const handlePhoneChange = (value, data) => {
     setPhone(value);
@@ -41,6 +43,7 @@ const SignIn = () => {
   };
 
   const handleSendOtp = async (e) => {
+    setProcessing(true)
     e.preventDefault();
     const localPhone = phone.slice(countryCode.length);
     const formData = {
@@ -79,7 +82,7 @@ const SignIn = () => {
       window.confirmationResult = confirmationResult;
       // console.log("OTP sent successfully:", confirmationResult);
       toast.success("OTP sent successfully!");
-
+      setProcessing(false)
       navigate("/otp");
     } catch (error) {
       console.error("Invalid sign-in process", error);
@@ -88,13 +91,17 @@ const SignIn = () => {
         toast.error(
           "Invalid phone number format. Please enter a valid number."
         );
+        setProcessing(false)
       } else if (error.code === "auth/quota-exceeded") {
         toast.error("SMS quota exceeded. Try again later.");
+        setProcessing(false)
       } else if (error.code === "auth/billing-not-enabled") {
         toast.error(
           "Billing is not enabled in your Firebase project. Please enable it."
         );
+        setProcessing(false)
       } else {
+        setProcessing(false)
         toast.error("Invalid sign-in process");
       }
     }
@@ -144,7 +151,7 @@ const SignIn = () => {
                 type="submit"
                 className="text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-2.5"
               >
-                Continue
+                 {processing ? <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Verifying....</p></span> : "Continue" }
               </button>
             </div>
           </div>

@@ -5,9 +5,11 @@ import cover from "../../assets/bgimage.png";
 import { toast } from "react-toastify";
 import { auth } from "../../firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const OTP = () => {
   const navigate = useNavigate();
+  const [processing, setProcessing] = useState(false);
 
   const [formData, setFormData] = useState({
     otp1: "",
@@ -113,6 +115,7 @@ const OTP = () => {
   }, [timer]);
 
   const onOTPVerify = async (e) => {
+    setProcessing(true)
     e.preventDefault();
     const otp =
       formData.otp1 +
@@ -130,12 +133,14 @@ const OTP = () => {
       await confirmationResult.confirm(otp);
       localStorage.setItem("isLoggedIn", true);
       toast.success("OTP Verified & LoggedIn.");
+      setProcessing(false)
       navigate("/dashboard");
     } catch (err) {
       console.error("Error verifying OTP:", err);
       toast.error("Invalid OTP. Please try again.");
       navigate("/");
       localStorage.clear();
+      setProcessing(false)
     }
   };
 
@@ -187,7 +192,7 @@ const OTP = () => {
               className="text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5"
               type="submit"
             >
-              Verify
+               {processing ? <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Verifying....</p></span> : "Verify" }
             </button>
           </div>
           <p className="text-sm mt-3 text-center font-extralight">
