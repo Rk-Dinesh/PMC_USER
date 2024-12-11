@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../assets/PMC_Logo.png";
 import { useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
@@ -11,16 +11,24 @@ import axios from "axios";
 import { API } from "../../Host";
 import { toast } from "react-toastify";
 
+
 const UserSchema = yup.object().shape({
   fname: yup.string().required("fname is required"),
   lname: yup.string().required("lname is required"),
-  phone: yup.number().required("Phone Number is required"),
+  // phone: yup.number().required("Phone Number is required"),
   email: yup.string().email().required("Email Id  is required"),
   dob: yup.string().required("Date of birth is required"),
 });
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("");
+
+  const handlePhoneChange = (value, data) => {
+    setPhone(value);
+    setCountryCode(data.dialCode);
+  };
 
   const {
     register,
@@ -31,10 +39,12 @@ const SignUp = () => {
   });
 
   const onSubmit = async (data) => {
+    const localPhone = phone.slice(countryCode.length);
     const formData = {
       ...data,
+      phone: localPhone,
       type: "free",
-      company: "seeIt",
+      company: "seenIt",
     };
     try {
       const response = await axios.post(`${API}/api/usersignup`, formData);
@@ -85,13 +95,34 @@ const SignUp = () => {
             <label htmlFor="phone">
               Phone <span className="text-red-600">*</span>
             </label>
-            <input
+            {/* <input
               type="text"
               placeholder="9999999999"
               {...register("phone")}
               className="py-2 px-2  rounded-md text-center  text-black shadow-md outline-none"
+            /> */}
+
+            <PhoneInput
+              // country={"in"}
+              value={phone}
+              onChange={handlePhoneChange}
+              className="w-full py-1 text-black font-poppins font-extralight rounded-md shadow-md outline-none bg-white "
+              inputStyle={{
+                border: "none",
+                textAlign: "center",
+                fontSize: "16px",
+              }}
+              placeholder="9999999999"
+              buttonStyle={{
+                // background: "linear-gradient(to right, #3D03FA, #A71CD2)",
+                width: "70px",
+                borderRadius: "8px",
+                marginLeft:'10px',
+                border:'none',
+                background:'white',
+              }}
             />
-            <p className="text-center text-red-300">{errors.phone?.message}</p>
+
             <label htmlFor="email">
               Email <span className="text-red-600">*</span>
             </label>
@@ -99,7 +130,7 @@ const SignUp = () => {
               type="email"
               placeholder="johndoe@gmail.com"
               {...register("email")}
-              className="py-2  rounded-md text-center text-black shadow-md outline-none"
+              className="py-2  rounded-md text-center text-black  shadow-md outline-none"
             />
             <p className="text-center text-red-300">{errors.email?.message}</p>
             <label htmlFor="dob">

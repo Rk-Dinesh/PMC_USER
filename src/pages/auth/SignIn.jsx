@@ -25,6 +25,9 @@ const SignIn = () => {
   };
 
   const setUpRecaptcha = () => {
+    if (window.recaptchaVerifier) {
+      return;
+    }
     window.recaptchaVerifier = new RecaptchaVerifier(
       auth,
       "recaptcha-container",
@@ -37,31 +40,13 @@ const SignIn = () => {
     );
   };
 
-  // const setUpRecaptcha = () => {
-
-  //   if (window.recaptchaVerifier) {
-  //     return; 
-  //   }
-
-  //   window.recaptchaVerifier = new RecaptchaVerifier(
-  //     'recaptcha-container', 
-  //     {
-  //       size: 'invisible', 
-  //       callback: (response) => {
-  //         console.log("reCAPTCHA verified:", response);
-  //       },
-  //     },
-  //     auth
-  //   );
-  // };
-
   const handleSendOtp = async (e) => {
     e.preventDefault();
     const localPhone = phone.slice(countryCode.length);
     const formData = {
       phone: localPhone,
     };
-  
+
     try {
       const response = await axios.post(`${API}/api/usersignin`, formData);
 
@@ -71,46 +56,49 @@ const SignIn = () => {
       }
 
       const responseData = response.data.userId;
-      console.log(responseData);
-  
+      //console.log(responseData);
+
       localStorage.setItem("user", responseData._id);
       localStorage.setItem("fname", responseData.fname);
       localStorage.setItem("lname", responseData.lname);
       localStorage.setItem("email", responseData.email);
       localStorage.setItem("phone", responseData.phone);
       localStorage.setItem("type", responseData.type);
-  
+      localStorage.setItem("countryCode", countryCode);
+
       setUpRecaptcha();
       const appVerifier = window.recaptchaVerifier;
       const formattedPhone = phone.startsWith("+") ? phone : "+" + phone;
-      console.log("Formatted Phone Number:", formattedPhone);
-  
+      // console.log("Formatted Phone Number:", formattedPhone);
+
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
         appVerifier
       );
-      window.confirmationResult = confirmationResult; 
-      console.log("OTP sent successfully:", confirmationResult);
+      window.confirmationResult = confirmationResult;
+      // console.log("OTP sent successfully:", confirmationResult);
       toast.success("OTP sent successfully!");
 
       navigate("/otp");
-  
     } catch (error) {
       console.error("Invalid sign-in process", error);
-  
+
       if (error.code === "auth/invalid-phone-number") {
-        toast.error("Invalid phone number format. Please enter a valid number.");
+        toast.error(
+          "Invalid phone number format. Please enter a valid number."
+        );
       } else if (error.code === "auth/quota-exceeded") {
         toast.error("SMS quota exceeded. Try again later.");
       } else if (error.code === "auth/billing-not-enabled") {
-        toast.error("Billing is not enabled in your Firebase project. Please enable it.");
+        toast.error(
+          "Billing is not enabled in your Firebase project. Please enable it."
+        );
       } else {
         toast.error("Invalid sign-in process");
       }
     }
   };
-  
 
   return (
     <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white">
@@ -122,24 +110,39 @@ const SignIn = () => {
         />
         <form className="z-0" onSubmit={handleSendOtp}>
           <img src={Logo} alt="Logo" className="w-full" />
-          <p className="text-center text-lg my-2">Login</p>
+          <p className="text-center text-xl my-2">Login</p>
           <div className="flex flex-col gap-3 mx-2 my-4 ">
-            <label htmlFor="phone" className="mx-10">
+            <label htmlFor="phone" className="mx-6">
               Phone <span className="text-red-600">*</span>
             </label>
-            <div className="w-full mx-10">
+            <div className="w-5/6 mx-6">
               <PhoneInput
                 country={"in"}
                 value={phone}
                 onChange={handlePhoneChange}
-                className="text-black"
+                className="w-full py-1 text-black rounded-md shadow-md outline-none bg-white "
+                inputStyle={{
+                  border: "none",
+                  // textAlign: "center",
+                  fontSize: "16px",
+                  marginLeft: "10px",
+                }}
+                placeholder="9999999999"
+                buttonStyle={{
+                  // background: "linear-gradient(to right, #3D03FA, #A71CD2)",
+                  width: "30px",
+                  borderRadius: "8px",
+                  marginLeft: "10px",
+                  border: "none",
+                  background: "white",
+                }}
               />
             </div>
 
-            <div className="flex justify-center my-8">
+            <div className="flex justify-center my-6">
               <button
                 type="submit"
-                className="text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5"
+                className="text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-2.5"
               >
                 Continue
               </button>

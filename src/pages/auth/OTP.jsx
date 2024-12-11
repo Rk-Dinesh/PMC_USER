@@ -3,10 +3,12 @@ import Logo from "../../assets/PMC_Logo.png";
 import { useNavigate } from "react-router-dom";
 import cover from "../../assets/bgimage.png";
 import { toast } from "react-toastify";
+import { auth } from "../../firebase.config";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 const OTP = () => {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     otp1: "",
     otp2: "",
@@ -17,6 +19,7 @@ const OTP = () => {
   });
 
   const [timer, setTimer] = useState(90);
+  const [canResend, setCanResend] = useState(false);
 
   const handleChange = (value, event) => {
     setFormData({ ...formData, [value]: event.target.value });
@@ -36,42 +39,59 @@ const OTP = () => {
     }
   };
 
-  const onOTPVerify = async (e) => {
-    e.preventDefault();
-    const otp =
-      formData.otp1 + formData.otp2 + formData.otp3 + formData.otp4 + formData.otp5 + formData.otp6;
-    try {
-      const confirmationResult = window.confirmationResult;
-      if (!confirmationResult) {
-        toast.error("Please request a new OTP.");
-        return;
+  const setUpRecaptcha = () => {
+    
+    window.recaptchaVerifier = new RecaptchaVerifier(
+      auth,
+      "recaptcha-container",
+      {
+        size: "invisible",
+        callback: (response) => {
+         console.log("reCAPTCHA verified");
+
+        },
       }
-      await confirmationResult.confirm(otp); 
-      localStorage.setItem("isLoggedIn", true);
-      toast.success("OTP Verified & LoggedIn.");
-      navigate("/dashboard");
-    } catch (err) {
-      console.error("Error verifying OTP:", err);
-      toast.error("Invalid OTP. Please try again.");
-      navigate('/')
-      localStorage.clear()
-    }
+    );
   };
 
-  useEffect(() => {
-    if (!window.confirmationResult) {
-      toast.error("Session expired. Please request a new OTP.");
-      navigate("/");
+  const handleResendOtp = async () => {
+    if (!canResend) {
+      toast.error("Please wait before resending the OTP.");
+      return;
     }
 
-    if (timer <= 0) return; 
-    const interval = setInterval(() => {
-      setTimer((prevTime) => prevTime - 1);
-    }, 1000);
+    const phone = localStorage.getItem("phone");
+    const countryCode = localStorage.getItem("countryCode");
+   // console.log(phone);
+   // console.log(countryCode);
 
-    return () => clearInterval(interval);
-  }, [timer, navigate]);
+    if (!phone || !countryCode) {
+      toast.error("Unable to send OTP. Please try again later.");
+      return;
+    }
 
+    try {
+      console.log("intialize");
+
+      setUpRecaptcha();
+      const appVerifier = window.recaptchaVerifier;
+      const formattedPhone = `+${countryCode}${phone}`;
+      console.log(formattedPhone, "phone");
+
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        formattedPhone,
+        appVerifier
+      );
+      window.confirmationResult = confirmationResult;
+      toast.success("OTP sent successfully!");
+      setCanResend(false);
+      setTimer(90);
+    } catch (error) {
+      toast.error("Error sending OTP.");
+      //navigate('/')
+    }
+  };
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -79,13 +99,59 @@ const OTP = () => {
     return minutes > 0 ? `${minutes} min ${seconds} secs` : `${seconds} secs`;
   };
 
+  useEffect(() => {
+    if (timer <= 0) {
+      setCanResend(true);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTimer((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  const onOTPVerify = async (e) => {
+    e.preventDefault();
+    const otp =
+      formData.otp1 +
+      formData.otp2 +
+      formData.otp3 +
+      formData.otp4 +
+      formData.otp5 +
+      formData.otp6;
+    try {
+      const confirmationResult = window.confirmationResult;
+      if (!confirmationResult) {
+        toast.error("Please request a new OTP.");
+        return;
+      }
+      await confirmationResult.confirm(otp);
+      localStorage.setItem("isLoggedIn", true);
+      toast.success("OTP Verified & LoggedIn.");
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Error verifying OTP:", err);
+      toast.error("Invalid OTP. Please try again.");
+      navigate("/");
+      localStorage.clear();
+    }
+  };
+
   return (
     <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white">
       <div className="w-[430px] mx-1 bg-[#200098] p-4 flex flex-col justify-center shadow-black shadow-lg relative">
-        <img src={cover} alt="Image" className="absolute top-2 right-1 w-[420px] opacity-20" />
+        <img
+          src={cover}
+          alt="Image"
+          className="absolute top-2 right-1 w-[420px] opacity-20"
+        />
         <form className="z-0" onSubmit={onOTPVerify}>
           <img src={Logo} alt="Logo" className="w-full" />
-          <p className="text-center text-lg my-4 font-extralight">Phone Number Verification</p>
+          <p className="text-center text-lg my-4 font-extralight">
+            Phone Number Verification
+          </p>
           <div className="flex justify-center gap-3 my-6">
             {Object.keys(formData).map((key, index) => (
               <input
@@ -106,7 +172,14 @@ const OTP = () => {
             We have sent you an OTP (one-time password) to your phone number
           </p>
           <div className="flex justify-around my-12">
-            <p className="text-lg font-extralight">Resend OTP</p>
+            <p
+              className={`text-lg font-extralight ${
+                canResend ? "cursor-pointer" : "text-gray-400"
+              }`}
+              onClick={() => canResend && handleResendOtp()}
+            >
+              Resend OTP
+            </p>
             <p className="text-lg font-extralight ">{formatTime(timer)}</p>
           </div>
           <div className="flex justify-center my-12">
@@ -122,6 +195,7 @@ const OTP = () => {
             <span className="text-red-700">&#x2764;</span> by SeenIT Pty Ltd
           </p>
         </form>
+        <div id="recaptcha-container"></div>
       </div>
     </div>
   );
