@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "axios": "^1.7.7",
+    "currency-converter-lt": "^2.0.1",
     "firebase": "^11.0.2",
     "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",

@@ -32,7 +32,7 @@ const Pricing = () => {
             <div class="flex flex-col p-6 text-center text-white bg-[#000928]   shadow outline-none">
               <h3 class="mb-2 text-xl">{plan.packagename}</h3>
               <div class="flex justify-center items-baseline my-2">
-                <span class="mr-2 text-2xl font-semibold">{plan.price}</span>
+                <span class="mr-2 text-2xl font-semibold">${plan.price}</span>
                 <span class="text-gray-500 dark:text-gray-400">/month</span>
               </div>
               <ul role="list" class="mb-8 space-y-1 text-left">
@@ -69,7 +69,9 @@ const Pricing = () => {
                     state: {
                       amount: plan.price,
                       receipt:plan.packagename,
-                      course:plan.course
+                      course:plan.course,
+                      planId:plan.stripeId,
+                      tax:plan.tax,
                     },
                   });
                 }}

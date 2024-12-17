@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -27,12 +27,36 @@ const Payment = () => {
   const options = useMemo(() => countryList().getData(), []);
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [conversionrate, setConversionrate] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
   const location = useLocation();
-  const amount = location?.state?.amount * 100;
+  const amount = location?.state?.amount;
   const receipt = location?.state?.receipt;
   const course = location?.state?.course;
+  const planId = location?.state?.planId;
+  const tax = location?.state?.tax;
 
-  console.log(amount, receipt);
+  useEffect(() => {
+    async function convertCurrency(amount, from, to) {
+      const API_KEY = "8ae590e70d4cf6c51b57bbae";
+      const url = `https://v6.exchangerate-api.com/v6/${API_KEY}/pair/${from}/${to}/${amount}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.result === "success") {
+         // console.log("valid", data.conversion_result);
+          setConversionrate(data.conversion_result);
+        } else {
+          console.error("Error fetching exchange rates:", data.error);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+    convertCurrency(amount, "USD", "INR");
+  }, []);
 
   const {
     register,
@@ -47,7 +71,7 @@ const Payment = () => {
       toast.error("Please select a payment method.");
       return;
     }
-  
+
     if (paymentMethod === "stripe") {
       await startStripe(data);
     } else if (paymentMethod === "razorpay") {
@@ -56,7 +80,6 @@ const Payment = () => {
   };
 
   const startStripe = async (data) => {
-    let planId = 'price_1Pd8mq01PbsRdqnLHOa9bhU1';
     const dataToSend = {
       planId: planId,
     };
@@ -67,8 +90,9 @@ const Payment = () => {
       localStorage.setItem("stripe", res.data.id);
       localStorage.setItem("method", "stripe");
       localStorage.setItem("plan", receipt);
-      localStorage.setItem('amount',amount);
-      localStorage.setItem('cousecount',course);
+      localStorage.setItem("amount", amount);
+      localStorage.setItem("cousecount", course);
+      localStorage.setItem("tax", tax);
       window.location.href = res.data.url;
     } catch (error) {
       //DO NOTHING
@@ -88,30 +112,32 @@ const Payment = () => {
     });
   };
 
-
   const startRazorpay = async (data) => {
     await loadRazorpayScript();
+    const taxRate = tax / 100;
+    const taxAmount = conversionrate * taxRate;
+    const totalWithTax = conversionrate+ taxAmount; 
     const dataToSend = {
-      amount: amount,
+      amount: totalWithTax.toFixed(0)*100,
       currency: "INR",
       receipt: receipt,
     };
-  
+
     try {
       const postURL = API + "/order";
       const res = await axios.post(postURL, dataToSend);
-  
+
       const order = res.data;
-      
+
       localStorage.setItem("razorpay", order.id);
       localStorage.setItem("method", "razorpay");
       localStorage.setItem("plan", receipt);
-      localStorage.setItem('amount',amount);
-      localStorage.setItem('coursecount',course);
-
+      localStorage.setItem("amount", amount);
+      localStorage.setItem("coursecount", course);
+      localStorage.setItem("tax", tax);
       const options = {
-        key: 'rzp_live_PwFLUg2b6qe1uU', 
-        amount: amount, 
+        key: "rzp_live_PwFLUg2b6qe1uU",
+        amount: amount,
         currency: "INR",
         name: "PickMyCourse",
         description: "PickMyCourse Subscription",
@@ -123,7 +149,7 @@ const Payment = () => {
             uid: localStorage.getItem("user"),
             plan: localStorage.getItem("plan"),
           };
-  
+
           try {
             const validateRes = await axios.post(
               `${API}/order/validate`,
@@ -154,12 +180,12 @@ const Payment = () => {
           color: "#3399cc",
         },
       };
-  
+
       var rzp1 = new window.Razorpay(options);
       rzp1.on("payment.failed", function (response) {
         toast.error("Payment failed");
       });
-  
+
       rzp1.open();
     } catch (error) {
       console.error("Error starting Razorpay:", error);
@@ -225,8 +251,9 @@ const Payment = () => {
               <select
                 className="block w-full text-black px-3 py-2 pr-10 outline-none rounded-lg "
                 {...register("country")}
+                onChange={(e) => setSelectedCountry(e.target.value)}
               >
-                <option value="" disabled>
+                <option value="" >
                   Select Country
                 </option>
                 {options.map((country) => (
@@ -244,22 +271,23 @@ const Payment = () => {
             </p>
 
             <div className="flex justify-center my-3">
+            {selectedCountry === "IN" ? (
               <button
-                className="text-sm bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5"
-                type="submit"
-                onClick={() => setPaymentMethod("stripe")}
-              >
-                Stripe ( For International pay)
-              </button>
-            </div>
-            <div className="flex justify-center mb-3">
-              <button
-                className="text-sm bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5"
+                className="text-sm bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 my-2"
                 type="submit"
                 onClick={() => setPaymentMethod("razorpay")}
               >
-                Razorpay ( For Indian Pay)
+                Razorpay (For Indian Pay)
               </button>
+            ) : selectedCountry ? (
+              <button
+                className="text-sm bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 my-2"
+                type="submit"
+                onClick={() => setPaymentMethod("stripe")}
+              >
+                Stripe (For International Pay)
+              </button>
+            ) : null}
             </div>
           </div>
         </form>

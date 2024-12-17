@@ -37,6 +37,7 @@ const Success = () => {
         phone: localStorage.getItem("phone"),
         amount: localStorage.getItem("amount"),
         course: localStorage.getItem("coursecount"),
+        tax:localStorage.getItem("tax")
       };
       const response = await axios.post(
         `${API}/api/usersubscription`,
@@ -74,6 +75,7 @@ const Success = () => {
             phone: localStorage.getItem("phone"),
             amount: localStorage.getItem("amount"),
             course: localStorage.getItem("coursecount"),
+            tax:localStorage.getItem("tax")
           };
           const response = await axios.post(
             `${API}/api/usersubscription`,
