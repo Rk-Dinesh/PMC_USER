@@ -28,6 +28,7 @@ const Success = () => {
       });
       const formData = {
         subscriberId: localStorage.getItem("stripe"),
+        subscription:jsonData.customer,
         user: localStorage.getItem("user"),
         plan: localStorage.getItem("plan"),
         method: "stripe",
@@ -66,6 +67,7 @@ const Success = () => {
         if (localStorage.getItem("method") === "razorpay") {
           const formData = {
             subscriberId: localStorage.getItem("razorpay"),
+            subscription:localStorage.getItem("subscription"),
             user: localStorage.getItem("user"),
             plan: localStorage.getItem("plan"),
             method: "razorpay",
@@ -81,7 +83,7 @@ const Success = () => {
             `${API}/api/usersubscription`,
             formData
           );
-          console.log(response.data);
+          console.log(response.data,'sucsess');
           if (response.status === 200) {
             const dataToSend = {
                 user: localStorage.getItem("user"),
@@ -91,13 +93,14 @@ const Success = () => {
                 `${API}/api/countplan`,
                 dataToSend
               );
-              console.log(response.data);
+              //console.log(response.data);
       
             localStorage.removeItem("amount");
             localStorage.removeItem("coursecount");
             localStorage.removeItem("razorpay");
             localStorage.removeItem("method");
             localStorage.removeItem("plan");
+            localStorage.removeItem("subscription");
           }
         }
       } catch (error) {

@@ -117,8 +117,9 @@ const Payment = () => {
     const taxRate = tax / 100;
     const taxAmount = conversionrate * taxRate;
     const totalWithTax = conversionrate+ taxAmount; 
+    const rupees = 1*100
     const dataToSend = {
-      amount: totalWithTax.toFixed(0)*100,
+      amount: rupees,
       currency: "INR",
       receipt: receipt,
     };
@@ -132,7 +133,7 @@ const Payment = () => {
       localStorage.setItem("razorpay", order.id);
       localStorage.setItem("method", "razorpay");
       localStorage.setItem("plan", receipt);
-      localStorage.setItem("amount", amount);
+      localStorage.setItem("amount", conversionrate);
       localStorage.setItem("coursecount", course);
       localStorage.setItem("tax", tax);
       const options = {
@@ -163,6 +164,7 @@ const Payment = () => {
             const jsonRes = validateRes.data;
             localStorage.setItem("type", localStorage.getItem("plan"));
             console.log(jsonRes);
+            localStorage.setItem('subscription',jsonRes.paymentId)
             navigate("/success");
           } catch (validateError) {
             console.error("Validation error:", validateError);
