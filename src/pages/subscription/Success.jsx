@@ -28,7 +28,7 @@ const Success = () => {
       });
       const formData = {
         subscriberId: localStorage.getItem("stripe"),
-        subscription:jsonData.customer,
+        subscription:jsonData.customer.id || 'id not found',
         user: localStorage.getItem("user"),
         plan: localStorage.getItem("plan"),
         method: "stripe",

@@ -632,9 +632,9 @@ const Content = () => {
                   ) : (
                     <span className="text-white">
                       <p className="w-3/4 text-end mx-4 text-lg font-extralight">{`${percentage}%`}</p>
-                      <div class="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
+                      <div className="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
                         <div
-                          class="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
+                          className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
                           style={{ width: `${percentage}%` }}
                         ></div>
                       </div>

@@ -66,7 +66,7 @@ const UpdatePhone = ({ ClosePhoneModal }) => {
         </p>
         <p className="text-center text-lg my-2">Update Phone</p>
         <p className="text-center text-sm lg:mx-12 md:mx-12 mx-4 my-6">
-          Enter you’re your new Phone Number(please note we will be sending a OP
+          Enter you’re your new Phone Number(please note we will be sending a OTP
           to your new phone number)
         </p>
         <form onSubmit={handleSubmit(onsubmit)}>

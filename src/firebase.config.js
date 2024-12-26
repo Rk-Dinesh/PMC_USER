@@ -3,14 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDoLMENijyBPO8k8Uf_AlOcB6YkwvwcqT8",
-    authDomain: "opt-project-a4542.firebaseapp.com",
-    projectId: "opt-project-a4542",
-    storageBucket: "opt-project-a4542.firebasestorage.app",
-    messagingSenderId: "999845433195",
-    appId: "1:999845433195:web:e9c188ce967d54924f462e",
-    measurementId: "G-NBSWTTWTK1"
-  };  
+  apiKey: "AIzaSyDwZKo09zss5D0s2RnNj5aY5xvWsVBGemI",
+  authDomain: "pick-my-course-da02e.firebaseapp.com",
+  projectId: "pick-my-course-da02e",
+  storageBucket: "pick-my-course-da02e.firebasestorage.app",
+  messagingSenderId: "27261355513",
+  appId: "1:27261355513:web:aed4e8672495a506a92928"
+};
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

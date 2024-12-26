@@ -181,9 +181,9 @@ const ActiveThisMonthCount = courses.filter((course) => {
         <p className="text-lg my-3">Monthly Activity Progress</p>
         <span>
           <p className="w-3/4 text-end mx-4 text-xl">{coursesThisMonthCount}/10</p>
-          <div class="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
+          <div className="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
             <div
-              class="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
+              className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
               style={{ width: `${(coursesThisMonthCount / 10) * 100}%` }} 
             ></div>
           </div>
@@ -191,9 +191,9 @@ const ActiveThisMonthCount = courses.filter((course) => {
         </span>
         <span>
           <p className="w-3/4 text-end mx-4 text-xl">{ActiveThisMonthCount}/10</p>
-          <div class="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
+          <div className="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
             <div
-              class="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
+              className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
               style={{ width: `${(ActiveThisMonthCount / 10) * 100}%` }}
             ></div>
           </div>
@@ -201,9 +201,9 @@ const ActiveThisMonthCount = courses.filter((course) => {
         </span>
         <span>
           <p className="w-3/4 text-end mx-4 text-xl">{completedThisMonthCount}/10</p>
-          <div class="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
+          <div className="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
             <div
-              class="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
+              className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
               style={{ width: `${(completedThisMonthCount / 10) * 100}%` }}
             ></div>
           </div>

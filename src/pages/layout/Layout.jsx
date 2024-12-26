@@ -16,21 +16,43 @@ import bin from "../../assets/bin.png";
 import LogOut from "../auth/LogOut";
 import DeleteAccount from "../auth/DeleteAccount";
 import axios from "axios";
-import { API } from "../../Host";
+import { API, formatDate1 } from "../../Host";
 
 const Layout = () => {
   const location = useLocation();
-  const fname = localStorage.getItem('fname');
-  const lname = localStorage.getItem('lname');
-  const user = localStorage.getItem('user');
-  const type = localStorage.getItem('type');
+  const fname = localStorage.getItem("fname");
+  const lname = localStorage.getItem("lname");
+  const user = localStorage.getItem("user");
+  const type = localStorage.getItem("type");
   const [isLogOutModalOpen, setLogOutModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [userImage, setUserImage] = useState({});
+  const [activeplans, setActiveplans] = useState([]);
 
   useEffect(() => {
     fetchImage();
+    const fetchSubs = async () => {
+      const postURL = API + `/api/getsubsbyid?user=${user}`;
+      try {
+        const response = await axios.get(postURL);
+        setActiveplans(response.data.sub);
+      } catch (error) {
+        console.error("Error fetching subscriptions:", error);
+      }
+    };
+
+    fetchSubs();
   }, []);
+
+  const lastActivePlan =
+    activeplans.length > 0 ? activeplans[activeplans.length - 1] : null;
+
+  const calculateExpiryDate = (date) => {
+    const currentDate = new Date(date);
+    currentDate.setDate(currentDate.getDate() + 30);
+    localStorage.setItem("expiry", currentDate);
+    return currentDate;
+  };
 
   const Menus = [
     { title: "Dashboard", icon: dashoard, to: "/dashboard" },
@@ -82,19 +104,26 @@ const Layout = () => {
       <div className="flex w-full h-screen  pt-14 font-poppins   ">
         <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden overflow-auto  ">
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
-          <img
-            src={userImage?.image ? userImage.image : profile}
-            alt="Profile"
-            className={`w-14 h-14 ${userImage?.image ? ' rounded-xl object-cover' : ''}`}
-          />
+            <img
+              src={userImage?.image ? userImage.image : profile}
+              alt="Profile"
+              className={`w-14 h-14 ${
+                userImage?.image ? " rounded-xl object-cover" : ""
+              }`}
+            />
             <div className="mx-1">
-              <p className="text-xl font-extralight">{`Hello! ${fname} ${lname}`} </p>
+              <p className="text-xl font-extralight">
+                {`Hello! ${fname} ${lname}`}{" "}
+              </p>
               <p className="text-xs font-extralight pt-1">
                 Subscription : {type}
               </p>
-              <p className="text-xs font-extralight whitespace-nowrap py-1">
-                Subscription Expiry : 12/12/26
+              { lastActivePlan ? (
+                <p className="text-xs font-extralight whitespace-nowrap py-1">
+                Subscription Expiry : {formatDate1(calculateExpiryDate(lastActivePlan.date))}
               </p>
+              ):(<></>) }
+              
             </div>
           </div>
 
