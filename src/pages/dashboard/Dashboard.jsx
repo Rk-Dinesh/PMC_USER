@@ -21,7 +21,7 @@ const Dashboard = () => {
         setCourses(response.data);
         setProcessing(false);
       } catch (error) {
-        fetchUserCourses();
+        //fetchUserCourses();
       }
     };
 

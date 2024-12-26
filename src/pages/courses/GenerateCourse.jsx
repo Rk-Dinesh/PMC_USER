@@ -51,7 +51,10 @@ const GenerateCourse = () => {
       const response = await axios.get(postURL);
       // console.log(response.data);
       setCourses(response.data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
   const updateCount = async () => {
@@ -208,7 +211,15 @@ const GenerateCourse = () => {
               "Your monthly plan has reached the limit. Please upgrade the Monthly plan for further access"
             );
           }
-        } 
+        } else{
+          navigate("/topics", {
+            state: {
+              jsonData: parsedJson,
+              mainTopic: mainTopic.toLowerCase(),
+              type: selectedType.toLowerCase(),
+            },
+          });
+        }
       } catch (error) {
         //sendPrompt(prompt, mainTopic, selectedType);
       }
