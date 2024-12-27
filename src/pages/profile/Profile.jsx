@@ -22,7 +22,7 @@ const Profile = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(`${API}/api/getusersbyid/${user}`);
+      const response = await axios.get(`${API}/api/getusersbyid?_id=${user}`);
       const responseData = response.data.user;
       setUserData(responseData);
     } catch (error) {
