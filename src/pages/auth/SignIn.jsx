@@ -62,6 +62,7 @@ const SignIn = () => {
       //console.log(responseData);
 
       localStorage.setItem("user", responseData._id);
+      localStorage.setItem("LoggedIn", true);
       localStorage.setItem("fname", responseData.fname);
       localStorage.setItem("lname", responseData.lname);
       localStorage.setItem("email", responseData.email);

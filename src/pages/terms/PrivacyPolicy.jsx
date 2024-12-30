@@ -1,31 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { API } from '../../Host';
+import axios from 'axios';
+import StyledText from '../../components/StyledText';
 
 const PrivacyPolicy = () => {
+   const [policy, setPolicy] = useState({});
+  
+    useEffect(() => {
+      const fetchPolicy = async () => {
+        const postURL = API + `/api/policies`;
+        try {
+          const response = await axios.get(postURL);
+          const responseData = response.data.data;
+  
+          setPolicy(responseData);
+        } catch (error) {
+          console.error("Error fetching subscriptions:", error);
+        }
+      };
+  
+      fetchPolicy();
+    }, []);
   return (
     <div className="mx-5 my-6 font-poppins font-extralight">
     <p className="text-lg">Privacy Policy</p>
     <hr className="my-2 " />
-    <div className="my-5">
-        <h1 className="text-normal font-normal ">Privacy Policy:</h1>
-        <p className="mb-4">Last update on: <strong>15-Oct-2024</strong></p>
-        <h1 className="text-normal  font-normal">Privacy Policy:</h1>
-        <p className="mb-1">Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose.</p>
-        
-        <ul className="list-disc list-inside mb-4">
-            <li>Lorem Ipsum is dummy text</li>
-            <li>Lorem Ipsum is dummy text</li>
-            <li>Lorem Ipsum is dummy text</li>
-            <li>Lorem Ipsum is dummy text</li>
-            <li>Lorem Ipsum is dummy text</li>
-        </ul>
-        <h1 className="text-normal font-normal">Privacy Policy:</h1>
-        <p className="">Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose.</p>
-        
-        <p className="mb-4">Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose.</p>
-        
-        <p>Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose.</p>
-        <p className="mb-4">Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose.</p>
-    </div>
+    {policy ? (
+        <StyledText text={policy.privacy} />
+      ) : (
+        <p className="text-center mt-4">No Privacy Policy Found</p>
+      )}
   </div>
   )
 }
