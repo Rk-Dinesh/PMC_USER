@@ -46,8 +46,6 @@ const NewTicket = () => {
     fetchPriorty();
   }, []);
 
-
-
   const OnSubmit = async (data) => {
     const formData = {
       ...data,
@@ -67,10 +65,7 @@ const NewTicket = () => {
           const uploadData = new FormData();
           uploadData.append("user", localStorage.getItem("user"));
           uploadData.append("ticketId", ticketId);
-          uploadData.append("createdby", 'user');
-
-          console.log(uploadData);
-          
+          uploadData.append("createdby", "user");
           selectedFiles.forEach((file) => {
             uploadData.append("files", file);
           });
@@ -80,9 +75,6 @@ const NewTicket = () => {
               "Content-Type": "multipart/form-data",
             },
           });
-
-          console.log(uploadResponse);
-          
 
           if (uploadResponse.status === 200) {
             toast.success("Files uploaded successfully");

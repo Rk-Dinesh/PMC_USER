@@ -20,7 +20,6 @@ const Invoice = () => {
       try {
         const response = await axios.get(postURL);
         setInvoice(response.data.sub);
-        console.log(response.data.sub);
       } catch (error) {
         console.error("Error fetching subscriptions:", error);
       }
@@ -97,6 +96,7 @@ const Invoice = () => {
           <div className="grid grid-cols-12 gap-3 text-black mx-3 my-3">
             <div className="col-span-6 ">
               <p className="font-normal">Tax:</p>
+              <p>{invoice.tax}%</p>
             </div>
             <div className="col-span-6">
               <p>

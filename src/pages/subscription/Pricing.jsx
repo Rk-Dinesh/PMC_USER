@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Pricing = () => {
   const [plans, setPlans] = useState([]);
   const navigate = useNavigate();
+  const countryCode = localStorage.getItem('countryCode')
 
   useEffect(() => {
     fetchSubscriptionPlan();
@@ -32,7 +33,9 @@ const Pricing = () => {
             <div className="flex flex-col p-6 text-center text-white bg-[#000928]   shadow outline-none">
               <h3 className="mb-2 text-xl">{plan.packagename}</h3>
               <div className="flex justify-center items-baseline my-2">
-                <span className="mr-2 text-2xl font-semibold">${plan.price}</span>
+                <span className="mr-2 text-2xl font-semibold"> {countryCode === "91"
+                  ? `₹${plan.inr}`
+                  : `$${plan.price}`}</span>
                 <span className="text-gray-500 dark:text-gray-400">/month</span>
               </div>
               <ul role="list" className="mb-8 space-y-1 text-left">
@@ -67,7 +70,8 @@ const Pricing = () => {
                 onClick={() => {
                   navigate("/payment", {
                     state: {
-                      amount: plan.price,
+                      usd: plan.price,
+                      inr:plan.inr,
                       receipt:plan.packagename,
                       course:plan.course,
                       planId:plan.stripeId,

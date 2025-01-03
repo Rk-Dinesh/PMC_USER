@@ -43,7 +43,7 @@ const SignIn = () => {
   };
 
   const handleSendOtp = async (e) => {
-    setProcessing(true)
+    setProcessing(true);
     e.preventDefault();
     const localPhone = phone.slice(countryCode.length);
     const formData = {
@@ -59,10 +59,8 @@ const SignIn = () => {
       }
 
       const responseData = response.data.userId;
-      //console.log(responseData);
 
       localStorage.setItem("user", responseData._id);
-      localStorage.setItem("LoggedIn", true);
       localStorage.setItem("fname", responseData.fname);
       localStorage.setItem("lname", responseData.lname);
       localStorage.setItem("email", responseData.email);
@@ -73,7 +71,6 @@ const SignIn = () => {
       setUpRecaptcha();
       const appVerifier = window.recaptchaVerifier;
       const formattedPhone = phone.startsWith("+") ? phone : "+" + phone;
-      // console.log("Formatted Phone Number:", formattedPhone);
 
       const confirmationResult = await signInWithPhoneNumber(
         auth,
@@ -81,9 +78,9 @@ const SignIn = () => {
         appVerifier
       );
       window.confirmationResult = confirmationResult;
-      // console.log("OTP sent successfully:", confirmationResult);
+
       toast.success("OTP sent successfully!");
-      setProcessing(false)
+      setProcessing(false);
       navigate("/otp");
     } catch (error) {
       console.error("Invalid sign-in process", error);
@@ -92,17 +89,17 @@ const SignIn = () => {
         toast.error(
           "Invalid phone number format. Please enter a valid number."
         );
-        setProcessing(false)
+        setProcessing(false);
       } else if (error.code === "auth/quota-exceeded") {
         toast.error("SMS quota exceeded. Try again later.");
-        setProcessing(false)
+        setProcessing(false);
       } else if (error.code === "auth/billing-not-enabled") {
         toast.error(
           "Billing is not enabled in your Firebase project. Please enable it."
         );
-        setProcessing(false)
+        setProcessing(false);
       } else {
-        setProcessing(false)
+        setProcessing(false);
         toast.error("Invalid sign-in process");
       }
     }
@@ -152,7 +149,15 @@ const SignIn = () => {
                 type="submit"
                 className="text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-2.5"
               >
-                 {processing ? <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Verifying....</p></span> : "Continue" }
+                {processing ? (
+                  <span className="flex justify-center gap-3">
+                    {" "}
+                    <AiOutlineLoading className="h-6 w-6 animate-spin" />{" "}
+                    <p>Verifying....</p>
+                  </span>
+                ) : (
+                  "Continue"
+                )}
               </button>
             </div>
           </div>

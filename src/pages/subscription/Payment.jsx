@@ -29,34 +29,14 @@ const Payment = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [conversionrate, setConversionrate] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
+  const countryCode = localStorage.getItem("countryCode");
   const location = useLocation();
-  const amount = location?.state?.amount;
+  const usd = location?.state?.usd;
+  const inr = location?.state?.inr;
   const receipt = location?.state?.receipt;
   const course = location?.state?.course;
   const planId = location?.state?.planId;
   const tax = location?.state?.tax;
-
-  useEffect(() => {
-    async function convertCurrency(amount, from, to) {
-      const API_KEY = "8ae590e70d4cf6c51b57bbae";
-      const url = `https://v6.exchangerate-api.com/v6/${API_KEY}/pair/${from}/${to}/${amount}`;
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.result === "success") {
-         // console.log("valid", data.conversion_result);
-          setConversionrate(data.conversion_result);
-        } else {
-          console.error("Error fetching exchange rates:", data.error);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    }
-    convertCurrency(amount, "USD", "INR");
-  }, []);
 
   const {
     register,
@@ -86,11 +66,10 @@ const Payment = () => {
     try {
       const postURL = API + "/api/stripepayment";
       const res = await axios.post(postURL, dataToSend);
-      console.log(res.data.url);
       localStorage.setItem("stripe", res.data.id);
       localStorage.setItem("method", "stripe");
       localStorage.setItem("plan", receipt);
-      localStorage.setItem("amount", amount);
+      localStorage.setItem("amount", usd);
       localStorage.setItem("cousecount", course);
       localStorage.setItem("tax", tax);
       window.location.href = res.data.url;
@@ -115,9 +94,10 @@ const Payment = () => {
   const startRazorpay = async (data) => {
     await loadRazorpayScript();
     const taxRate = tax / 100;
-    const taxAmount = conversionrate * taxRate;
-    const totalWithTax = conversionrate+ taxAmount; 
-    const rupees = 1*100
+    const taxAmount = inr * taxRate;
+    const totalWithTax = Math.round(inr + taxAmount);    
+    const rupees = totalWithTax * 100;
+
     const dataToSend = {
       amount: rupees,
       currency: "INR",
@@ -127,18 +107,16 @@ const Payment = () => {
     try {
       const postURL = API + "/order";
       const res = await axios.post(postURL, dataToSend);
-
       const order = res.data;
-
       localStorage.setItem("razorpay", order.id);
       localStorage.setItem("method", "razorpay");
       localStorage.setItem("plan", receipt);
-      localStorage.setItem("amount", conversionrate);
+      localStorage.setItem("amount", inr);
       localStorage.setItem("coursecount", course);
       localStorage.setItem("tax", tax);
       const options = {
-        key: "rzp_live_PwFLUg2b6qe1uU",
-        amount: amount,
+        key: "rzp_test_GoakhwZlWlhSI2",
+        amount: rupees,
         currency: "INR",
         name: "PickMyCourse",
         description: "PickMyCourse Subscription",
@@ -163,8 +141,7 @@ const Payment = () => {
             );
             const jsonRes = validateRes.data;
             localStorage.setItem("type", localStorage.getItem("plan"));
-            console.log(jsonRes);
-            localStorage.setItem('subscription',jsonRes.paymentId)
+            localStorage.setItem("subscription", jsonRes.paymentId);
             navigate("/success");
           } catch (validateError) {
             console.error("Validation error:", validateError);
@@ -255,9 +232,7 @@ const Payment = () => {
                 {...register("country")}
                 onChange={(e) => setSelectedCountry(e.target.value)}
               >
-                <option value="" >
-                  Select Country
-                </option>
+                <option value="">Select Country</option>
                 {options.map((country) => (
                   <option key={country.value} value={country.value}>
                     {country.label}
@@ -273,23 +248,23 @@ const Payment = () => {
             </p>
 
             <div className="flex justify-center my-3">
-            {selectedCountry === "IN" ? (
-              <button
-                className="text-sm bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 my-2"
-                type="submit"
-                onClick={() => setPaymentMethod("razorpay")}
-              >
-                Razorpay (For Indian Pay)
-              </button>
-            ) : selectedCountry ? (
-              <button
-                className="text-sm bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 my-2"
-                type="submit"
-                onClick={() => setPaymentMethod("stripe")}
-              >
-                Stripe (For International Pay)
-              </button>
-            ) : null}
+              {countryCode === "91" ? (
+                <button
+                  className="text-sm bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 my-2"
+                  type="submit"
+                  onClick={() => setPaymentMethod("razorpay")}
+                >
+                  Razorpay (For Indian Pay)
+                </button>
+              ) : (
+                <button
+                  className="text-sm bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2.5 my-2"
+                  type="submit"
+                  onClick={() => setPaymentMethod("stripe")}
+                >
+                  Stripe (For International Pay)
+                </button>
+              )}
             </div>
           </div>
         </form>

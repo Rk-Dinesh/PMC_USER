@@ -16,7 +16,6 @@ const Subscription = () => {
       try {
         const response = await axios.get(postURL);
         setActiveplans(response.data.sub);
-        console.log(response.data.sub);
       } catch (error) {
         console.error("Error fetching subscriptions:", error);
       }
@@ -101,7 +100,7 @@ const Subscription = () => {
         </div>
       </div>
       <hr className="my-2" />
-      {filteredPlans.map((plan, index) => (
+      {filteredPlans.reverse().map((plan, index) => (
         <>
           <div className="flex justify-between mx-2 flex-wrap" key={index}>
             <div className="flex flex-col gap-0 .5">

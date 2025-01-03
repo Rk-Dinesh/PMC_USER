@@ -42,15 +42,13 @@ const OTP = () => {
   };
 
   const setUpRecaptcha = () => {
-    
     window.recaptchaVerifier = new RecaptchaVerifier(
       auth,
       "recaptcha-container",
       {
         size: "invisible",
         callback: (response) => {
-         console.log("reCAPTCHA verified");
-
+          console.log("reCAPTCHA verified");
         },
       }
     );
@@ -64,8 +62,6 @@ const OTP = () => {
 
     const phone = localStorage.getItem("phone");
     const countryCode = localStorage.getItem("countryCode");
-   // console.log(phone);
-   // console.log(countryCode);
 
     if (!phone || !countryCode) {
       toast.error("Unable to send OTP. Please try again later.");
@@ -73,12 +69,9 @@ const OTP = () => {
     }
 
     try {
-      console.log("intialize");
-
       setUpRecaptcha();
       const appVerifier = window.recaptchaVerifier;
       const formattedPhone = `+${countryCode}${phone}`;
-      console.log(formattedPhone, "phone");
 
       const confirmationResult = await signInWithPhoneNumber(
         auth,
@@ -115,7 +108,7 @@ const OTP = () => {
   }, [timer]);
 
   const onOTPVerify = async (e) => {
-    setProcessing(true)
+    setProcessing(true);
     e.preventDefault();
     const otp =
       formData.otp1 +
@@ -133,14 +126,14 @@ const OTP = () => {
       await confirmationResult.confirm(otp);
       localStorage.setItem("isLoggedIn", true);
       toast.success("OTP Verified & LoggedIn.");
-      setProcessing(false)
       navigate("/dashboard");
+      setProcessing(false);
     } catch (err) {
       console.error("Error verifying OTP:", err);
       toast.error("Invalid OTP. Please try again.");
       navigate("/");
       localStorage.clear();
-      setProcessing(false)
+      setProcessing(false);
     }
   };
 
@@ -192,7 +185,15 @@ const OTP = () => {
               className="text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5"
               type="submit"
             >
-               {processing ? <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Verifying....</p></span> : "Verify" }
+              {processing ? (
+                <span className="flex justify-center gap-3">
+                  {" "}
+                  <AiOutlineLoading className="h-6 w-6 animate-spin" />{" "}
+                  <p>Verifying....</p>
+                </span>
+              ) : (
+                "Verify"
+              )}
             </button>
           </div>
           <p className="text-sm mt-3 text-center font-extralight">

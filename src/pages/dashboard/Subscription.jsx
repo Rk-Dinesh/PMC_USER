@@ -16,7 +16,6 @@ const Subscription = () => {
       try {
         const response = await axios.get(postURL);
         setActiveplans(response.data.sub);
-        console.log(response.data.sub);
       } catch (error) {
         console.error("Error fetching subscriptions:", error);
       }

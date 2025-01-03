@@ -40,7 +40,6 @@ const GenerateCourse = () => {
     try {
       const response = await axios.get(postURL);
       const responseData = response.data;
-      // console.log(responseData[0].count);
       setCount(responseData[0].count);
     } catch (error) {}
   }
@@ -49,11 +48,9 @@ const GenerateCourse = () => {
     const postURL = API + `/api/courses?userId=${user}`;
     try {
       const response = await axios.get(postURL);
-      // console.log(response.data);
       setCourses(response.data);
     } catch (error) {
       console.log(error);
-      
     }
   }
 
@@ -65,7 +62,6 @@ const GenerateCourse = () => {
     const postURL = API + "/api/updatecount";
     try {
       const response = await axios.post(postURL, dataToSend);
-      // console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -103,7 +99,6 @@ const GenerateCourse = () => {
     event.preventDefault();
     const subtopics = [];
     setProcessing(true);
-    
 
     formValues.forEach((subtopic) => {
       subtopics.push(subtopic.sub);
@@ -122,8 +117,6 @@ const GenerateCourse = () => {
       toast.error("Please fill in all required fields");
       return;
     }
-
-    
 
     const prompt = `Generate a list of Strict ${selectedValue} topics and any number sub topic for each topic for main title ${mainTopic.toLowerCase()}, everything in single line. Those ${selectedValue} topics should Strictly include these topics :- ${subtopics
       .join(", ")
@@ -169,8 +162,6 @@ const GenerateCourse = () => {
    }
   ]
   }`;
-    
-    
 
     sendPrompt(prompt, mainTopic, selectedType);
   };
@@ -179,18 +170,16 @@ const GenerateCourse = () => {
     const dataToSend = {
       prompt: prompt,
     };
-    
-    
-    try {   
+
+    try {
       const res = await axios.post(`${API}/api/prompt`, dataToSend);
-      const generatedText = res.data.generatedText; 
+      const generatedText = res.data.generatedText;
       const cleanedJsonString = generatedText
         .replace(/```json/g, "")
         .replace(/```/g, "");
       try {
         const parsedJson = JSON.parse(cleanedJsonString);
-        
-        
+
         setProcessing(false);
 
         // Check the type of subscription and the end date before navigating
@@ -211,7 +200,7 @@ const GenerateCourse = () => {
               "Your monthly plan has reached the limit. Please upgrade the Monthly plan for further access"
             );
           }
-        } else{
+        } else {
           navigate("/topics", {
             state: {
               jsonData: parsedJson,
@@ -411,7 +400,15 @@ const GenerateCourse = () => {
                 className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-1/2 md:w-3/4 w-full py-2.5 my-5 `}
                 type="submit"
               >
-                {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Generating ....</p></span> : "Generate Course" }
+                {processing ? (
+                  <span className="flex justify-center gap-3">
+                    {" "}
+                    <AiOutlineLoading className="h-6 w-6 animate-spin" />{" "}
+                    <p>Generating ....</p>
+                  </span>
+                ) : (
+                  "Generate Course"
+                )}
               </button>
             </div>
           </div>

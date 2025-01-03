@@ -28,7 +28,7 @@ const Success = () => {
       });
       const formData = {
         subscriberId: localStorage.getItem("stripe"),
-        subscription:jsonData.customer.id || 'id not found',
+        subscription: jsonData.customer.id || "id not found",
         user: localStorage.getItem("user"),
         plan: localStorage.getItem("plan"),
         method: "stripe",
@@ -38,23 +38,18 @@ const Success = () => {
         phone: localStorage.getItem("phone"),
         amount: localStorage.getItem("amount"),
         course: localStorage.getItem("coursecount"),
-        tax:localStorage.getItem("tax")
+        tax: localStorage.getItem("tax"),
       };
       const response = await axios.post(
         `${API}/api/usersubscription`,
         formData
       );
-      console.log(response.data);
       if (response.status === 200) {
         const dataToSend = {
           user: localStorage.getItem("user"),
           count: localStorage.getItem("coursecount"),
         };
-        const response = await axios.post(
-          `${API}/api/countplan`,
-          dataToSend
-        );
-        console.log(response.data);
+        const response = await axios.post(`${API}/api/countplan`, dataToSend);
 
         localStorage.removeItem("amount");
         localStorage.removeItem("coursecount");
@@ -67,7 +62,7 @@ const Success = () => {
         if (localStorage.getItem("method") === "razorpay") {
           const formData = {
             subscriberId: localStorage.getItem("razorpay"),
-            subscription:localStorage.getItem("subscription"),
+            subscription: localStorage.getItem("subscription"),
             user: localStorage.getItem("user"),
             plan: localStorage.getItem("plan"),
             method: "razorpay",
@@ -77,24 +72,22 @@ const Success = () => {
             phone: localStorage.getItem("phone"),
             amount: localStorage.getItem("amount"),
             course: localStorage.getItem("coursecount"),
-            tax:localStorage.getItem("tax")
+            tax: localStorage.getItem("tax"),
           };
           const response = await axios.post(
             `${API}/api/usersubscription`,
             formData
           );
-          console.log(response.data,'sucsess');
           if (response.status === 200) {
             const dataToSend = {
-                user: localStorage.getItem("user"),
-                count: localStorage.getItem("coursecount"),
-              };
-              const response = await axios.post(
-                `${API}/api/countplan`,
-                dataToSend
-              );
-              //console.log(response.data);
-      
+              user: localStorage.getItem("user"),
+              count: localStorage.getItem("coursecount"),
+            };
+            const response = await axios.post(
+              `${API}/api/countplan`,
+              dataToSend
+            );
+
             localStorage.removeItem("amount");
             localStorage.removeItem("coursecount");
             localStorage.removeItem("razorpay");

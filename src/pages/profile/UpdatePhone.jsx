@@ -34,7 +34,6 @@ const UpdatePhone = ({ ClosePhoneModal }) => {
     const formData = {
       ...data,
     };
-    console.log(formData);
 
     try {
       const response = await axios.post(
