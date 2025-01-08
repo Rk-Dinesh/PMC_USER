@@ -2,12 +2,13 @@ import React from "react";
 import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
 
-const LogOut = ({ handleCloseModal }) => {
-  const navigate = useNavigate()
+const LogOut = ({ handleCloseModal, setIsLoggedIn }) => {
+  const navigate = useNavigate();
   const redirect = () => {
+    setIsLoggedIn(false);
     localStorage.clear()
-    navigate('')
-  }
+    navigate("");
+  };
   return (
     <Modal>
       <div className="w-[550px] min-h-[330px] my-4 mx-8 font-extralight font-poppins text-white">

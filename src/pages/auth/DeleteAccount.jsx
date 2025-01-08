@@ -4,7 +4,7 @@ import axios from "axios";
 import { API } from "../../Host";
 import { useNavigate } from "react-router-dom";
 
-const DeleteAccount = ({ handleDeleteCloseModal }) => {
+const DeleteAccount = ({ handleDeleteCloseModal,setIsLoggedIn }) => {
   const [Loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -14,7 +14,8 @@ const DeleteAccount = ({ handleDeleteCloseModal }) => {
       const id = localStorage.getItem("user");
       const response = await axios.delete(`${API}/api/deleteuser?id=${id}`);
       setLoading(false);
-      navigate("/");
+      setIsLoggedIn(false)
+      navigate("/signup");
       localStorage.clear();
     } catch (error) {
       //Do nothing

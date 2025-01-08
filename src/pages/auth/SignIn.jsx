@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../../assets/PMC_Logo.png";
 import { useNavigate } from "react-router-dom";
 import cover from "../../assets/bgimage.png";
@@ -17,6 +17,15 @@ const SignIn = () => {
   const [countryCode, setCountryCode] = useState("");
   const [processing, setProcessing] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      if (window.recaptchaVerifier) {
+        window.recaptchaVerifier.clear(); 
+        delete window.recaptchaVerifier;
+      }
+    };
+  }, []);
+
   const handlePhoneChange = (value, data) => {
     setPhone(value);
     setCountryCode(data.dialCode);
@@ -25,6 +34,7 @@ const SignIn = () => {
   const redirectSignUp = () => {
     navigate("/signup");
   };
+
 
   const setUpRecaptcha = () => {
     if (window.recaptchaVerifier) {
@@ -68,6 +78,8 @@ const SignIn = () => {
       localStorage.setItem("type", responseData.type);
       localStorage.setItem("countryCode", countryCode);
 
+      
+     
       setUpRecaptcha();
       const appVerifier = window.recaptchaVerifier;
       const formattedPhone = phone.startsWith("+") ? phone : "+" + phone;

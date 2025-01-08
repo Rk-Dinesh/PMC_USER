@@ -18,7 +18,7 @@ import DeleteAccount from "../auth/DeleteAccount";
 import axios from "axios";
 import { API, formatDate1 } from "../../Host";
 
-const Layout = () => {
+const Layout = ({setIsLoggedIn}) => {
   const location = useLocation();
   const fname = localStorage.getItem("fname");
   const lname = localStorage.getItem("lname");
@@ -166,9 +166,9 @@ const Layout = () => {
           <span className="text-red-700">&#x2764;</span> by SeenIT Pty Ltd
         </p>
       </footer> */}
-      {isLogOutModalOpen && <LogOut handleCloseModal={handleCloseModal} />}
+      {isLogOutModalOpen && <LogOut handleCloseModal={handleCloseModal} setIsLoggedIn={setIsLoggedIn}/>}
       {isDeleteModalOpen && (
-        <DeleteAccount handleDeleteCloseModal={handleDeleteCloseModal} />
+        <DeleteAccount handleDeleteCloseModal={handleDeleteCloseModal} setIsLoggedIn={setIsLoggedIn}/>
       )}
     </div>
   );

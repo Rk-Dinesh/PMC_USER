@@ -7,7 +7,7 @@ import { auth } from "../../firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { AiOutlineLoading } from "react-icons/ai";
 
-const OTP = () => {
+const OTP = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
   const [processing, setProcessing] = useState(false);
 
@@ -125,8 +125,9 @@ const OTP = () => {
       }
       await confirmationResult.confirm(otp);
       localStorage.setItem("isLoggedIn", true);
-      toast.success("OTP Verified & LoggedIn.");
+      setIsLoggedIn(true);
       navigate("/dashboard");
+      toast.success("OTP Verified & LoggedIn.");
       setProcessing(false);
     } catch (err) {
       console.error("Error verifying OTP:", err);
