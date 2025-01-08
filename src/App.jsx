@@ -34,57 +34,51 @@ const Success = lazy(() => import("./pages/subscription/Success"));
 const Failed = lazy(() => import("./pages/subscription/Failed"));
 
 function App() {
-
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
   );
-
-  // Sync localStorage changes with React state
-  // useEffect(() => {
-  //   const handleStorageChange = () => {
-  //     setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
-  //   };
-
-  //   window.addEventListener("storage", handleStorageChange);
-  //   return () => {
-  //     window.removeEventListener("storage", handleStorageChange);
-  //   };
-  // }, []);
 
   return (
     <>
       <BrowserRouter future={{ v7_relativeSplatPath: true }}>
         <Routes>
-          <Route path="" element={isLoggedIn ? <Navigate to="/dashboard" /> : <SignIn />} />
+          <Route
+            path=""
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <SignIn />}
+          />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/otp" element={<OTP setIsLoggedIn={setIsLoggedIn}/>} />
+          <Route path="/otp" element={<OTP setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/content" element={<Content />} />
           <Route
             path="/"
-            element={ localStorage.getItem("isLoggedIn") === "true" ? <Layout setIsLoggedIn={setIsLoggedIn}/> : <Navigate to="" />}
+            element={
+              localStorage.getItem("isLoggedIn") === "true" ? (
+                <Layout setIsLoggedIn={setIsLoggedIn} />
+              ) : (
+                <Navigate to="" />
+              )
+            }
           >
-           
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/course" element={<MyCourses />} />
-              <Route path="/create" element={<GenerateCourse />} />
-              <Route path="/topics" element={<ListTopics />} />
-              <Route path="/support" element={<HelpSupport />} />
-              <Route path="/newticket" element={<NewTicket />} />
-              <Route path="/viewticket" element={<ViewTicket />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/notify" element={<Notification />} />
-              <Route path="/terms" element={<TermsService />} />
-              <Route path="/policy" element={<PrivacyPolicy />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/certificate" element={<Certificate />} />
-              <Route path="/viewcertificate" element={<ViewCertificate />} />
-              <Route path="/subscription" element={<Subscription />} />
-              <Route path="/invoice" element={<Invoice />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/success" element={<Success />} />
-              <Route path="/failed" element={<Failed />} />
-           
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/course" element={<MyCourses />} />
+            <Route path="/create" element={<GenerateCourse />} />
+            <Route path="/topics" element={<ListTopics />} />
+            <Route path="/support" element={<HelpSupport />} />
+            <Route path="/newticket" element={<NewTicket />} />
+            <Route path="/viewticket" element={<ViewTicket />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/notify" element={<Notification />} />
+            <Route path="/terms" element={<TermsService />} />
+            <Route path="/policy" element={<PrivacyPolicy />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/certificate" element={<Certificate />} />
+            <Route path="/viewcertificate" element={<ViewCertificate />} />
+            <Route path="/subscription" element={<Subscription />} />
+            <Route path="/invoice" element={<Invoice />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/success" element={<Success />} />
+            <Route path="/failed" element={<Failed />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

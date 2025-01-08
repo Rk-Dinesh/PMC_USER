@@ -259,7 +259,7 @@ const ActiveThisMonthCount = courses.filter((course) => {
             </button>
           </div>
         ))}
-      </div>
+      </div>     
     </div>
   );
 };
