@@ -7,6 +7,7 @@ import axios from "axios";
 import { API } from "../../Host";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const ticketSchema = yup.object().shape({
   category: yup
@@ -32,6 +33,7 @@ const NewTicket = () => {
   const [category, setCategory] = useState([]);
   const [priority, setPriority] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [processing, setProcessing] = useState(false);
 
   const {
     register,
@@ -57,9 +59,11 @@ const NewTicket = () => {
     };
 
     try {
+      setProcessing(true)
       const response = await axios.post(`${API}/api/ticket`, formData);
       if (response.status === 200) {
         toast.success("Ticket Raised");
+        selectedFiles.length > 0 ? setProcessing(true) : setProcessing(false)
         if (selectedFiles.length > 0) {
           const ticketId = response.data.Ticket;
           const uploadData = new FormData();
@@ -78,6 +82,7 @@ const NewTicket = () => {
 
           if (uploadResponse.status === 200) {
             toast.success("Files uploaded successfully");
+            setProcessing(false)
           } else {
             toast.error("Failed to upload files");
           }
@@ -86,10 +91,12 @@ const NewTicket = () => {
         navigate("/support");
       } else {
         toast.error("Failed to raise ticket");
+        setProcessing(false)
       }
     } catch (error) {
       console.log(error);
       toast.error("An error occurred");
+      setProcessing(false)
     }
   };
 
@@ -113,6 +120,10 @@ const NewTicket = () => {
     }
   };
 
+  const openFileDialog = () => {
+    document.getElementById("file-input").click();
+  };
+
   return (
     <div className="font-poppins font-extralight my-5 lg:mx-6 md:mx-6 mx-2">
       <p className="text-center ">Raise Ticket</p>
@@ -125,10 +136,10 @@ const NewTicket = () => {
               </label>
               <div className="relative inline-block lg:w-3/4 md:w-3/4 w-full">
                 <select
-                  className="block w-full text-black px-3 py-2 pr-10 outline-none rounded-lg "
+                  className="block w-full text-black px-3 py-2 pr-10 outline-none rounded-lg cursor-pointer "
                   {...register("category")}
                 >
-                  <option value="" disabled>
+                  <option value="" hidden>
                     Select Category
                   </option>
                   {category &&
@@ -174,8 +185,8 @@ const NewTicket = () => {
               <label htmlFor="file-input">
                 Attachments (you can select multiple files)
               </label>
-              <div className="relative my-1 lg:w-3/4 md:w-3/4 w-full">
-                <label className="block bg-white rounded-lg">
+              <div className="relative my-1 lg:w-3/4 md:w-3/4 w-full bg-white rounded-lg">
+                <label className="block ">
                   <span className="sr-only">Choose File</span>
                   <input
                     type="file"
@@ -186,15 +197,17 @@ const NewTicket = () => {
                       setSelectedFiles(Array.from(e.target.files))
                     }
                   />
+                  </label>
                   <button
-                    className="bg-gray-300 text-black px-4 py-2.5 rounded-md"
+                    className="bg-gray-300 text-black px-4 py-1.5 rounded-md"
                     htmlFor="file-input"
+                    onClick={openFileDialog}
                   >
                     Choose Files
                   </button>
-                </label>
+                
                 <span
-                  className="absolute top-1/2 -translate-y-1/2 lg:right-4 md:right-4 right-16 text-normal text-black"
+                  className="absolute top-1/2 -translate-y-1/2 lg:right-4 md:right-4 right-16 text-normal text-black "
                   id="file-name"
                 >
                   {selectedFiles.length > 0
@@ -211,10 +224,10 @@ const NewTicket = () => {
               </label>
               <div className="relative inline-block lg:w-3/4 md:w-3/4 w-full">
                 <select
-                  className="block w-full text-black px-3 py-2 pr-10 outline-none rounded-lg "
+                  className="block w-full text-black px-3 py-2 pr-10 outline-none rounded-lg cursor-pointer "
                   {...register("priority")}
                 >
-                  <option value="" disabled>
+                  <option value="" hidden>
                     Select Priority
                   </option>
                   {priority &&
@@ -232,9 +245,9 @@ const NewTicket = () => {
             </div>
             <div className="block text-center  lg:mr-36 md:mr-36 mx-auto">
               <button
-                className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]   px-6 py-2.5 my-5 `}
+                className={` text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]   px-6 py-2.5 my-5 cursor-pointer `}
               >
-                Raise a Ticket
+                {processing ? <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Creating a Ticket....</p></span> : "Raise a Ticket" }
               </button>
             </div>
           </div>

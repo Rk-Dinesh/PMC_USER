@@ -116,26 +116,20 @@ const SignUp = () => {
             <label htmlFor="phone">
               Phone <span className="text-red-600">*</span>
             </label>
-            {/* <input
-              type="text"
-              placeholder="9999999999"
-              {...register("phone")}
-              className="py-2 px-2  rounded-md text-center  text-black shadow-md outline-none"
-            /> */}
-
+            
             <PhoneInput
-              // country={"in"}
+              country={"in"}
               value={phone}
               onChange={handlePhoneChange}
               className="w-full py-1 text-black font-poppins font-extralight rounded-md shadow-md outline-none bg-white "
               inputStyle={{
                 border: "none",
-                textAlign: "center",
+                textAlign: "",
                 fontSize: "16px",
+                marginLeft: "34px",
               }}
               placeholder="9999999999"
               buttonStyle={{
-                // background: "linear-gradient(to right, #3D03FA, #A71CD2)",
                 width: "70px",
                 borderRadius: "8px",
                 marginLeft:'10px',
@@ -168,8 +162,8 @@ const SignUp = () => {
               <input type="checkbox" name="" id="" className="outline-none " onChange={(e) => setIsCheckboxChecked(e.target.checked)} />
               <p className="text-sm font-extralight">
                 I agree to the{" "}
-                <span className="text-blue-400" onClick={redirectTrems}>Terms of Service</span> &{" "}
-                <span className="text-blue-400"  onClick={redirectprivacy}>Privacy Policy</span>
+                <span className="text-blue-400 cursor-pointer" onClick={redirectTrems}>Terms of Service</span> &{" "}
+                <span className="text-blue-400 cursor-pointer"  onClick={redirectprivacy}>Privacy Policy</span>
               </p>
             </div>
             <div className="flex justify-center my-1">

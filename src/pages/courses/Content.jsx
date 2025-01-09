@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TruncatedText from "../../components/TruncatedText";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
-import {  FaCaretSquareLeft } from "react-icons/fa";
+import { FaCaretSquareLeft } from "react-icons/fa";
 import StyledText from "../../components/StyledText";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ import { FaCheck } from "react-icons/fa";
 import { API } from "../../Host";
 import Headers from "../layout/Headers";
 import robot from "../../assets/robot.png";
+import { motion } from "framer-motion";
 
 const Content = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +31,7 @@ const Content = () => {
   const [newMessage, setNewMessage] = useState("");
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const handleOnClose = () => setIsOpenDrawer(false);
+  const [isAnimationVisible, setIsAnimationVisible] = useState(false);
 
   const CountDoneTopics = () => {
     let doneCount = 0;
@@ -260,6 +262,16 @@ const Content = () => {
       localStorage.setItem("jsonData", JSON.stringify(jsonData));
       CountDoneTopics();
     }
+  }, []);
+
+  useEffect(() => {
+    setIsAnimationVisible(true);
+
+    const timer = setTimeout(() => {
+      setIsAnimationVisible(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleSelect = (topics, sub) => {
@@ -531,9 +543,9 @@ const Content = () => {
     }
   }
 
-  const redirectcourse = () =>{
-    navigate('/course')
-   }
+  const redirectcourse = () => {
+    navigate("/course");
+  };
 
   const renderTopicsAndSubtopics = (topics) => {
     return (
@@ -603,12 +615,34 @@ const Content = () => {
     <>
       <Headers />
       {!mainTopic ? null : (
-        <div className="flex flex-col h-screen  " >
+        <div className="flex flex-col h-screen  ">
+          import {motion} from "framer-motion";
+          {isAnimationVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 100 }}
+          transition={{
+            duration: 1,
+            ease: [0.6, -0.05, 0.01, 0.99],
+          }}
+          className="fixed bottom-36 right-10 z-50"
+        >
+         
+          <div className="relative bg-gradient-to-r from-purple-500 to-blue-500 text-white p-4 rounded-xl shadow-lg w-48 font-poppins border-2">
+            <p className="text-center text-sm font-light leading-relaxed">
+              Hi, I am your AI teacher. <br />
+              You can ask me any doubts you have on this course.
+            </p>
+           
+            <div className="absolute -bottom-2 right-6 h-5 w-5 rotate-45 bg-gradient-to-r from-blue-500 to-blue-500"></div>
+          </div>
+        </motion.div>
+      )}
           <div
             onClick={() => setIsOpenDrawer(true)}
             className="m-5 fixed bottom-8 right-6 z-40  w-32 h-16  text-white  flex justify-center items-center shadow-md "
           >
-            
             <img src={robot} alt="Image" />
           </div>
           <div className="flex flex-row overflow-y-auto mt-12 ">
@@ -625,7 +659,7 @@ const Content = () => {
                   {isComplete ? (
                     <p
                       onClick={finish}
-                      className="mr-3 underline text-black dark:text-white font-normal mx-8"
+                      className="mr-3 underline text-white font-normal mx-8"
                     >
                       Download Certificate
                     </p>
@@ -670,46 +704,64 @@ const Content = () => {
               </div>
             </div>
           </div>
-          <div className={`fixed inset-0 z-50 ${isOpenDrawer ? 'block' : 'hidden'}`}>
-          <div className='bg-[#200098] h-full lg:w-96 md:w-80 w-72 right-0 absolute'>
-            <div className="flex justify-end items-center p-2">
-             
-              <button onClick={() => setIsOpenDrawer(false)} className="text-white">
-                <IoClose size={24} />
-              </button>
-            </div>
-            <div className='overflow-y-auto' style={{ height: 'calc(100% - 200px)' }}>
-              {messages.map((msg, index) => (
-                <div key={index} className={`flex font-poppins font-extralight text-base ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`rounded-lg  p-1 m-2 ${msg.sender === 'user' ? 'text-center text-white' : 'text-center text-white'}`}>
-                    <div dangerouslySetInnerHTML={{ __html: msg.text }} />
+          <div
+            className={`fixed inset-0 z-50 ${
+              isOpenDrawer ? "block" : "hidden"
+            }`}
+          >
+            <div className="bg-[#200098] h-full lg:w-96 md:w-80 w-72 right-0 absolute">
+              <div className="flex justify-end items-center p-2">
+                <button
+                  onClick={() => setIsOpenDrawer(false)}
+                  className="text-white"
+                >
+                  <IoClose size={24} />
+                </button>
+              </div>
+              <div
+                className="overflow-y-auto"
+                style={{ height: "calc(100% - 200px)" }}
+              >
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`flex font-poppins font-extralight text-base ${
+                      msg.sender === "user" ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    <div
+                      className={`rounded-lg  p-1 m-2 ${
+                        msg.sender === "user"
+                          ? "text-center text-white"
+                          : "text-center text-white"
+                      }`}
+                    >
+                      <div dangerouslySetInnerHTML={{ __html: msg.text }} />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className="mx-6 mt-2">
-              <input
-                value={newMessage}
-                placeholder='Ask Something...'
-                onChange={(e) => setNewMessage(e.target.value)}
-                className='w-full border border-gray-300 rounded-md outline-none py-5 text-center  '
-                type="text"
-              />
+                ))}
+              </div>
+              <div className="mx-6 mt-2">
+                <input
+                  value={newMessage}
+                  placeholder="Ask Something..."
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  className="w-full border border-gray-300 rounded-md outline-none py-5 text-center  "
+                  type="text"
+                />
               </div>
               <div className="flex justify-center">
-              <button
-                className={`text-white text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 my-5 `}
-                type="submit"
-                onClick={sendMessage} 
-              >
-                Submit
-              </button>
+                <button
+                  className={`text-white text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2.5 my-5 `}
+                  type="submit"
+                  onClick={sendMessage}
+                >
+                  Submit
+                </button>
+              </div>
             </div>
-        
-            
           </div>
         </div>
-      </div>
       )}
     </>
   );

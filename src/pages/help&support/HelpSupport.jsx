@@ -20,8 +20,9 @@ const HelpSupport = () => {
   const fetchTicket = async () => {
     try {
       const response = await axios.get(`${API}/api/getticket`);
-      const responseData = await response.data.ticket;      
-      setTicket(responseData);
+      const responseData = await response.data.ticket;
+      const reverseData = responseData.reverse()      
+      setTicket(reverseData);
     } catch (error) {
       console.log(error);
     }

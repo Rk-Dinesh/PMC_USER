@@ -29,7 +29,7 @@ const TermsService = () => {
         {policy?.terms !== "" ? (
           <StyledText text={policy.terms} />
         ) : (
-          <p className="text-center mt-4">No Terms & Conditions Found</p>
+          <p className="text-center mt-8">No Terms & Conditions Found</p>
         )}
       </div>
     </div>

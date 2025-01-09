@@ -75,7 +75,7 @@ const Subscription = () => {
         ) : (
           <>
             <p className="text-2xl mx-5">Active Subscription</p>
-            <p className="text-normal mx-5">Subscription : Free</p>
+            <p className="text-normal mx-5">Subscription : {localStorage.getItem('type')}</p>
             <p className="text-normal mx-5 mb-2">No Of Courses : 1</p>
             <button
               className={`text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-full py-2`}

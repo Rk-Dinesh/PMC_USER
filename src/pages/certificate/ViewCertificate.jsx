@@ -10,7 +10,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 
 const ViewCertificate = () => {
   const [processing, setProcessing] = useState(false);
-  const userName = localStorage.getItem('fname');
+  const userName = localStorage.getItem('fname') + " " + localStorage.getItem('lname') ;
   const { state } = useLocation();
   const navigate = useNavigate();
   const { courseTitle, end } = state || {};

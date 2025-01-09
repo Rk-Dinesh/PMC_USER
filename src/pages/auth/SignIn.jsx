@@ -173,10 +173,10 @@ const SignIn = () => {
               </button>
             </div>
           </div>
-          <p className="text-center text-lg py-2" onClick={redirectSignUp}>
+          <p className="text-center text-lg my-2 cursor-pointer" onClick={redirectSignUp}>
             Don't have an account?
           </p>
-          <p className="text-center text-lg pb-16" onClick={redirectSignUp}>
+          <p className="text-center text-lg mb-16 cursor-pointer" onClick={redirectSignUp}>
             Create an account
           </p>
           <p className="text-sm mt-10 text-center font-extralight">

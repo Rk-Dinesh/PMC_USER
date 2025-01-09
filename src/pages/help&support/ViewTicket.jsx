@@ -31,11 +31,14 @@ const Modal = ({ isOpen, onClose, imageUrl }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className=" relative w-[550px]  h-[350px]">
-        <p onClick={onClose} className=" text-red-500 font-extrabold text-2xl absolute right-2 ">x</p>
+        
         <img src={imageUrl} alt="Modal" className="w-full h-full"  ref={pdfRef}/>
-        <div className="flex justify-center my-3 ">
-          <button  className={`text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-40 py-2.5 ${processing ? 'opacity-15' : ''}`}  disabled={processing} onClick={handleDownload}>
-          {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Downloading ....</p></span> : "Download" }
+        <div className="flex justify-center my-3 gap-3 ">
+          <button  className={`text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 px-3 py-2 ${processing ? 'opacity-15' : ''}`}  disabled={processing} onClick={handleDownload}>
+          {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Downloading...</p></span> : "Download" }
+          </button>
+          <button  className={`text-base text-black bg-white w-36 py-2 `} onClick={onClose}>
+          close
           </button>
     </div>
       </div>

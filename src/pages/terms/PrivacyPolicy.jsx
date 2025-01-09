@@ -29,7 +29,7 @@ const PrivacyPolicy = () => {
         {policy?.privacy !== "" ? (
           <StyledText text={policy.privacy} />
         ) : (
-          <p className="text-center mt-4">No Privacy Policy Found</p>
+          <p className="text-center mt-8">No Privacy Policy Found</p>
         )}
       </div>
     </div>
