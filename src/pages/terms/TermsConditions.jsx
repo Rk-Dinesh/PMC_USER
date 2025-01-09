@@ -30,7 +30,7 @@ const TermsConditions = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white h-screen">
+    <div className="bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white h-screen overflow-auto">
       <div className="flex justify-between items-center mx-4">
         <img src={Logo} alt="Logo" className="w-1/4" />
         <button className="text-xl bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 h-14 " onClick={redirectSignUp}>
@@ -43,7 +43,7 @@ const TermsConditions = () => {
         {policy?.terms  !== '' ? (
           <StyledText text={policy.terms} />
         ) : (
-          <p className="text-center text-xl mt-8 text-white">No Terms & Conditions Found</p>
+          <p className="text-center text-xl mt-8 text-white ">No Terms & Conditions Found</p>
         )}
       </div>
     </div>

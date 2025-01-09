@@ -31,7 +31,7 @@ const PrivacyPolicyplus = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white  h-screen">
+    <div className="bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white  h-screen overflow-auto">
       <div className="flex justify-between items-center mx-4">
         <img src={Logo} alt="Logo" className="w-1/4" />
         <button
