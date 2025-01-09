@@ -8,6 +8,8 @@ import SignIn from "./pages/auth/SignIn";
 import OTP from "./pages/auth/OTP";
 import NotFound from "./404";
 import Content from "./pages/courses/Content";
+import TermsConditions from "./pages/terms/TermsConditions";
+import PrivacyPolicyplus from "./pages/terms/PrivacyPolicyplus";
 
 // Lazy load the components
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
@@ -49,6 +51,8 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/otp" element={<OTP setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/content" element={<Content />} />
+          <Route path="/termsplus" element={<TermsConditions />} />
+          <Route path="/policyplus" element={<PrivacyPolicyplus />} />
           <Route
             path="/"
             element={

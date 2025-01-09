@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { API } from "../../Host";
 import axios from "axios";
 import StyledText from "../../components/StyledText";
+import { useNavigate } from "react-router-dom";
+import Logo from "../../assets/PMC_Logo.png";
 
-const PrivacyPolicy = () => {
+
+const PrivacyPolicyplus = () => {
   const [policy, setPolicy] = useState({});
+   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPolicy = async () => {
@@ -21,10 +25,24 @@ const PrivacyPolicy = () => {
 
     fetchPolicy();
   }, []);
+
+  const redirectSignUp = () => {
+    navigate("/signup");
+  };
+
   return (
     <div className="bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white">
+      <div className="flex justify-between items-center mx-4">
+        <img src={Logo} alt="Logo" className="w-1/4" />
+        <button
+          className="text-xl bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 h-14 "
+          onClick={redirectSignUp}
+        >
+          SignUp
+        </button>
+      </div>
       <div className="mx-5 py-6 font-poppins font-extralight">
-        <p className="text-lg">Privacy Policy</p>
+        <p className="text-2xl font-semibold">Privacy Policy</p>
         <hr className="my-2 " />
         {policy ? (
           <StyledText text={policy.privacy} />
@@ -36,4 +54,4 @@ const PrivacyPolicy = () => {
   );
 };
 
-export default PrivacyPolicy;
+export default PrivacyPolicyplus;

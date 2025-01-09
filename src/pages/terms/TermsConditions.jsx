@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import StyledText from "../../components/StyledText";
 import { API } from "../../Host";
 import axios from "axios";
+import Logo from "../../assets/PMC_Logo.png";
+import { useNavigate } from "react-router-dom";
 
-const TermsService = () => {
+const TermsConditions = () => {
   const [policy, setPolicy] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPolicy = async () => {
@@ -21,10 +24,21 @@ const TermsService = () => {
 
     fetchPolicy();
   }, []);
+
+  const redirectSignUp = () => {
+    navigate("/signup");
+  };
+  
   return (
     <div className="bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white">
+      <div className="flex justify-between items-center mx-4">
+        <img src={Logo} alt="Logo" className="w-1/4" />
+        <button className="text-xl bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 h-14 " onClick={redirectSignUp}>
+          SignUp
+        </button>
+      </div>
       <div className="mx-5 py-3 font-poppins font-extralight">
-        <p className="text-lg">Terms of Service</p>
+        <p className="text-2xl font-semibold">Terms of Service</p>
         <hr className="my-2 " />
         {policy ? (
           <StyledText text={policy.terms} />
@@ -36,4 +50,4 @@ const TermsService = () => {
   );
 };
 
-export default TermsService;
+export default TermsConditions;

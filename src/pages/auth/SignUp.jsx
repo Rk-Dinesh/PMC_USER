@@ -26,6 +26,7 @@ const SignUp = () => {
   const [phone, setPhone] = useState("");
   const [countryCode, setCountryCode] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
   const handlePhoneChange = (value, data) => {
     setPhone(value);
@@ -41,7 +42,11 @@ const SignUp = () => {
   });
 
   const onSubmit = async (data) => {
-    setProcessing(true)
+    if (!isCheckboxChecked) {
+      toast.error("Please accept the terms and privacy policies to continue.");
+      return;
+    }
+    
     const localPhone = phone.slice(countryCode.length);
     const formData = {
       ...data,
@@ -50,6 +55,7 @@ const SignUp = () => {
       company: "seenIt",
     };
     try {
+      setProcessing(true)
       const response = await axios.post(`${API}/api/usersignup`, formData);
       if (response.status === 200) {
         toast.success("Account Created Successfully");
@@ -62,8 +68,18 @@ const SignUp = () => {
       }
     } catch (error) {
       console.log(error);
+      toast.error("User Already exists");
+      setProcessing(false)
     }
   };
+
+  const redirectTrems = () => {
+    navigate('/termsplus')
+  }
+
+  const redirectprivacy = () => {
+    navigate('/policyplus')
+  }
 
   return (
     <div className="bg-[#300080] h-screen flex justify-center items-center font-poppins text-white  ">
@@ -149,11 +165,11 @@ const SignUp = () => {
             />
             <p className="text-center text-red-300">{errors.dob?.message}</p>
             <div className="flex gap-2 items-center my-4">
-              <input type="checkbox" name="" id="" className="outline-none " />
+              <input type="checkbox" name="" id="" className="outline-none " onChange={(e) => setIsCheckboxChecked(e.target.checked)} />
               <p className="text-sm font-extralight">
                 I agree to the{" "}
-                <span className="text-blue-400">Terms of Service</span> &{" "}
-                <span className="text-blue-400">Privacy Policy</span>
+                <span className="text-blue-400" onClick={redirectTrems}>Terms of Service</span> &{" "}
+                <span className="text-blue-400"  onClick={redirectprivacy}>Privacy Policy</span>
               </p>
             </div>
             <div className="flex justify-center my-1">
