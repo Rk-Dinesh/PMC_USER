@@ -31,7 +31,7 @@ const PrivacyPolicyplus = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white">
+    <div className="bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white  h-screen">
       <div className="flex justify-between items-center mx-4">
         <img src={Logo} alt="Logo" className="w-1/4" />
         <button
@@ -44,10 +44,10 @@ const PrivacyPolicyplus = () => {
       <div className="mx-5 py-6 font-poppins font-extralight">
         <p className="text-2xl font-semibold">Privacy Policy</p>
         <hr className="my-2 " />
-        {policy ? (
+        {policy?.privacy !== "" ? (
           <StyledText text={policy.privacy} />
         ) : (
-          <p className="text-center mt-4">No Privacy Policy Found</p>
+          <p className="text-center mt-8 text-white text-xl">No Privacy Policy Found</p>
         )}
       </div>
     </div>

@@ -26,7 +26,7 @@ const TermsService = () => {
       <div className="mx-5 py-3 font-poppins font-extralight">
         <p className="text-lg">Terms of Service</p>
         <hr className="my-2 " />
-        {policy ? (
+        {policy?.terms !== "" ? (
           <StyledText text={policy.terms} />
         ) : (
           <p className="text-center mt-4">No Terms & Conditions Found</p>

@@ -26,7 +26,7 @@ const PrivacyPolicy = () => {
       <div className="mx-5 py-6 font-poppins font-extralight">
         <p className="text-lg">Privacy Policy</p>
         <hr className="my-2 " />
-        {policy ? (
+        {policy?.privacy !== "" ? (
           <StyledText text={policy.privacy} />
         ) : (
           <p className="text-center mt-4">No Privacy Policy Found</p>
