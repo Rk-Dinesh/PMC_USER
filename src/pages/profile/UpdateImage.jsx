@@ -84,6 +84,7 @@ const UpdateImage = ({ CloseProfileModal }) => {
               type="file"
               className="hidden"
               id="file-input"
+              accept=".jpg,.jpeg,.png,.gif"
               onChange={handleFileChange}
             />
            

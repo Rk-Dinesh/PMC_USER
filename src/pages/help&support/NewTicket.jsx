@@ -193,18 +193,19 @@ const NewTicket = () => {
                     className="hidden"
                     id="file-input"
                     multiple
+                    accept=".jpg,.jpeg,.png,.gif"
                     onChange={(e) =>
                       setSelectedFiles(Array.from(e.target.files))
                     }
                   />
                   </label>
-                  <button
-                    className="bg-gray-300 text-black px-4 py-1.5 rounded-md"
+                  <p
+                    className="bg-gray-300 text-black w-2/6 py-1.5 text-center rounded-md"
                     htmlFor="file-input"
                     onClick={openFileDialog}
                   >
                     Choose Files
-                  </button>
+                  </p>
                 
                 <span
                   className="absolute top-1/2 -translate-y-1/2 lg:right-4 md:right-4 right-16 text-normal text-black "

@@ -32,7 +32,7 @@ const Modal = ({ isOpen, onClose, imageUrl }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className=" relative w-[550px]  h-[350px]">
         
-        <img src={imageUrl} alt="Modal" className="w-full h-full"  ref={pdfRef}/>
+        <img src={imageUrl} alt="Modal" className="object-center"  ref={pdfRef}/>
         <div className="flex justify-center my-3 gap-3 ">
           <button  className={`text-base bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 px-3 py-2 ${processing ? 'opacity-15' : ''}`}  disabled={processing} onClick={handleDownload}>
           {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Downloading...</p></span> : "Download" }

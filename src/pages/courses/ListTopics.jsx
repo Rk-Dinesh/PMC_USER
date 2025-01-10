@@ -69,7 +69,7 @@ const ListTopics = () => {
       try {
         const generatedText = res.data.url;
         sendData(generatedText, parsedJson);
-        setProcessing(false);
+        //setProcessing(false);
       } catch (error) {
         sendImage(parsedJson, promptImage);
       }
@@ -146,6 +146,7 @@ const ListTopics = () => {
       localStorage.setItem("courseId", response.data.courseId);
       localStorage.setItem("first", response.data.completed);
       localStorage.setItem("jsonData", JSON.stringify(jsonData));
+      setProcessing(false)
       navigate("/content", {
         state: {
           jsonData: jsonData,
@@ -215,7 +216,7 @@ const ListTopics = () => {
 
       try {
         const parsedJson = htmlContent;
-        setProcessing(false);
+       // setProcessing(false);
         sendDataVideo(url, parsedJson);
       } catch (error) {
         sendSummery(prompt, url);

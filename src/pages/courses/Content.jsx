@@ -49,6 +49,7 @@ const Content = () => {
     setPercentage(completionPercentage);
     if (completionPercentage >= "100") {
       setIsCompleted(true);
+      finish()
     }
   };
 
@@ -108,96 +109,29 @@ const Content = () => {
   async function sendEmail(formattedDate) {
     const userName = localStorage.getItem("fname");
     const email = localStorage.getItem("email");
-    const html = `<!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="initial-scale=1.0">
-            <title>Certificate of Completion</title>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap">
-            <style>
-            body {
-                font-family: 'Roboto', sans-serif;
-                text-align: center;
-                background-color: #fff;
-                margin: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
-        
-            .certificate {
-                border: 10px solid #000;
-                max-width: 600px;
-                margin: 20px auto;
-                padding: 50px;
-                background-color: #fff;
-                position: relative;
-                color: #000;
-                text-align: center;
-            }
-        
-            h1 {
-                font-weight: 900;
-                font-size: 24px;
-                margin-bottom: 10px;
-            }
-        
-            h4 {
-                font-weight: 900;
-                text-align: center;
-                font-size: 20px;
-            }
-        
-            h2 {
-                font-weight: 700;
-                font-size: 18px;
-                margin-top: 10px;
-                margin-bottom: 5px;
-                text-decoration: underline;
-            }
-        
-            h3 {
-                font-weight: 700;
-                text-decoration: underline;
-                font-size: 16px;
-                margin-top: 5px;
-                margin-bottom: 10px;
-            }
-        
-            p {
-                font-weight: 400;
-                line-height: 1.5;
-            }
-        
-            img {
-                width: 40px;
-                height: 40px;
-                margin-right: 10px;
-                text-align: center;
-                align-self: center;
-            }
-            </style>
-        </head>
-        <body>
-        
-        <div class="certificate">
-        <h1>Certificate of Completion 🥇</h1>
-        <p>This is to certify that</p>
-        <h2>${userName}</h2>
-        <p>has successfully completed the course on</p>
-        <h3>${mainTopic}</h3>
-        <p>on ${formattedDate}.</p>
-    
-        <div class="signature">
-            <img src=''>
-            <h4>''</h4>
-        </div>
-    </div>
-        
-        </body>
-        </html>`;
+    const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body style="margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto;background-color:rgb(255,255,255);font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';">
+    <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width:37.5em;margin-left:auto;margin-right:auto;margin-top:40px;margin-bottom:40px;width:465px;border-radius:0.25rem;border-width:1px;border-style:solid;border-color:rgb(234,234,234);padding:20px">
+      <tr style="width:100%">
+        <td>
+          <h1 style="margin-left:0px;margin-right:0px;margin-top:30px;margin-bottom:30px;padding:0px;text-align:center;font-size:24px;font-weight:400;color:rgb(0,0,0)">Congratulations on Completing Your Course!</h1>
+          <p style="font-size:14px;line-height:24px;margin:16px 0;color:rgb(0,0,0)">Hi <strong>${userName}</strong>,</p>
+          <p style="font-size:14px;line-height:24px;margin:16px 0;color:rgb(0,0,0)">Congratulations on completing the course <strong>"${mainTopic}"</strong> on Pick My Course! We're thrilled to see you achieve your learning goals. You've demonstrated dedication and a thirst for knowledge, and we commend you for your accomplishment.</p>
+          <p style="font-size:14px;line-height:24px;margin:16px 0;color:rgb(0,0,0)">To celebrate your success, we've prepared a certificate of completion for you. You can download it here:</p>
+          <p style="font-size:14px;line-height:24px;margin:16px 0;color:rgb(0,0,0)">We encourage you to share your achievement with your friends and colleagues on social media using the hashtag <strong>#PickMyCourseGrad</strong>.</p>
+          <p style="font-size:14px;line-height:24px;margin:16px 0;color:rgb(0,0,0)">What's next? Continue your learning journey with Pick My Course! Explore our vast library of courses and discover new topics to master.</p>
+          <p style="font-size:14px;line-height:24px;margin:16px 0;color:rgb(0,0,0)">Keep learning, keep growing!</p>
+          <p style="font-size:14px;line-height:24px;margin:16px 0;color:rgb(0,0,0)">The <strong>Pick My Course</strong> Team</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+`;
 
     try {
       const postURL = API + "/api/sendcertificate";

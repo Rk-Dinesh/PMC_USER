@@ -16,7 +16,7 @@ const Certificate = () => {
         const response = await axios.get(postURL);
         setCourses(response.data);
       } catch (error) {
-        fetchUserCourses();
+       // fetchUserCourses();
       }
     };
 
@@ -52,7 +52,7 @@ const Certificate = () => {
         </div>
       </div>
       <hr className="my-2" />
-      {filteredCourses.map((certify, index) => (
+      {filteredCourses.reverse().map((certify, index) => (
         <>
           <div
             className="flex justify-between mx-2 flex-wrap font-extralight"
