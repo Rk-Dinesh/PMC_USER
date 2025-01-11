@@ -1,12 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API } from "../../Host";
 import { toast } from "react-toastify";
 import { AiOutlineLoading } from "react-icons/ai";
+import { ThemeContext } from "../../App";
 
 const ListTopics = () => {
   const { state } = useLocation();
+  const {global,setGlobal} = useContext(ThemeContext);
   const [processing, setProcessing] = useState(false);
   const { jsonData, mainTopic, type } = state || {};
   const navigate = useNavigate();
@@ -120,6 +122,7 @@ const ListTopics = () => {
         description:`Your course ${mainTopic} has been successfully created!`
       }
       await axios.post(`${API}/api/notify`,formData)
+      setGlobal(!global)
     } else {
       sendData(image, theory);
     }
@@ -162,6 +165,14 @@ const ListTopics = () => {
           end: "",
         },
       });
+
+      const formData ={
+        user:user,
+        subject:`Course Creation Confirmation`,
+        description:`Your course ${mainTopic} has been successfully created!`
+      }
+      await axios.post(`${API}/api/notify`,formData)
+      setGlobal(!global)
     } else {
       sendDataVideo(image, theory);
     }

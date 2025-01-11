@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TruncatedText from "../../components/TruncatedText";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
@@ -13,8 +13,10 @@ import { API } from "../../Host";
 import Headers from "../layout/Headers";
 import robot from "../../assets/robot.png";
 import { motion } from "framer-motion";
+import { ThemeContext } from "../../App";
 
 const Content = () => {
+  const {global,setGlobal} = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
   const [key, setkey] = useState("");
   const { state } = useLocation();
@@ -104,6 +106,7 @@ const Content = () => {
             description:`Congratulations! You've completed the course ${mainTopic}`
           }
           await axios.post(`${API}/api/notify`,formData)
+          setGlobal(!global)
         } else {
           finish();
         }

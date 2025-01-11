@@ -115,7 +115,7 @@ const Payment = () => {
       localStorage.setItem("coursecount", course);
       localStorage.setItem("tax", tax);
       const options = {
-        key: "rzp_test_GoakhwZlWlhSI2",
+        key: "rzp_live_wYeGLl5JSaiCMw",
         amount: rupees,
         currency: "INR",
         name: "PickMyCourse",
@@ -150,7 +150,7 @@ const Payment = () => {
         prefill: {
           name: data.fname,
           email: data.email,
-          contact: "0000000000", // You might want to replace this with the user's actual contact
+          contact: "0000000000", 
         },
         notes: {
           address: "Razorpay Corporate Office",

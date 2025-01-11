@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { API } from "../../Host";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { ThemeContext } from "../../App";
+
 
 const Success = () => {
+  const {global,setGlobal} = useContext(ThemeContext);
   const [processing, setProcessing] = useState(false);
   const [jsonData, setJsonData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -63,6 +66,7 @@ const Success = () => {
         description:`Your subscription has been renewed. Enjoy uninterrupted access to Pick My Course.`
       }
       await axios.post(`${API}/api/notify`,formDatanotify)
+      setGlobal(!global)
     } else {
       try {
         if (localStorage.getItem("method") === "razorpay") {
@@ -107,6 +111,7 @@ const Success = () => {
             description:`Your subscription has been renewed. Enjoy uninterrupted access to Pick My Course.`
           }
           await axios.post(`${API}/api/notify`,formDatanotify)
+          setGlobal(!global)
         }
       } catch (error) {
         getDetails();

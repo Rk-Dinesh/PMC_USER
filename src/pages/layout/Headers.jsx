@@ -1,14 +1,44 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PMCLogo from "../../assets/PMC_Logo.png";
 import { IoNotifications } from "react-icons/io5";
 import profile from "../../assets/profile.png";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { API } from "../../Host";
+import axios from "axios";
+import { ThemeContext } from "../../App";
 
 const Headers = ({ Menus }) => {
   const navigate = useNavigate();
+  const {global,setGlobal} =useContext(ThemeContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [notify, setNotify] = useState(false);
+  const [count, setCount] = useState(0);
+  const [refresh, setRefresh] = useState(false);
   const location = useLocation();
+  const user = localStorage.getItem('user')
+
+  const [notification, setNotification] = useState([])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchNotification();
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [refresh,global]);
+  
+  
+    const fetchNotification = async () => {
+      try {
+        const response = await axios.get(`${API}/api/getnotifybyid?user=${user}`);
+        const responseData = response.data.notify;
+        const reverseData = responseData.reverse();
+        const filteredCount = responseData.filter(count => count.read === 'no').length;
+        setNotification(reverseData);
+        setCount(filteredCount)        
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -20,6 +50,7 @@ const Headers = ({ Menus }) => {
 
   const redirectnotify = () => {
     setNotify(!notify);
+    setRefresh(!refresh);
     navigate('/notify')
   }
 
@@ -71,30 +102,27 @@ const Headers = ({ Menus }) => {
         </div>
       )}
 
-      <div className="">
+      <div className="relative mr-5" onClick={togglenotify}>
         <IoNotifications
           className="lg:w-7 lg:h-7 md:w-6 md:h-6 w-5 h-5 text-white cursor-pointer"
-          onClick={togglenotify}
+          
         />
+       <p className="absolute text-white bg-red-500 rounded-full px-2 -top-2 -right-3 cursor-pointer"> {count}</p>
       </div>
       {notify && (
-        <div className="absolute text-black right-2 top-10 bg-white w-80 h-fit pt-3 font-poppins font-extralight">
+        <div className="absolute text-black right-2 top-10 bg-white w-80 h-fit pt-3 font-poppins font-extralight" onClick={()=>redirectnotify()}>
           <p className="px-2">Notifications</p>
+          {notification&& notification.slice(0,3).map((data,index)=>(
+          <div>
           <hr />
-          <span className=" flex gap-1 justify-between px-3 py-2">
+          <span className=" flex gap-1 justify-between px-3 py-2" key={index}>
             <p className="text-normal text-slate-600">
-              Subject: Lhoereemmis apilsiudmenistered a dummy Text
+              <strong>Subject:</strong> {data.subject}
             </p>
-            <button className="text-sm text-black font-normal " onClick={redirectnotify}>View</button>
+            <button className="text-sm text-black font-normal " >View</button>
           </span>
-          <hr />
-          <span className=" flex gap-1 justify-between px-3 py-2">
-            <p className="text-normal text-slate-600">
-              Subject: Lhoereemmis apilsiudmenistered a dummy Text
-            </p>
-            <button className="text-sm text-black font-normal " onClick={redirectnotify}>View</button>
-          </span>
-
+          </div>
+          ))}
           <button className="w-full bg-slate-400 text-lg py-1" onClick={redirectnotify}>See all</button>
         </div>
       )}

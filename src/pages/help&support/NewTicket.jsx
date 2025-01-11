@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import { API } from "../../Host";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading } from "react-icons/ai";
+import { ThemeContext } from "../../App";
 
 const ticketSchema = yup.object().shape({
   category: yup
@@ -29,6 +30,7 @@ const ticketSchema = yup.object().shape({
 });
 
 const NewTicket = () => {
+  const {global,setGlobal} = useContext(ThemeContext);
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [priority, setPriority] = useState([]);
@@ -94,6 +96,7 @@ const NewTicket = () => {
           description:`Your ticket ${ticketId} has been received. We'll be in touch soon! Thank you for contacting support. Here are some resources that might help while you wait: https://helpcenter.pickmycourseai.support`
         }
         await axios.post(`${API}/api/notify`,formData)
+        setGlobal(!global)
         navigate("/support");
       } else {
         toast.error("Failed to raise ticket");

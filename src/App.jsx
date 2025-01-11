@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { Suspense, createContext, lazy, useContext, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,13 +35,17 @@ const Payment = lazy(() => import("./pages/subscription/Payment"));
 const Success = lazy(() => import("./pages/subscription/Success"));
 const Failed = lazy(() => import("./pages/subscription/Failed"));
 
+export const ThemeContext = createContext()
+
 function App() {
+  const [global, setGlobal] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
   );
 
   return (
     <>
+    <ThemeContext.Provider value={{ global, setGlobal }}>
       <BrowserRouter future={{ v7_relativeSplatPath: true }}>
         <Routes>
           <Route
@@ -99,6 +103,7 @@ function App() {
         pauseOnHover
         theme="dark"
       />
+      </ThemeContext.Provider>
     </>
   );
 }

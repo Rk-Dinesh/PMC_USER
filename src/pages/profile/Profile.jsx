@@ -78,7 +78,7 @@ const Profile = () => {
                 type="text"
                 className=" text-white py-3 pe-0 ps-2 block w-full bg-transparent border-t-transparent border-b border-x-transparent border-b-gray-400 outline-none  disabled:pointer-events-none"
                 placeholder="John"
-                value={userData?.fname || ''}
+                defaultValue={userData?.fname || ''}
               />
             </div>
             <div className="lg:col-span-4 md:col-span-4 col-span-12 ">
@@ -87,7 +87,7 @@ const Profile = () => {
                 type="text"
                 className="text-white py-3 pe-0 ps-2 block w-full bg-transparent border-t-transparent border-b border-x-transparent border-b-gray-400 outline-none  disabled:pointer-events-none"
                 placeholder="Doe"
-                value={userData?.lname || ''}
+                defaultValue={userData?.lname || ''}
               />
             </div>
             <div className="lg:col-span-4 md:col-span-4 col-span-12 ">
@@ -96,7 +96,7 @@ const Profile = () => {
                 type="text"
                 className="text-white py-3 pe-0 ps-2 block w-full bg-transparent border-t-transparent border-b border-x-transparent border-b-gray-400 outline-none  disabled:pointer-events-none"
                 placeholder="25-12-2024"
-                value={userData?.dob || ''}
+                defaultValue={userData?.dob || ''}
               />
             </div>
           </div>
@@ -112,7 +112,7 @@ const Profile = () => {
                   type="text"
                   className=" py-3 pe-0 ps-2 block w-full bg-transparent border-t-transparent border-b border-x-transparent border-b-white outline-none  disabled:pointer-events-none text-white"
                   placeholder="johndoe@gmail.com"
-                  value={localStorage.getItem("email") || ''}
+                  defaultValue={localStorage.getItem("email") || ''}
                 />
               </div>
               <div className="flex justify-center my-2">
@@ -131,7 +131,7 @@ const Profile = () => {
                   type="text"
                   className=" py-3 pe-0 ps-2 block w-full bg-transparent border-t-transparent border-b border-x-transparent border-b-white outline-none  disabled:pointer-events-none text-white"
                   placeholder="1234567890"
-                  value={localStorage.getItem("phone") || ''}
+                  defaultValue={localStorage.getItem("phone") || ''}
                 />
               </div>
               <div className="flex justify-center my-2">

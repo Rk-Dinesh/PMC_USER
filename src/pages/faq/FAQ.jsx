@@ -50,7 +50,7 @@ const FAQ = () => {
           <FaSearch className="text-black text-xl" />
           <input
             type="text"
-            placeholder="Search by topic"
+            placeholder="Search by FAQ"
             className="bg-transparent w-full outline-none text-center font-extralight text-black"
           />
         </div>
