@@ -113,9 +113,9 @@ const Headers = ({ Menus }) => {
         <div className="absolute text-black right-2 top-10 bg-white w-80 h-fit pt-3 font-poppins font-extralight" onClick={()=>redirectnotify()}>
           <p className="px-2">Notifications</p>
           {notification&& notification.slice(0,3).map((data,index)=>(
-          <div>
+          <div key={index}>
           <hr />
-          <span className=" flex gap-1 justify-between px-3 py-2" key={index}>
+          <span className=" flex gap-1 justify-between px-3 py-2" >
             <p className="text-normal text-slate-600">
               <strong>Subject:</strong> {data.subject}
             </p>

@@ -1,63 +1,35 @@
-import React from "react";
-import { FaSearch } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
 import Accordion from "../../components/Accordion";
+import axios from "axios";
+import { API } from "../../Host";
 
 const FAQ = () => {
- 
-  const Accdata = [
-    {
-      title: "What is lorem Ipsum used for?",
-      content:
-        "Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose",
-    },
-    {
-      title: "What is lorem Ipsum used for?",
-      content:
-        "Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose",
-    },
-    {
-      title: "What is lorem Ipsum used for?",
-      content:
-        "Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose",
-    },
-    {
-        title: "What is lorem Ipsum used for?",
-        content:
-          "Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose",
-      },
-      {
-        title: "What is lorem Ipsum used for?",
-        content:
-          "Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose",
-      },
-      {
-        title: "What is lorem Ipsum used for?",
-        content:
-          "Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose",
-      },
-       {
-      title: "What is lorem Ipsum used for?",
-      content:
-        "Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose. Lorem ipsum is a dummy text used for type setting instead of real text only for demonstration purpose",
-    },
-  ];
+  const [Accdata, setAccdata] = useState([]);
+
+  useEffect(() => {
+    const fetchFAQ = async () => {
+      try {
+        const response = await axios.get(`${API}/api/getfaq`);
+        const responseData = response.data.faq;
+
+        setAccdata(responseData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchFAQ();
+  }, []);
 
   return (
     <div className="mx-4 my-6 font-poppins">
       <div className="flex justify-between items-center flex-wrap gap-3 mx-2">
         <p className="text-lg font-extralight">FAQ</p>
-        <div className="flex items-center gap-3 bg-white w-96 px-6 py-1.5  rounded-md mr-1">
-          <FaSearch className="text-black text-xl" />
-          <input
-            type="text"
-            placeholder="Search by FAQ"
-            className="bg-transparent w-full outline-none text-center font-extralight text-black"
-          />
-        </div>
       </div>
       <hr className="my-2 " />
-       {Accdata.map(({ title, content }) => (
-          <Accordion title={title} content={content} />
+      {Accdata &&
+        Accdata.map(({ title, content }, index) => (
+          <Accordion key={index} title={title} content={content} />
         ))}
     </div>
   );

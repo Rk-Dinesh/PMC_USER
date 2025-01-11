@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import Headers from "./Headers";
 import profile from "../../assets/profile.png";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
@@ -17,8 +17,10 @@ import LogOut from "../auth/LogOut";
 import DeleteAccount from "../auth/DeleteAccount";
 import axios from "axios";
 import { API, formatDate1 } from "../../Host";
+import { ThemeContext } from "../../App";
 
 const Layout = ({setIsLoggedIn}) => {
+  const {global,setGlobal} = useContext(ThemeContext);
   const location = useLocation();
   const fname = localStorage.getItem("fname");
   const lname = localStorage.getItem("lname");
@@ -30,7 +32,6 @@ const Layout = ({setIsLoggedIn}) => {
   const [activeplans, setActiveplans] = useState([]);
 
   useEffect(() => {
-    fetchImage();
     const fetchSubs = async () => {
       const postURL = API + `/api/getsubsbyid?user=${user}`;
       try {
@@ -43,6 +44,23 @@ const Layout = ({setIsLoggedIn}) => {
 
     fetchSubs();
   }, []);
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const response = await axios.get(`${API}/api/getimagebyid?user=${user}`);
+        const responseData = response.data.user;
+        setUserImage(responseData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const timer = setTimeout(() => {
+      fetchImage();
+    }, 2000);
+    return () => clearTimeout(timer);
+   
+  }, [global]);
 
   const lastActivePlan =
     activeplans.length > 0 ? activeplans[activeplans.length - 1] : null;
@@ -88,22 +106,14 @@ const Layout = ({setIsLoggedIn}) => {
     setDeleteModalOpen(false);
   };
 
-  const fetchImage = async () => {
-    try {
-      const response = await axios.get(`${API}/api/getimagebyid?user=${user}`);
-      const responseData = response.data.user;
-      setUserImage(responseData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   return (
     <div className="">
       <Headers Menus={Menus} />
       <div className="flex w-full h-screen  pt-14 font-poppins   ">
         <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden overflow-auto  ">
-          <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
+          <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ml-2 ">
             <img
               src={userImage?.image ? userImage.image : profile}
               alt="Profile"

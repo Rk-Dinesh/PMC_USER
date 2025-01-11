@@ -9,7 +9,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 const UpdatePhone = ({ ClosePhoneModal }) => {
   const email = localStorage.getItem("email");
-  const [phone, setPhone] = useState(localStorage.getItem("phone"));
+  const [phone, setPhone] = useState('');
   const [processing, setProcessing] = useState(false);
   const [countryCode, setCountryCode] = useState(
     localStorage.getItem("countryCode")
@@ -80,6 +80,11 @@ const UpdatePhone = ({ ClosePhoneModal }) => {
     e.preventDefault();
 
     try {
+
+      if(!phone){
+         toast.error("Mobile Number is required.");
+          return;
+      }
       setProcessing(true);
       setUpRecaptcha();
       const appVerifier = window.recaptchaVerifier;

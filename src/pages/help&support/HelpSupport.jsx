@@ -57,8 +57,8 @@ const HelpSupport = () => {
       </div>
       <hr className="my-2" />
       {filteredTickets.map((ticket, index) => (
-        <>
-        <div className="flex justify-between mx-2 flex-wrap" key={index}>
+        <div key={index}>
+        <div className="flex justify-between mx-2 flex-wrap" >
           <div className="flex flex-col gap-1">
             <p>Ticket No: {ticket.ticketId}</p>
             <p>Category: {ticket.category}</p>
@@ -94,7 +94,7 @@ const HelpSupport = () => {
           </div>
         </div>
         <hr className="my-3 " />
-        </>
+        </div>
       ))}
     </div>
   );

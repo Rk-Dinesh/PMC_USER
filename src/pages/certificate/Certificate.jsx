@@ -53,10 +53,10 @@ const Certificate = () => {
       </div>
       <hr className="my-2" />
       {filteredCourses.reverse().map((certify, index) => (
-        <>
+        <div key={index}>
           <div
             className="flex justify-between mx-2 flex-wrap font-extralight"
-            key={index}
+            
           >
             <div className="flex flex-col gap-1">
               <p className="text-lg">Topic Name : {certify.mainTopic}</p>
@@ -75,7 +75,7 @@ const Certificate = () => {
             </div>
           </div>
           <hr className="my-3 " />
-        </>
+        </div>
       ))}
     </div>
   );

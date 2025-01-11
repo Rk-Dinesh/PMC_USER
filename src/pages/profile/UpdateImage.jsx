@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Modal from "../../components/Modal";
 import axios from "axios";
 import { API } from "../../Host";
 import { toast } from "react-toastify";
 import { AiOutlineLoading } from "react-icons/ai";
+import { ThemeContext } from "../../App";
 
 const UpdateImage = ({ CloseProfileModal }) => {
+  const {global,setGlobal} = useContext(ThemeContext);
   const [selectedFile, setSelectedFile] = useState(null);
   const [base64Image, setBase64Image] = useState("");
   const [preview, setPreview] = useState("");
@@ -51,6 +53,7 @@ const UpdateImage = ({ CloseProfileModal }) => {
       if (response.status === 200) {
         toast.success(response.data.message);
         setProcessing(false)
+        setGlobal(!global)
         CloseProfileModal();
       } else {
         console.log("Failed to Upload");

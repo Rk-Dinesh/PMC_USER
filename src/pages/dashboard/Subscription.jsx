@@ -103,8 +103,8 @@ const Subscription = () => {
       </div>
       <hr className="my-2" />
       {filteredPlans.map((plan, index) => (
-        <>
-          <div className="flex justify-between mx-2 flex-wrap" key={index}>
+        <div key={index}>
+          <div className="flex justify-between mx-2 flex-wrap" >
             <div className="flex flex-col gap-0 .5">
               <p className="text-xl">Subscription : {plan.plan}</p>
               <p>Subscription Start Date : {formatDate1(plan.date)}</p>
@@ -124,7 +124,7 @@ const Subscription = () => {
             </div>
           </div>
           <hr className="my-3" />
-        </>
+        </div>
       ))}
     </div>
   );

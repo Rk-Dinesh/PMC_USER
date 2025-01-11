@@ -4,9 +4,10 @@ import { API, formatDate } from "../../Host";
 import { ThemeContext } from "../../App";
 
 const Notification = () => {
+  const {global,setGlobal} = useContext(ThemeContext);
   const user = localStorage.getItem("user");
   const [notify, setNotify] = useState([]);
-  const {global,setGlobal} = useContext(ThemeContext);
+
 
   useEffect(() => {
     const fetchNotification = async () => {
