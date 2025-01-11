@@ -62,6 +62,7 @@ const NewTicket = () => {
       setProcessing(true)
       const response = await axios.post(`${API}/api/ticket`, formData);
       if (response.status === 200) {
+        const ticketId = response.data.Ticket;
         toast.success("Ticket Raised");
         selectedFiles.length > 0 ? setProcessing(true) : setProcessing(false)
         if (selectedFiles.length > 0) {
@@ -87,7 +88,12 @@ const NewTicket = () => {
             toast.error("Failed to upload files");
           }
         }
-
+        const formData ={
+          user:localStorage.getItem("user"),
+          subject:` Ticket Confirmation`,
+          description:`Your ticket ${ticketId} has been received. We'll be in touch soon! Thank you for contacting support. Here are some resources that might help while you wait: https://helpcenter.pickmycourseai.support`
+        }
+        await axios.post(`${API}/api/notify`,formData)
         navigate("/support");
       } else {
         toast.error("Failed to raise ticket");

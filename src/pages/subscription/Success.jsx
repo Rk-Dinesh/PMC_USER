@@ -57,6 +57,12 @@ const Success = () => {
         localStorage.removeItem("method");
         localStorage.removeItem("plan");
       }
+      const formDatanotify ={
+        user:localStorage.getItem("user"),
+        subject:` Subscription Renewal`,
+        description:`Your subscription has been renewed. Enjoy uninterrupted access to Pick My Course.`
+      }
+      await axios.post(`${API}/api/notify`,formDatanotify)
     } else {
       try {
         if (localStorage.getItem("method") === "razorpay") {
@@ -95,6 +101,12 @@ const Success = () => {
             localStorage.removeItem("plan");
             localStorage.removeItem("subscription");
           }
+          const formDatanotify ={
+            user:localStorage.getItem("user"),
+            subject:` Subscription Renewal`,
+            description:`Your subscription has been renewed. Enjoy uninterrupted access to Pick My Course.`
+          }
+          await axios.post(`${API}/api/notify`,formDatanotify)
         }
       } catch (error) {
         getDetails();

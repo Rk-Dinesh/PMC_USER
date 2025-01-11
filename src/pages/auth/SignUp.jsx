@@ -58,7 +58,14 @@ const SignUp = () => {
       setProcessing(true)
       const response = await axios.post(`${API}/api/usersignup`, formData);
       if (response.status === 200) {
+        const newuser = response.data.userId._id;  
         toast.success("Account Created Successfully");
+        const formData ={
+          user:newuser,
+          subject:`Welcome message`,
+          description:`Welcome to Pick My Course! Start creating your personalized learning journey today.`
+        }
+        await axios.post(`${API}/api/notify`,formData)
         setProcessing(false)
         navigate("/");
       } else {

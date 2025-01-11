@@ -1,33 +1,33 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { API, formatDate } from '../../Host';
 
 const Notification = () => {
-
-    const notify = [
-        {
-            date : '22-05-1990',
-            subject:'Lorem Ipsum is a dummy text placed for illustration only',
-            desc:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularized in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
-        },
-        {
-            date : '22-05-1990',
-            subject:'Lorem Ipsum is a dummy text placed for illustration only',
-            desc:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularized in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
-        },
-        {
-            date : '22-05-1990',
-            subject:'Lorem Ipsum is a dummy text placed for illustration only',
-            desc:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularized in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
-        },
-    ]
+const user = localStorage.getItem('user')
+    const [notify, setNotify] = useState([])
+    useEffect(() => {
+        fetchNotification();
+    }, []);
+  
+    const fetchNotification = async () => {
+      try {
+        const response = await axios.get(`${API}/api/getnotifybyid?user=${user}`);
+        const responseData = response.data.notify;
+        setNotify(responseData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
   return (
     <div className='mx-5 my-6 font-poppins font-extralight'>
         <p className='text-lg'>Notifications</p>
         <hr className="my-2 " />
-        {notify.map((data,index)=>(
+        {notify && notify.map((data,index)=>(
         <div className='my-5' key={index}>
-            <p><span className='font-normal'>Date :</span> {data.date}</p>
+            <p><span className='font-normal'>Date :</span> {formatDate(data.createdAt)}</p>
             <p><span className='font-normal'>Subject :</span> {data.subject}</p>
-            <p className='my-3'><span className='font-normal'>Description :</span> {data.desc}</p>
+            <p className='my-3'><span className='font-normal'>Description :</span> {data.description}</p>
             <hr className="my-4 " />
         </div>
         ))}

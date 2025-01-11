@@ -114,6 +114,12 @@ const ListTopics = () => {
           end: "",
         },
       });
+      const formData ={
+        user:user,
+        subject:`Course Creation Confirmation`,
+        description:`Your course ${mainTopic} has been successfully created!`
+      }
+      await axios.post(`${API}/api/notify`,formData)
     } else {
       sendData(image, theory);
     }

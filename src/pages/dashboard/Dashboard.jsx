@@ -10,7 +10,9 @@ import { PieChart, Pie, ResponsiveContainer, Cell,Legend } from 'recharts';
 
 const Dashboard = () => {
   const userId = localStorage.getItem("user");
+  const packagename = localStorage.getItem("type");
   const [courses, setCourses] = useState([]);
+  const [plans, setPlans] = useState(0)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +28,27 @@ const Dashboard = () => {
     };
 
     fetchUserCourses();
+    fetchSubscriptionPlan();
   }, []);
+
+  const fetchSubscriptionPlan = async () => {
+    try {
+      const response = await axios.get(`${API}/api/getsubscriptionplan`);
+      const responseData = response.data.plans;
+      const filteredPlan = responseData.find(plan => plan.packagename === packagename);
+  
+      if (filteredPlan) {
+        setPlans(filteredPlan.course);
+       
+        
+      } else {
+        //console.log("No matching plan found for the given package name.");
+        setPlans(10); 
+      }
+    } catch (error) {
+      console.error("Error fetching subscription plans:", error);
+    }
+  };
 
   const data02 = [
     { name: 'Image', value: (courses && courses.length > 0) ? 
@@ -91,15 +113,18 @@ const ActiveThisMonthCount = courses.filter((course) => {
   );
 }).length;
 
+
+
+
   return (
     <div className=" mx-5 my-6 font-poppins font-extralight">
-      <div className="w-full bg-black">
+      {/* <div className="w-full bg-black">
         <p className="mx-3 my-5 py-2">
           Notification Area : We have sent you an verification on your email.
           Please verify your email to generate by you is incorrect than you can
           update it from the profile section.
         </p>
-      </div>
+      </div> */}
       <div className="flex gap-4 flex-wrap ">
         <div className="lg:w-52 md:w-48 w-48 h-56 bg-black my-1">
           <p className="mx-3 text-normal text-center mt-6">
@@ -180,31 +205,31 @@ const ActiveThisMonthCount = courses.filter((course) => {
       <div className="my-6 col-span-6">
         <p className="text-lg my-3">Monthly Activity Progress</p>
         <span>
-          <p className="w-3/4 text-end mx-4 text-xl">{coursesThisMonthCount}/10</p>
+          <p className="w-3/4 text-end mx-4 text-xl">{coursesThisMonthCount}/{plans}</p>
           <div className="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
             <div
               className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
-              style={{ width: `${(coursesThisMonthCount / 10) * 100}%` }} 
+              style={{ width: `${(coursesThisMonthCount / plans) * 100}%` }} 
             ></div>
           </div>
           <p className="mx-6 text-sm">Courses Generated this month</p>
         </span>
         <span>
-          <p className="w-3/4 text-end mx-4 text-xl">{ActiveThisMonthCount}/10</p>
+          <p className="w-3/4 text-end mx-4 text-xl">{ActiveThisMonthCount}/{plans}</p>
           <div className="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
             <div
               className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
-              style={{ width: `${(ActiveThisMonthCount / 10) * 100}%` }}
+              style={{ width: `${(ActiveThisMonthCount / plans) * 100}%` }}
             ></div>
           </div>
           <p className="mx-6 text-sm">Active Courses this month</p>
         </span>
         <span>
-          <p className="w-3/4 text-end mx-4 text-xl">{completedThisMonthCount}/10</p>
+          <p className="w-3/4 text-end mx-4 text-xl">{completedThisMonthCount}/{plans}</p>
           <div className="w-3/4 bg-gray-200 rounded-full h-4 dark:bg-gray-700 mx-5">
             <div
               className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] h-4 rounded-full"
-              style={{ width: `${(completedThisMonthCount / 10) * 100}%` }}
+              style={{ width: `${(completedThisMonthCount / plans) * 100}%` }}
             ></div>
           </div>
           <p className="mx-6 text-sm">Completed Courses this month</p>

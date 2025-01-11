@@ -32,6 +32,7 @@ const Content = () => {
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const handleOnClose = () => setIsOpenDrawer(false);
   const [isAnimationVisible, setIsAnimationVisible] = useState(false);
+  const user = localStorage.getItem("user");
 
   const CountDoneTopics = () => {
     let doneCount = 0;
@@ -97,6 +98,12 @@ const Content = () => {
           const formattedDate = today.toLocaleDateString("en-GB");
           localStorage.setItem("first", "true");
           sendEmail(formattedDate);
+          const formData ={
+            user:user,
+            subject:`Course Completion Confirmation`,
+            description:`Congratulations! You've completed the course ${mainTopic}`
+          }
+          await axios.post(`${API}/api/notify`,formData)
         } else {
           finish();
         }
@@ -563,7 +570,7 @@ const Content = () => {
           className="fixed bottom-36 right-10 z-50"
         >
          
-          <div className="relative bg-gradient-to-r from-purple-500 to-blue-500 text-white p-4 rounded-xl shadow-lg w-48 font-poppins border-2">
+          <div className="relative bg-gradient-to-r from-purple-500 to-blue-500 text-white p-3 rounded-xl shadow-lg w-56 font-poppins border-2">
             <p className="text-center text-sm font-light leading-relaxed">
               Hi, I am your AI teacher. <br />
               You can ask me any doubts you have on this course.
