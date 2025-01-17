@@ -8,6 +8,7 @@ const HelpSupport = () => {
   const navigate = useNavigate();
   const [ticket, setTicket] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const user  = localStorage.getItem('user')
 
   const redirectnewticket = () => {
     navigate("/newticket");
@@ -19,7 +20,7 @@ const HelpSupport = () => {
 
   const fetchTicket = async () => {
     try {
-      const response = await axios.get(`${API}/api/getticket`);
+      const response = await axios.get(`${API}/api/getticketuserbyid?user=${user}`);
       const responseData = await response.data.ticket;
       const reverseData = responseData.reverse()      
       setTicket(reverseData);
